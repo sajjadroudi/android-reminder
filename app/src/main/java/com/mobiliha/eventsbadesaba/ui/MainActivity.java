@@ -1,8 +1,10 @@
-package com.mobiliha.eventsbadesaba;
+package com.mobiliha.eventsbadesaba.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.mobiliha.eventsbadesaba.R;
 
 public class MainActivity extends AppCompatActivity {
 
