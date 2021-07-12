@@ -1,6 +1,7 @@
 package com.mobiliha.eventsbadesaba.ui.list;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -10,19 +11,23 @@ import com.mobiliha.eventsbadesaba.data.repository.TaskRepository;
 import java.util.List;
 
 import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 
 public class ListViewModel extends ViewModel {
 
     private final TaskRepository repository;
+    private final ObservableBoolean isListEmpty = new ObservableBoolean(false);
 
     public ListViewModel(TaskRepository repository) {
         this.repository = repository;
     }
 
     public Single<List<Task>> getTaskList() {
-        return repository.getAllTasks();
+        return repository.getAllTasks()
+                .doOnSuccess(tasks -> isListEmpty.set(tasks == null || tasks.isEmpty()));
+    }
+
+    public ObservableBoolean getIsListEmpty() {
+        return isListEmpty;
     }
 
     public static class Factory implements ViewModelProvider.Factory {
