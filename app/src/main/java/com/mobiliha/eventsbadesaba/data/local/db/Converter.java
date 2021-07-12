@@ -9,6 +9,7 @@ import java.util.Calendar;
 public class Converter {
 
     public static Task contentValuesToTask(ContentValues values) {
+        if(values == null) return null;
         return new Task(
                 values.getAsInteger(DbContract.TaskEntry.COL_NAME_TASK_ID),
                 values.getAsString(DbContract.TaskEntry.COL_NAME_TITLE),
@@ -21,6 +22,7 @@ public class Converter {
     }
 
     public static ContentValues taskToContentValues(Task task) {
+        if(task == null) return null;
         ContentValues values = new ContentValues();
         values.put(DbContract.TaskEntry.COL_NAME_TITLE, task.getTitle());
         values.put(DbContract.TaskEntry.COL_NAME_DUE_DATE, Converter.calendarToTimestamp(task.getDueDate()));
@@ -32,12 +34,14 @@ public class Converter {
     }
 
     public static Calendar timestampToCalendar(long value) {
+        if(value == 0) return null;
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(value);
         return calendar;
     }
 
     public static long calendarToTimestamp(Calendar calendar) {
+        if(calendar == null) return 0;
         return calendar.getTimeInMillis();
     }
 

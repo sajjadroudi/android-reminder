@@ -1,5 +1,7 @@
 package com.mobiliha.eventsbadesaba.data.local.db.entity;
 
+import androidx.annotation.NonNull;
+
 import com.mobiliha.eventsbadesaba.data.local.db.Converter;
 
 import java.util.Calendar;
@@ -18,7 +20,7 @@ public class Task {
 
     public Task(
             int taskId,
-            String title,
+            @NonNull String title,
             Calendar dueDate,
             String occasion,
             String details,
@@ -35,7 +37,7 @@ public class Task {
     }
 
     public Task(
-            String title,
+            @NonNull String title,
             Calendar dueDate,
             String occasion,
             String details,
@@ -47,7 +49,7 @@ public class Task {
 
     public Task(
             int taskId,
-            String title,
+            @NonNull String title,
             long dueDate,
             String occasion,
             String details,
@@ -58,7 +60,7 @@ public class Task {
     }
 
     public Task(
-            String title,
+            @NonNull String title,
             long dueDate,
             String occasion,
             String details,
@@ -85,7 +87,7 @@ public class Task {
     }
 
     public void setDueDate(long dueDate) {
-        this.dueDate = Converter.timestampToCalendar(dueDate);
+        setDueDate(Converter.timestampToCalendar(dueDate));
     }
 
     public void setDueDate(Calendar value) {
@@ -124,6 +126,7 @@ public class Task {
         this.link = link;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Task{" +

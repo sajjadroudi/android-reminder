@@ -10,6 +10,9 @@ import com.mobiliha.eventsbadesaba.data.local.db.entity.Task;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Completable;
+import io.reactivex.Single;
+
 public class TaskDao {
 
     private final BaseDao dao;
@@ -19,38 +22,80 @@ public class TaskDao {
         this.dao = dao;
     }
 
-    public List<Task> getAll() {
-        Cursor cursor = dao.query(tableName);
-        List<Task> tasks = extractTasks(cursor);
-        cursor.close();
-        return tasks;
+    public Single<List<Task>> getAllTasks() {
+        return Single.create(emitter -> {
+            String sortOrder = DbContract.TaskEntry.COL_NAME_TASK_ID;
+            try (Cursor cursor = dao.query(tableName, null, null, sortOrder)) {
+                List<Task> tasks = extractTasks(cursor);
+                emitter.onSuccess(tasks);
+            } catch (Exception e) {
+                emitter.onError(e);
+            }
+        });
     }
 
-    public Task getTask(int taskId) {
-        String selection = DbContract.TaskEntry.COL_NAME_TASK_ID + " = ?";
-        String[] selectionArgs = { String.valueOf(taskId) };
-        Cursor cursor = dao.query(tableName, selection, selectionArgs);
-        cursor.moveToFirst();
-        Task task = extractTask(cursor);
-        cursor.close();
-        return task;
+    public Single<Task> getTask(int taskId) {
+        return Single.create(emitter -> {
+            String selection = DbContract.TaskEntry.COL_NAME_TASK_ID + " = ?";
+            String[] selectionArgs = { String.valueOf(taskId) };
+
+            try(Cursor cursor = dao.query(tableName, selection, selectionArgs)) {
+                cursor.moveToFirst();
+                Task task = extractTask(cursor);
+                emitter.onSuccess(task);
+            } catch (Exception e) {
+                emitter.onError(e);
+            }
+        });
     }
 
-    public void insert(Task task) {
-        ContentValues values = Converter.taskToContentValues(task);
-        dao.insert(tableName, values);
+    public Completable insert(Task task) {
+        return Completable.create(emitter -> {
+            try {
+                ContentValues values = Converter.taskToContentValues(task);
+                dao.insert(tableName, values);
+                emitter.onComplete();
+            } catch (Exception e) {
+                emitter.onError(e);
+            }
+        });
     }
 
-    public void update(Task task) {
-        String whereClause = DbContract.TaskEntry.COL_NAME_TASK_ID + " = ?";
-        String[] whereArgs = { String.valueOf(task.getTaskId()) };
-        dao.update(tableName, Converter.taskToContentValues(task), whereClause, whereArgs);
+    public Completable update(Task task) {
+        return Completable.create(emitter -> {
+           try {
+               String whereClause = DbContract.TaskEntry.COL_NAME_TASK_ID + " = ?";
+               String[] whereArgs = { String.valueOf(task.getTaskId()) };
+               dao.update(tableName, Converter.taskToContentValues(task), whereClause, whereArgs);
+               emitter.onComplete();
+           } catch (Exception e) {
+               emitter.onError(e);
+           }
+        });
     }
 
-    public void delete(Task task) {
-        String whereClause = DbContract.TaskEntry.COL_NAME_TASK_ID + " = ?";
-        String[] whereArgs = { String.valueOf(task.getTaskId()) };
-        dao.delete(tableName, whereClause, whereArgs);
+    public Completable delete(Task task) {
+        return Completable.create(emitter -> {
+            try {
+                String whereClause = DbContract.TaskEntry.COL_NAME_TASK_ID + " = ?";
+                String[] whereArgs = { String.valueOf(task.getTaskId()) };
+                dao.delete(tableName, whereClause, whereArgs);
+                emitter.onComplete();
+            } catch (Exception e) {
+                emitter.onError(e);
+            }
+        });
+    }
+
+    public Completable deleteAll() {
+        return Completable.create(emitter -> {
+           try {
+               dao.delete(tableName);
+               emitter.onComplete();
+           } catch (Exception e) {
+               emitter.onError(e);
+           }
+        });
     }
 
     private Task extractTask(Cursor cursor) {
