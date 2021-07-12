@@ -3,6 +3,7 @@ package com.mobiliha.eventsbadesaba.data.local.db.entity;
 import androidx.annotation.NonNull;
 
 import com.mobiliha.eventsbadesaba.data.local.db.Converter;
+import com.mobiliha.eventsbadesaba.util.Utils;
 
 import java.util.Calendar;
 
@@ -138,4 +139,19 @@ public class Task {
                 ", link='" + link + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return taskId == task.taskId &&
+                Utils.equals(title, task.title) &&
+                Utils.equals(dueDate, task.dueDate) &&
+                Utils.equals(occasion, task.occasion) &&
+                Utils.equals(details, task.details) &&
+                Utils.equals(location, task.location) &&
+                Utils.equals(link, task.link);
+    }
+
 }

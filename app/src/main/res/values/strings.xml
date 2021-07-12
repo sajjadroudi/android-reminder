@@ -1,3 +1,19 @@
 <resources>
-    <string name="app_name">EventsBadeSaba</string>
+    <string name="app_name">Reminder</string>
+
+    <string-array name="months">
+        <item>Farvardin</item>
+        <item>Ordibehesht</item>
+        <item>Khordad</item>
+        <item>Tir</item>
+        <item>Mordad</item>
+        <item>Shahrivar</item>
+        <item>Mehr</item>
+        <item>Aban</item>
+        <item>Azar</item>
+        <item>Dey</item>
+        <item>Bahman</item>
+        <item>Esfand</item>
+    </string-array>
+    
 </resources>

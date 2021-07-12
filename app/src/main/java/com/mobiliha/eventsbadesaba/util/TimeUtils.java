@@ -1,24 +1,32 @@
 package com.mobiliha.eventsbadesaba.util;
 
+import android.content.Context;
+
+import com.mobiliha.eventsbadesaba.R;
+import com.mobiliha.eventsbadesaba.ReminderApp;
+
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class TimeUtils {
 
+    public static final String TAG = "TimeUtils";
+
     /**
      * @param calendar Calendar
-     * @return something like:
-     * ۱۳:۴۷
+     * @return a string indicating hour and minute
      */
     public static String extractPersianTime(Calendar calendar) {
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
-        return toPersianNumber(hour) + ":" + toPersianNumber(minute);
+        String timeStr = new SimpleDateFormat("hh:mm").format(calendar.getTime());
+        if(isLocaleIranAndFarsi())
+            return toPersianNumber(timeStr);
+        return timeStr;
     }
 
     /**
      * @param calendar Calendar
-     * @return something like:
-     *   ۲۱ تیر ۱۴۰۰
+     * @return a string indication year, month and day
      */
     public static String extractPersianDate(Calendar calendar) {
         PersianCalendar persianCalendar = new PersianCalendar();
@@ -28,46 +36,24 @@ public class TimeUtils {
         int month = persianCalendar.get(PersianCalendar.MONTH);
         int day = persianCalendar.get(PersianCalendar.DAY_OF_MONTH);
 
-        return toPersianNumber(day) +
-                " " +
-                getMonthName(month) +
-                " " +
-                toPersianNumber(year);
+        String monthName = ReminderApp.getAppContext().getResources().getStringArray(R.array.months)[month];
+        if(isLocaleIranAndFarsi()) {
+            return toPersianNumber(day) + " " + monthName + " " + toPersianNumber(year);
+        }
+        return year + " " + monthName + " " + day;
     }
 
     /**
-     * @param month number of month starting from zero.
-     * @return persian name of the corresponding month number.
+     * @param number an string consisting of numbers
+     * @return string of the given number with persian numbers
      */
-    private static String getMonthName(int month) {
-        switch (month) {
-            case 0:
-                return "فروردین";
-            case 1:
-                return "اردیبهشت";
-            case 2:
-                return "خرداد";
-            case 3:
-                return "تیر";
-            case 4:
-                return "مرداد";
-            case 5:
-                return "شهریور";
-            case 6:
-                return "مهر";
-            case 7:
-                return "آبان";
-            case 8:
-                return "آذر";
-            case 9:
-                return "دی";
-            case 10:
-                return "بهمن";
-            case 11:
-                return "اسفند";
-        }
+    private static String toPersianNumber(String number) {
+        char[] persianNumbers = {'۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'};
 
-        throw new IllegalArgumentException();
+        for(int i = 0; i < 10; i++)
+            number = number.replace((char) ('0' + i), persianNumbers[i]);
+
+        return  number;
     }
 
     /**
@@ -75,15 +61,13 @@ public class TimeUtils {
      * @return string of the given number with persian numbers
      */
     private static String toPersianNumber(int number) {
-        String numberStr = String.valueOf(number);
+        return toPersianNumber(String.valueOf(number));
+    }
 
-        char[] persianNumbers = {'۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'};
-
-        for(int i = 0; i < 10; i++) {
-            numberStr = numberStr.replace((char) ('0' + i), persianNumbers[i]);
-        }
-
-        return  numberStr;
+    private static boolean isLocaleIranAndFarsi() {
+        Context context = ReminderApp.getAppContext();
+        Locale locale = context.getResources().getConfiguration().locale;
+        return locale.getLanguage().equals("fa") && locale.getCountry().equals("IR");
     }
 
 }
