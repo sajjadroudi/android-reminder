@@ -10,6 +10,7 @@ import com.mobiliha.eventsbadesaba.data.repository.TaskRepository;
 
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 
 public class ListViewModel extends ViewModel {
@@ -24,6 +25,10 @@ public class ListViewModel extends ViewModel {
     public Single<List<Task>> getTaskList() {
         return repository.getAllTasks()
                 .doOnSuccess(tasks -> isListEmpty.set(tasks == null || tasks.isEmpty()));
+    }
+
+    public Completable deleteTask(Task task) {
+        return repository.delete(task);
     }
 
     public ObservableBoolean getIsListEmpty() {

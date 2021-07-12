@@ -2,6 +2,7 @@
     <string name="app_name">Reminder</string>
 
     <string name="no_task_found">No task found!</string>
+    <string name="deleted">Deleted!</string>
 
     <string-array name="months">
         <item>Farvardin</item>

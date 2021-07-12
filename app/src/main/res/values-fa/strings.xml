@@ -3,6 +3,7 @@
     <string name="app_name">یادآور</string>
 
     <string name="no_task_found">هیچ تسکی پیدا نشد!</string>
+    <string name="deleted">حذف شد!</string>\
 
     <string-array name="months">
          <item>فروردین</item>
