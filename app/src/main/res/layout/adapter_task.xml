@@ -42,7 +42,7 @@
             android:id="@+id/txt_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{TimeUtils.extractPersianTime(task.dueDate)}"
+            android:text="@{TimeUtils.extractTime(task.dueDate)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

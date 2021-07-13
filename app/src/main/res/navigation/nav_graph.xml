@@ -7,6 +7,15 @@
     <fragment
         android:id="@+id/listFragment"
         android:name="com.mobiliha.eventsbadesaba.ui.list.ListFragment"
-        android:label="ListFragment" />
+        android:label="ListFragment" >
+        <action
+            android:id="@+id/action_list_to_modify"
+            app:destination="@id/modifyFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/modifyFragment"
+        android:name="com.mobiliha.eventsbadesaba.ui.modify.ModifyFragment"
+        android:label="ModifyFragment" />
 
 </navigation>

@@ -13,7 +13,7 @@ public class Converter {
         return new Task(
                 values.getAsInteger(DbContract.TaskEntry.COL_NAME_TASK_ID),
                 values.getAsString(DbContract.TaskEntry.COL_NAME_TITLE),
-                values.getAsInteger(DbContract.TaskEntry.COL_NAME_DUE_DATE),
+                values.getAsLong(DbContract.TaskEntry.COL_NAME_DUE_DATE),
                 values.getAsString(DbContract.TaskEntry.COL_NAME_OCCASION),
                 values.getAsString(DbContract.TaskEntry.COL_NAME_DETAILS),
                 values.getAsString(DbContract.TaskEntry.COL_NAME_LOCATION),
@@ -24,8 +24,9 @@ public class Converter {
     public static ContentValues taskToContentValues(Task task) {
         if(task == null) return null;
         ContentValues values = new ContentValues();
+        long timestamp = Converter.calendarToTimestamp(task.getDueDate());
         values.put(DbContract.TaskEntry.COL_NAME_TITLE, task.getTitle());
-        values.put(DbContract.TaskEntry.COL_NAME_DUE_DATE, Converter.calendarToTimestamp(task.getDueDate()));
+        values.put(DbContract.TaskEntry.COL_NAME_DUE_DATE, timestamp);
         values.put(DbContract.TaskEntry.COL_NAME_OCCASION, task.getOccasion());
         values.put(DbContract.TaskEntry.COL_NAME_DETAILS, task.getDetails());
         values.put(DbContract.TaskEntry.COL_NAME_LOCATION, task.getLocation());
@@ -34,9 +35,14 @@ public class Converter {
     }
 
     public static Calendar timestampToCalendar(long value) {
-        if(value == 0) return null;
+        if(value == 0)
+            return null;
+        if(value < 0)
+            throw new IllegalArgumentException("Timestamp can never be negative.");
+
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(value);
+
         return calendar;
     }
 

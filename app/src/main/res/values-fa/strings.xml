@@ -19,4 +19,17 @@
          <item>بهمن</item>
          <item>اسفند</item>
     </string-array>
+
+    <string name="title">عنوان</string>
+    <string name="date">تاریخ</string>
+    <string name="occasion">رویداد</string>
+    <string name="description">توضیحات</string>
+    <string name="link">لینک</string>
+    <string name="save">ذخیره</string>
+    <string name="saved">ذخیره شد!</string>
+    <string name="invalid_title">عنوان تسک نمی‌تواند خالی باشد!</string>
+    <string name="something_went_wrong">خطایی رخ داد!</string>
+    <string name="today">امروز</string>
+    <string name="time">زمان</string>
+
 </resources>

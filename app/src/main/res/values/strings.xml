@@ -18,5 +18,17 @@
         <item>Bahman</item>
         <item>Esfand</item>
     </string-array>
-    
+
+    <string name="title">Title</string>
+    <string name="date">Date</string>
+    <string name="occasion">Occasion</string>
+    <string name="description">Description</string>
+    <string name="link">Link</string>
+    <string name="save">Save</string>
+    <string name="saved">Saved!</string>
+    <string name="invalid_title">Task title can not be empty!</string>
+    <string name="something_went_wrong">Something went wrong!</string>
+    <string name="today">Today</string>
+    <string name="time">Time</string>
+
 </resources>

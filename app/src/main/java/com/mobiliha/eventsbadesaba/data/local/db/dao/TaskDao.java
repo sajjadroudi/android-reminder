@@ -101,7 +101,7 @@ public class TaskDao {
     private Task extractTask(Cursor cursor) {
         int taskId = cursor.getInt(cursor.getColumnIndex(DbContract.TaskEntry.COL_NAME_TASK_ID));
         String title = cursor.getString(cursor.getColumnIndex(DbContract.TaskEntry.COL_NAME_TITLE));
-        int dueDate = cursor.getInt(cursor.getColumnIndex(DbContract.TaskEntry.COL_NAME_DUE_DATE));
+        long dueDate = cursor.getLong(cursor.getColumnIndex(DbContract.TaskEntry.COL_NAME_DUE_DATE));
         String occasion = cursor.getString(cursor.getColumnIndex(DbContract.TaskEntry.COL_NAME_OCCASION));
         String details = cursor.getString(cursor.getColumnIndex(DbContract.TaskEntry.COL_NAME_DETAILS));
         String location = cursor.getString(cursor.getColumnIndex(DbContract.TaskEntry.COL_NAME_LOCATION));

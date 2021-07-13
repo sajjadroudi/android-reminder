@@ -14,21 +14,27 @@ public class TimeUtils {
     public static final String TAG = "TimeUtils";
 
     /**
-     * @param calendar Calendar
-     * @return a string indicating hour and minute
+     * @param calendar Calendar.
+     * @return A string indicating hour and minute.
      */
-    public static String extractPersianTime(Calendar calendar) {
-        String timeStr = new SimpleDateFormat("hh:mm").format(calendar.getTime());
+    public static String extractTime(Calendar calendar) {
+        if(calendar == null)
+            return null;
+
+        String timeStr = new SimpleDateFormat("HH:mm").format(calendar.getTime());
         if(isLocaleIranAndFarsi())
             return toPersianNumber(timeStr);
         return timeStr;
     }
 
     /**
-     * @param calendar Calendar
-     * @return a string indication year, month and day
+     * @param calendar Calendar.
+     * @return A string indication year, month and day.
      */
     public static String extractPersianDate(Calendar calendar) {
+        if(calendar == null)
+            return null;
+
         PersianCalendar persianCalendar = new PersianCalendar();
         persianCalendar.setTimeInMillis(calendar.getTimeInMillis());
 
@@ -44,8 +50,8 @@ public class TimeUtils {
     }
 
     /**
-     * @param number an string consisting of numbers
-     * @return string of the given number with persian numbers
+     * @param number On string consisting of numbers.
+     * @return String of the given number with persian numbers.
      */
     private static String toPersianNumber(String number) {
         char[] persianNumbers = {'۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'};
@@ -57,8 +63,8 @@ public class TimeUtils {
     }
 
     /**
-     * @param number an integer
-     * @return string of the given number with persian numbers
+     * @param number An integer.
+     * @return String of the given number with persian numbers.
      */
     private static String toPersianNumber(int number) {
         return toPersianNumber(String.valueOf(number));

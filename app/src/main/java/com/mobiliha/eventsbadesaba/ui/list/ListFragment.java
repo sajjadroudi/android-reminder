@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -60,6 +62,7 @@ public class ListFragment extends Fragment {
 
                     @Override
                     public void onComplete() {
+                        // TODO: show a snack bar and let the user undo the deletion
                         Toast.makeText(getContext(), R.string.deleted, Toast.LENGTH_SHORT).show();
                         fetchTasks();
                     }
@@ -92,6 +95,8 @@ public class ListFragment extends Fragment {
         setupBinding(inflater, container);
 
         fetchTasks();
+
+        binding.fab.setOnClickListener(v -> navigateToAddFragment());
         
         return binding.getRoot();
     }
@@ -132,6 +137,11 @@ public class ListFragment extends Fragment {
                 this,
                 new ListViewModel.Factory(repository)
         ).get(ListViewModel.class);
+    }
+
+    private void navigateToAddFragment() {
+        NavController navController = NavHostFragment.findNavController(this);
+        navController.navigate(R.id.action_list_to_modify);
     }
 
     @Override
