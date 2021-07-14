@@ -27,7 +27,7 @@ public class Converter {
         long timestamp = Converter.calendarToTimestamp(task.getDueDate());
         values.put(DbContract.TaskEntry.COL_NAME_TITLE, task.getTitle());
         values.put(DbContract.TaskEntry.COL_NAME_DUE_DATE, timestamp);
-        values.put(DbContract.TaskEntry.COL_NAME_OCCASION, task.getOccasion());
+        values.put(DbContract.TaskEntry.COL_NAME_OCCASION, task.getOccasion().toString());
         values.put(DbContract.TaskEntry.COL_NAME_DETAILS, task.getDetails());
         values.put(DbContract.TaskEntry.COL_NAME_LOCATION, task.getLocation());
         values.put(DbContract.TaskEntry.COL_NAME_LINK, task.getLink());

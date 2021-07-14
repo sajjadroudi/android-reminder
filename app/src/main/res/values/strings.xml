@@ -31,4 +31,13 @@
     <string name="today">Today</string>
     <string name="time">Time</string>
 
+    <string-array name="occasions">
+        <item>Birthday</item>
+        <item>Installment</item>
+        <item>Anniversary</item>
+        <item>Session</item>
+        <item>Khoms</item>
+        <item>Drug</item>
+    </string-array>
+
 </resources>

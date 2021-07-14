@@ -14,7 +14,7 @@ public class Task {
     private final int taskId;
     private String title;
     private Calendar dueDate;
-    private String occasion;
+    private Occasion occasion;
     private String details;
     private String location;
     private String link;
@@ -103,11 +103,15 @@ public class Task {
         this.details = details;
     }
 
-    public void setOccasion(String occasion) {
+    public void setOccasion(Occasion occasion) {
         this.occasion = occasion;
     }
 
-    public String getOccasion() {
+    public void setOccasion(String occasion) {
+        setOccasion(Occasion.valueOf(occasion));
+    }
+
+    public Occasion getOccasion() {
         return occasion;
     }
 

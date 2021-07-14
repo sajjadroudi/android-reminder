@@ -5,6 +5,7 @@ import android.database.Cursor;
 
 import com.mobiliha.eventsbadesaba.data.local.db.Converter;
 import com.mobiliha.eventsbadesaba.data.local.db.DbContract;
+import com.mobiliha.eventsbadesaba.data.local.db.entity.Occasion;
 import com.mobiliha.eventsbadesaba.data.local.db.entity.Task;
 
 import java.util.ArrayList;

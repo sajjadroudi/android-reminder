@@ -32,4 +32,13 @@
     <string name="today">امروز</string>
     <string name="time">زمان</string>
 
+    <string-array name="occasions">
+        <item>تولد</item>
+        <item>قسط</item>
+        <item>سالگرد</item>
+        <item>جلسه</item>
+        <item>خمس</item>
+        <item>دارو</item>
+    </string-array>
+
 </resources>
