@@ -139,9 +139,11 @@ public class Task {
                 "taskId=" + taskId +
                 ", title='" + title + '\'' +
                 ", dueDate=" + dueDate +
+                ", occasion=" + occasion +
                 ", details='" + details + '\'' +
                 ", location='" + location + '\'' +
                 ", link='" + link + '\'' +
+                ", color=" + color +
                 '}';
     }
 

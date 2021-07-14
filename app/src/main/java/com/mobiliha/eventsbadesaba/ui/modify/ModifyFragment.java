@@ -19,6 +19,7 @@ import com.mobiliha.eventsbadesaba.data.local.db.entity.Occasion;
 import com.mobiliha.eventsbadesaba.data.local.db.entity.TaskColor;
 import com.mobiliha.eventsbadesaba.data.repository.TaskRepository;
 import com.mobiliha.eventsbadesaba.databinding.FragmentModifyBinding;
+import com.mobiliha.eventsbadesaba.ui.custom.ColoredCircle;
 import com.mobiliha.eventsbadesaba.util.PersianCalendar;
 import com.mobiliha.eventsbadesaba.util.TimeUtils;
 import com.mobiliha.eventsbadesaba.util.UserInputException;
@@ -73,6 +74,8 @@ public class ModifyFragment extends Fragment {
     ) {
         setupBinding(view);
 
+        setupColoredCircleClick();
+
         binding.btnSave.setOnClickListener((v) -> {
             viewModel.saveTask()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -121,6 +124,19 @@ public class ModifyFragment extends Fragment {
             });
         });
 
+    }
+
+    private void setupColoredCircleClick() {
+        View.OnClickListener clickListener = view -> {
+            int color = ((ColoredCircle) view).getCircleColor();
+            TaskColor taskColor = TaskColor.getAssociatedTaskColor(color);
+            viewModel.setTaskColor(taskColor);
+        };
+
+        binding.blueCircle.setOnClickListener(clickListener);
+        binding.redCircle.setOnClickListener(clickListener);
+        binding.yellowCircle.setOnClickListener(clickListener);
+        binding.greenCircle.setOnClickListener(clickListener);
     }
 
     private void showDatePickerDialog(OnDateSelectListener callback) {

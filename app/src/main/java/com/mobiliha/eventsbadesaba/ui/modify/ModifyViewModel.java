@@ -30,7 +30,7 @@ public class ModifyViewModel extends ViewModel {
     public final ObservableField<String> location = new ObservableField<>();
     public final ObservableField<String> desc = new ObservableField<>();
     public final ObservableField<String> link = new ObservableField<>();
-    public final ObservableField<TaskColor> color = new ObservableField<>();
+    public final ObservableField<TaskColor> color = new ObservableField<>(TaskColor.BLUE);
 
     private final TaskRepository repository;
 
@@ -112,6 +112,10 @@ public class ModifyViewModel extends ViewModel {
 
     public Calendar getDateCalendar() {
         return date.get();
+    }
+
+    public void setTaskColor(TaskColor color) {
+        this.color.set(color);
     }
 
     public static class Factory implements ViewModelProvider.Factory {

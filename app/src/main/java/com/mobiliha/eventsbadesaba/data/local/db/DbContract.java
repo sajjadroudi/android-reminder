@@ -23,7 +23,7 @@ public class DbContract {
                         COL_NAME_OCCASION + " TEXT, " +
                         COL_NAME_DETAILS + " TEXT, " +
                         COL_NAME_LOCATION + " TEXT, " +
-                        COL_NAME_LINK + " TEXT" +
+                        COL_NAME_LINK + " TEXT," +
                         COL_NAME_COLOR + " TEXT" +
                     ")";
 
