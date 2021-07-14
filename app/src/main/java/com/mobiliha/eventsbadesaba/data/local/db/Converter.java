@@ -8,26 +8,14 @@ import java.util.Calendar;
 
 public class Converter {
 
-    public static Task contentValuesToTask(ContentValues values) {
-        if(values == null) return null;
-        return new Task(
-                values.getAsInteger(DbContract.TaskEntry.COL_NAME_TASK_ID),
-                values.getAsString(DbContract.TaskEntry.COL_NAME_TITLE),
-                values.getAsLong(DbContract.TaskEntry.COL_NAME_DUE_DATE),
-                values.getAsString(DbContract.TaskEntry.COL_NAME_OCCASION),
-                values.getAsString(DbContract.TaskEntry.COL_NAME_DETAILS),
-                values.getAsString(DbContract.TaskEntry.COL_NAME_LOCATION),
-                values.getAsString(DbContract.TaskEntry.COL_NAME_LINK)
-        );
-    }
-
     public static ContentValues taskToContentValues(Task task) {
         if(task == null) return null;
         ContentValues values = new ContentValues();
         long timestamp = Converter.calendarToTimestamp(task.getDueDate());
+        String occasionStr = (task.getOccasion() == null) ? null : task.getOccasion().toString();
         values.put(DbContract.TaskEntry.COL_NAME_TITLE, task.getTitle());
         values.put(DbContract.TaskEntry.COL_NAME_DUE_DATE, timestamp);
-        values.put(DbContract.TaskEntry.COL_NAME_OCCASION, task.getOccasion().toString());
+        values.put(DbContract.TaskEntry.COL_NAME_OCCASION, occasionStr);
         values.put(DbContract.TaskEntry.COL_NAME_DETAILS, task.getDetails());
         values.put(DbContract.TaskEntry.COL_NAME_LOCATION, task.getLocation());
         values.put(DbContract.TaskEntry.COL_NAME_LINK, task.getLink());

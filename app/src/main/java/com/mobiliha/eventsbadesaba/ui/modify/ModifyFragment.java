@@ -3,6 +3,8 @@ package com.mobiliha.eventsbadesaba.ui.modify;
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,13 +12,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
-import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
-
 import com.mobiliha.eventsbadesaba.R;
 import com.mobiliha.eventsbadesaba.data.local.db.DbHelper;
 import com.mobiliha.eventsbadesaba.data.local.db.dao.TaskDao;
+import com.mobiliha.eventsbadesaba.data.local.db.entity.Occasion;
 import com.mobiliha.eventsbadesaba.data.repository.TaskRepository;
 import com.mobiliha.eventsbadesaba.databinding.FragmentModifyBinding;
 import com.mobiliha.eventsbadesaba.util.PersianCalendar;
@@ -47,7 +46,7 @@ public class ModifyFragment extends Fragment {
     }
 
     private interface OnOccasionSelectListener {
-        void onSelect(String occasion);
+        void onSelect(Occasion occasion);
     }
 
     public static final String TAG = "ModifyFragment";
@@ -186,7 +185,7 @@ public class ModifyFragment extends Fragment {
         new AlertDialog.Builder(getContext())
                 .setTitle(R.string.occasion)
                 .setItems(R.array.occasions, (dialog, which) -> {
-                    String occasion = getResources().getStringArray(R.array.occasions)[which];
+                    Occasion occasion = Occasion.values()[which];
                     callback.onSelect(occasion);
                 })
                 .create()

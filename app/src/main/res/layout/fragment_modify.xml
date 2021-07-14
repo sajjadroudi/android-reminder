@@ -4,6 +4,7 @@
 
     <data>
         <import type="com.mobiliha.eventsbadesaba.util.TimeUtils"/>
+        <import type="com.mobiliha.eventsbadesaba.util.Utils"/>
         <variable
             name="viewModel"
             type="com.mobiliha.eventsbadesaba.ui.modify.ModifyViewModel" />
@@ -58,7 +59,7 @@
             android:textSize="19sp"
             tools:text="Occasion"
             android:hint="@string/occasion"
-            android:text="@={viewModel.occasion}"/>
+            android:text="@{Utils.toLocaleString(viewModel.occasion)}"/>
 
         <EditText
             android:id="@+id/edt_link"

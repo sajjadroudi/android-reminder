@@ -1,7 +1,5 @@
 package com.mobiliha.eventsbadesaba.ui.modify;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.ViewModel;
@@ -9,9 +7,9 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.mobiliha.eventsbadesaba.R;
 import com.mobiliha.eventsbadesaba.ReminderApp;
+import com.mobiliha.eventsbadesaba.data.local.db.entity.Occasion;
 import com.mobiliha.eventsbadesaba.data.local.db.entity.Task;
 import com.mobiliha.eventsbadesaba.data.repository.TaskRepository;
-import com.mobiliha.eventsbadesaba.util.TimeUtils;
 import com.mobiliha.eventsbadesaba.util.UserInputException;
 import com.mobiliha.eventsbadesaba.util.Utils;
 
@@ -24,7 +22,7 @@ public class ModifyViewModel extends ViewModel {
     public static final String TAG = "ModifyViewModel";
 
     public final ObservableField<String> title = new ObservableField<>();
-    public final ObservableField<String> occasion = new ObservableField<>();
+    public final ObservableField<Occasion> occasion = new ObservableField<>();
     public final ObservableField<Calendar> date = new ObservableField<>();
     public final ObservableField<Calendar> time = new ObservableField<>();
     public final ObservableField<String> details = new ObservableField<>();
@@ -76,7 +74,7 @@ public class ModifyViewModel extends ViewModel {
         Task task = new Task(
                 title,
                 buildDueDate(date.get(), time.get()),
-                Utils.tryTrim(occasion.get()),
+                occasion.get(),
                 Utils.tryTrim(details.get()),
                 Utils.tryTrim(location.get()),
                 Utils.tryTrim(link.get())
@@ -101,7 +99,7 @@ public class ModifyViewModel extends ViewModel {
         return dueDate;
     }
 
-    public void setOccasion(String occasion) {
+    public void setOccasion(Occasion occasion) {
         this.occasion.set(occasion);
     }
 

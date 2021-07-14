@@ -22,7 +22,7 @@ public class Task {
     public Task(
             int taskId,
             @NonNull String title,
-            Calendar dueDate,
+            long dueDate,
             String occasion,
             String details,
             String location,
@@ -40,35 +40,15 @@ public class Task {
     public Task(
             @NonNull String title,
             Calendar dueDate,
-            String occasion,
+            Occasion occasion,
             String details,
             String location,
             String link
     ) {
-        this(DEF_TASK_ID, title, dueDate, occasion, details, location, link);
-    }
-
-    public Task(
-            int taskId,
-            @NonNull String title,
-            long dueDate,
-            String occasion,
-            String details,
-            String location,
-            String link
-    ) {
-        this(taskId, title, Converter.timestampToCalendar(dueDate), occasion, details, location, link);
-    }
-
-    public Task(
-            @NonNull String title,
-            long dueDate,
-            String occasion,
-            String details,
-            String location,
-            String link
-    ) {
-        this(DEF_TASK_ID, title, dueDate, occasion, details, location, link);
+        this(DEF_TASK_ID, title,
+                dueDate == null ? 0 : dueDate.getTimeInMillis(),
+                occasion == null ? null : occasion.toString(),
+                details, location, link);
     }
 
     public int getTaskId() {
@@ -107,8 +87,9 @@ public class Task {
         this.occasion = occasion;
     }
 
-    public void setOccasion(String occasion) {
-        setOccasion(Occasion.valueOf(occasion));
+    public void setOccasion(String value) {
+        Occasion occasion = value == null ? null : Occasion.valueOf(value);
+        setOccasion(occasion);
     }
 
     public Occasion getOccasion() {

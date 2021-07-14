@@ -22,6 +22,9 @@ public class Utils {
     }
 
     public static String toLocaleString(Occasion occasion) {
+        if(occasion == null)
+            return null;
+
         String[] occasions = ReminderApp.getAppContext()
                 .getResources().getStringArray(R.array.occasions);
 
