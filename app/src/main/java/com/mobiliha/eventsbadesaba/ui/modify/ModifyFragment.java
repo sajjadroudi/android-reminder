@@ -1,21 +1,17 @@
 package com.mobiliha.eventsbadesaba.ui.modify;
 
+import android.app.AlertDialog;
 import android.app.TimePickerDialog;
-import android.graphics.Color;
-import android.icu.number.Scale;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.mobiliha.eventsbadesaba.R;
@@ -24,6 +20,7 @@ import com.mobiliha.eventsbadesaba.data.local.db.dao.TaskDao;
 import com.mobiliha.eventsbadesaba.data.repository.TaskRepository;
 import com.mobiliha.eventsbadesaba.databinding.FragmentModifyBinding;
 import com.mobiliha.eventsbadesaba.util.PersianCalendar;
+import com.mobiliha.eventsbadesaba.util.TimeUtils;
 import com.mobiliha.eventsbadesaba.util.UserInputException;
 
 import java.util.Calendar;
@@ -41,13 +38,19 @@ import ir.hamsaa.persiandatepicker.api.PersianPickerListener;
  */
 public class ModifyFragment extends Fragment {
 
-    private interface OnDateSelected {
+    private interface OnDateSelectListener {
         void onSelect(Calendar calendar);
     }
 
-    private interface OnTimeSelected {
+    private interface OnTimeSelectListener {
         void onSelect(int hour, int minute);
     }
+
+    private interface OnOccasionSelectListener {
+        void onSelect(String occasion);
+    }
+
+    public static final String TAG = "ModifyFragment";
 
     private FragmentModifyBinding binding;
     private ModifyViewModel viewModel;
@@ -102,7 +105,7 @@ public class ModifyFragment extends Fragment {
 
         binding.txtDate.setOnClickListener(v -> {
             showDatePickerDialog(selectedCalendar -> {
-                viewModel.setDate(selectedCalendar);
+                viewModel.setDateCalendar(selectedCalendar);
             });
         });
 
@@ -112,10 +115,23 @@ public class ModifyFragment extends Fragment {
             });
         });
 
+        binding.txtOccasion.setOnClickListener(v -> {
+            showOccasionDialog(occasion -> {
+                viewModel.setOccasion(occasion);
+            });
+        });
+
     }
 
-    private void showDatePickerDialog(OnDateSelected callback) {
+    private void showDatePickerDialog(OnDateSelectListener callback) {
+        Calendar date = viewModel.getDateCalendar();
+        PersianCalendar calendar = new PersianCalendar();
+        if(date != null) {
+            calendar = TimeUtils.toPersianCalendar(date);
+        }
+
         PersianCalendar now = new PersianCalendar();
+        final int minYear = now.get(Calendar.YEAR);
         final int maxYear = now.get(Calendar.YEAR) + 100;
 
         new PersianDatePickerDialog(getContext())
@@ -123,9 +139,9 @@ public class ModifyFragment extends Fragment {
                 .setNegativeButtonResource(android.R.string.cancel)
                 .setTodayButton(getString(R.string.today))
                 .setTodayButtonVisible(true)
-                .setMinYear(now.get(Calendar.YEAR))
+                .setMinYear(minYear)
                 .setMaxYear(maxYear)
-                .setInitDate(now.getTime())
+                .setInitDate(calendar.getTime())
                 .setTitleType(PersianDatePickerDialog.WEEKDAY_DAY_MONTH_YEAR)
                 .setShowInBottomSheet(false)
                 .setListener(new PersianPickerListener() {
@@ -145,18 +161,36 @@ public class ModifyFragment extends Fragment {
                 }).show();
     }
 
-    private void showTimePickerDialog(OnTimeSelected callback) {
+    private void showTimePickerDialog(OnTimeSelectListener callback) {
         TimePickerDialog.OnTimeSetListener listener = (view, hourOfDay, minute) -> {
             callback.onSelect(hourOfDay, minute);
         };
 
+        Calendar time = viewModel.getTimeCalendar();
+        int hour = 0, minute = 0;
+        if(time != null) {
+            hour = time.get(Calendar.HOUR_OF_DAY);
+            minute = time.get(Calendar.MINUTE);
+        }
+
         new TimePickerDialog(
                 getContext(),
                 listener,
-                0,
-                0,
+                hour,
+                minute,
                 true
         ).show();
+    }
+
+    private void showOccasionDialog(OnOccasionSelectListener callback) {
+        new AlertDialog.Builder(getContext())
+                .setTitle(R.string.occasion)
+                .setItems(R.array.occasions, (dialog, which) -> {
+                    String occasion = getResources().getStringArray(R.array.occasions)[which];
+                    callback.onSelect(occasion);
+                })
+                .create()
+                .show();
     }
 
     private void setupBinding(View view) {

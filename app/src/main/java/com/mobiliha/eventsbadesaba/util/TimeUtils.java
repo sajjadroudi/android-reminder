@@ -27,6 +27,15 @@ public class TimeUtils {
         return timeStr;
     }
 
+    public static PersianCalendar toPersianCalendar(Calendar calendar) {
+        if(calendar == null)
+            return null;
+
+        PersianCalendar persianCalendar = new PersianCalendar();
+        persianCalendar.setTime(calendar.getTime());
+        return persianCalendar;
+    }
+
     /**
      * @param calendar Calendar.
      * @return A string indication year, month and day.

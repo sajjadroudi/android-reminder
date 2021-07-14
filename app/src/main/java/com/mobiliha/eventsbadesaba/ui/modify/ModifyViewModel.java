@@ -1,5 +1,7 @@
 package com.mobiliha.eventsbadesaba.ui.modify;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.ViewModel;
@@ -9,6 +11,7 @@ import com.mobiliha.eventsbadesaba.R;
 import com.mobiliha.eventsbadesaba.ReminderApp;
 import com.mobiliha.eventsbadesaba.data.local.db.entity.Task;
 import com.mobiliha.eventsbadesaba.data.repository.TaskRepository;
+import com.mobiliha.eventsbadesaba.util.TimeUtils;
 import com.mobiliha.eventsbadesaba.util.UserInputException;
 import com.mobiliha.eventsbadesaba.util.Utils;
 
@@ -39,10 +42,8 @@ public class ModifyViewModel extends ViewModel {
      * Set year, month and day.
      * @param value Calendar contains desired year, month and day.
      */
-    public void setDate(Calendar value) {
-        Calendar calendar = date.get();
-        if(calendar == null)
-            calendar = Calendar.getInstance();
+    public void setDateCalendar(Calendar value) {
+        Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, value.get(Calendar.YEAR));
         calendar.set(Calendar.MONTH, value.get(Calendar.MONTH));
         calendar.set(Calendar.DAY_OF_MONTH, value.get(Calendar.DAY_OF_MONTH));
@@ -55,9 +56,7 @@ public class ModifyViewModel extends ViewModel {
      * @param minute Minute.
      */
     public void setTime(int hour, int minute) {
-        Calendar calendar = time.get();
-        if(calendar == null)
-            calendar = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
         time.set(calendar);
@@ -100,6 +99,18 @@ public class ModifyViewModel extends ViewModel {
         dueDate.set(Calendar.MINUTE, time.get(Calendar.MINUTE));
 
         return dueDate;
+    }
+
+    public void setOccasion(String occasion) {
+        this.occasion.set(occasion);
+    }
+
+    public Calendar getTimeCalendar() {
+        return time.get();
+    }
+
+    public Calendar getDateCalendar() {
+        return date.get();
     }
 
     public static class Factory implements ViewModelProvider.Factory {
