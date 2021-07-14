@@ -18,6 +18,7 @@ public class Task {
     private String details;
     private String location;
     private String link;
+    private TaskColor color = TaskColor.BLUE;
 
     public Task(
             int taskId,
@@ -26,7 +27,8 @@ public class Task {
             String occasion,
             String details,
             String location,
-            String link
+            String link,
+            String color
     ) {
         this.taskId = taskId;
         setTitle(title);
@@ -35,6 +37,7 @@ public class Task {
         setDetails(details);
         setLocation(location);
         setLink(link);
+        setColor(color);
     }
 
     public Task(
@@ -43,12 +46,14 @@ public class Task {
             Occasion occasion,
             String details,
             String location,
-            String link
+            String link,
+            TaskColor color
     ) {
         this(DEF_TASK_ID, title,
                 dueDate == null ? 0 : dueDate.getTimeInMillis(),
                 occasion == null ? null : occasion.toString(),
-                details, location, link);
+                details, location, link,
+                color == null ? null : color.toString());
     }
 
     public int getTaskId() {
@@ -110,6 +115,21 @@ public class Task {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public TaskColor getColor() {
+        return color;
+    }
+
+    public void setColor(TaskColor color) {
+        if (color != null) {
+            this.color = color;
+        }
+    }
+
+    public void setColor(String value) {
+        TaskColor color = value == null ? null : TaskColor.valueOf(value);
+        setColor(color);
     }
 
     @NonNull

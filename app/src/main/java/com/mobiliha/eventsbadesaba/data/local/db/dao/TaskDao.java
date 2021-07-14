@@ -107,7 +107,8 @@ public class TaskDao {
         String details = cursor.getString(cursor.getColumnIndex(DbContract.TaskEntry.COL_NAME_DETAILS));
         String location = cursor.getString(cursor.getColumnIndex(DbContract.TaskEntry.COL_NAME_LOCATION));
         String link = cursor.getString(cursor.getColumnIndex(DbContract.TaskEntry.COL_NAME_LINK));
-        return new Task(taskId, title, dueDate, occasion, details, location, link);
+        String color = cursor.getString(cursor.getColumnIndex(DbContract.TaskEntry.COL_NAME_COLOR));
+        return new Task(taskId, title, dueDate, occasion, details, location, link, color);
     }
 
     private List<Task> extractTasks(Cursor cursor) {

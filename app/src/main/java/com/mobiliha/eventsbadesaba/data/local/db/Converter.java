@@ -19,6 +19,7 @@ public class Converter {
         values.put(DbContract.TaskEntry.COL_NAME_DETAILS, task.getDetails());
         values.put(DbContract.TaskEntry.COL_NAME_LOCATION, task.getLocation());
         values.put(DbContract.TaskEntry.COL_NAME_LINK, task.getLink());
+        values.put(DbContract.TaskEntry.COL_NAME_COLOR, task.getColor().toString());
         return values;
     }
 

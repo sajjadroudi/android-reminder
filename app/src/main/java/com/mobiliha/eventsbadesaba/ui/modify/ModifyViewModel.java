@@ -9,6 +9,7 @@ import com.mobiliha.eventsbadesaba.R;
 import com.mobiliha.eventsbadesaba.ReminderApp;
 import com.mobiliha.eventsbadesaba.data.local.db.entity.Occasion;
 import com.mobiliha.eventsbadesaba.data.local.db.entity.Task;
+import com.mobiliha.eventsbadesaba.data.local.db.entity.TaskColor;
 import com.mobiliha.eventsbadesaba.data.repository.TaskRepository;
 import com.mobiliha.eventsbadesaba.util.UserInputException;
 import com.mobiliha.eventsbadesaba.util.Utils;
@@ -27,8 +28,9 @@ public class ModifyViewModel extends ViewModel {
     public final ObservableField<Calendar> time = new ObservableField<>();
     public final ObservableField<String> details = new ObservableField<>();
     public final ObservableField<String> location = new ObservableField<>();
-    public final ObservableField<String> link = new ObservableField<>();
     public final ObservableField<String> desc = new ObservableField<>();
+    public final ObservableField<String> link = new ObservableField<>();
+    public final ObservableField<TaskColor> color = new ObservableField<>();
 
     private final TaskRepository repository;
 
@@ -77,7 +79,8 @@ public class ModifyViewModel extends ViewModel {
                 occasion.get(),
                 Utils.tryTrim(details.get()),
                 Utils.tryTrim(location.get()),
-                Utils.tryTrim(link.get())
+                Utils.tryTrim(link.get()),
+                color.get()
         );
 
         return repository.insert(task);

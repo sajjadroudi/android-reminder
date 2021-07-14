@@ -13,6 +13,7 @@ public class DbContract {
         public static final String COL_NAME_DETAILS = "details";
         public static final String COL_NAME_LOCATION = "location";
         public static final String COL_NAME_LINK = "link";
+        public static final String COL_NAME_COLOR = "color";
 
         public static final String SQL_CREATE_TABLE =
                 "CREATE TABLE " + TABLE_NAME + " (" +
@@ -23,6 +24,7 @@ public class DbContract {
                         COL_NAME_DETAILS + " TEXT, " +
                         COL_NAME_LOCATION + " TEXT, " +
                         COL_NAME_LINK + " TEXT" +
+                        COL_NAME_COLOR + " TEXT" +
                     ")";
 
         public static final String SQL_DROP_TABLE =
