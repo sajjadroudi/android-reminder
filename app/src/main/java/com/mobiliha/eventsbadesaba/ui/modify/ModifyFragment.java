@@ -134,8 +134,8 @@ public class ModifyFragment extends Fragment {
         final int maxYear = now.get(Calendar.YEAR) + 100;
 
         new PersianDatePickerDialog(getContext())
-                .setPositiveButtonResource(android.R.string.ok)
-                .setNegativeButtonResource(android.R.string.cancel)
+                .setPositiveButtonResource(R.string.ok)
+                .setNegativeButtonResource(R.string.cancel)
                 .setTodayButton(getString(R.string.today))
                 .setTodayButtonVisible(true)
                 .setMinYear(minYear)

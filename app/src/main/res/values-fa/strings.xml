@@ -31,6 +31,8 @@
     <string name="something_went_wrong">خطایی رخ داد!</string>
     <string name="today">امروز</string>
     <string name="time">زمان</string>
+    <string name="cancel">لغو</string>
+    <string name="ok">باشه</string>
 
     <string-array name="occasions">
         <item>تولد</item>
