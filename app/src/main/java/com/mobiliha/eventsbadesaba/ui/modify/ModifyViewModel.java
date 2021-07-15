@@ -72,6 +72,14 @@ public class ModifyViewModel extends ViewModel {
             });
         }
 
+        if(title.length() > Task.MAX_TITLE_LENGTH) {
+            return Completable.create(emitter -> {
+                String message = ReminderApp.getAppContext().getString(
+                        R.string.long_title, Task.MAX_TITLE_LENGTH
+                );
+                emitter.onError(new UserInputException(message));
+            });
+        }
 
         Task task = new Task(
                 title,
