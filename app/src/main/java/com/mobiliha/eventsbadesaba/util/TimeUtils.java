@@ -1,6 +1,7 @@
 package com.mobiliha.eventsbadesaba.util;
 
 import android.content.Context;
+import android.content.res.Resources;
 
 import com.mobiliha.eventsbadesaba.R;
 import com.mobiliha.eventsbadesaba.ReminderApp;
@@ -22,8 +23,7 @@ public class TimeUtils {
             return null;
 
         String timeStr = new SimpleDateFormat("HH:mm").format(calendar.getTime());
-        if(isLocaleIranAndFarsi())
-            return toPersianNumber(timeStr);
+
         return timeStr;
     }
 
@@ -51,11 +51,22 @@ public class TimeUtils {
         int month = persianCalendar.get(PersianCalendar.MONTH);
         int day = persianCalendar.get(PersianCalendar.DAY_OF_MONTH);
 
-        String monthName = ReminderApp.getAppContext().getResources().getStringArray(R.array.months)[month];
-        if(isLocaleIranAndFarsi()) {
-            return toPersianNumber(day) + " " + monthName + " " + toPersianNumber(year);
+        Resources res = ReminderApp.getAppContext().getResources();
+
+        if(isTomorrow(persianCalendar))
+            return res.getString(R.string.tomorrow);
+
+        if(isInTheNext6Days(persianCalendar)) {
+            int dayIndex = persianCalendar.get(Calendar.DAY_OF_WEEK);
+            return res.getStringArray(R.array.week_days)[dayIndex];
         }
-        return year + " " + monthName + " " + day;
+
+        String monthName = res.getStringArray(R.array.months)[month];
+
+        if(isInTheSameYear(persianCalendar))
+            return day + " " + monthName;
+
+        return day + " " + monthName + " " + year;
     }
 
     /**
@@ -83,6 +94,25 @@ public class TimeUtils {
         Context context = ReminderApp.getAppContext();
         Locale locale = context.getResources().getConfiguration().locale;
         return locale.getLanguage().equals("fa") && locale.getCountry().equals("IR");
+    }
+
+    private static boolean isTomorrow(PersianCalendar calendar) {
+        PersianCalendar tomorrow = new PersianCalendar();
+        tomorrow.add(Calendar.DAY_OF_YEAR, 1);
+        return tomorrow.get(Calendar.YEAR) == calendar.get(Calendar.YEAR)
+                && tomorrow.get(Calendar.DAY_OF_YEAR) == calendar.get(Calendar.DAY_OF_YEAR);
+    }
+
+    private static boolean isInTheSameYear(PersianCalendar calendar) {
+        PersianCalendar now = new PersianCalendar();
+        return now.get(Calendar.YEAR) == calendar.get(Calendar.YEAR);
+    }
+
+    private static boolean isInTheNext6Days(PersianCalendar calendar) {
+        PersianCalendar now = new PersianCalendar();
+        int diff = calendar.get(Calendar.DAY_OF_YEAR) - now.get(Calendar.DAY_OF_YEAR);
+        return now.get(Calendar.YEAR) == calendar.get(Calendar.YEAR)
+                && diff <= 6 && diff >= 1;
     }
 
 }

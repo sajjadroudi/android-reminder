@@ -32,6 +32,7 @@
     <string name="time">زمان</string>
     <string name="cancel">لغو</string>
     <string name="ok">باشه</string>
+    <string name="tomorrow">فردا</string>
 
     <string-array name="occasions">
         <item>تولد</item>
@@ -41,5 +42,17 @@
         <item>خمس</item>
         <item>دارو</item>
     </string-array>
+
+    <string-array name="week_days">
+        <item>شنبه</item>
+        <item>یکشنبه</item>
+        <item>دوشنبه</item>
+        <item>سه‌شنبه</item>
+        <item>چهارشنبه</item>
+        <item>پنجشنبه</item>
+        <item>جمعه</item>
+    </string-array>
+
+    <string name="icon_calendar_day">&#xf783;</string>
 
 </resources>
