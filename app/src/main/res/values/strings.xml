@@ -1,45 +1,45 @@
 <resources>
-    <string name="app_name">Reminder</string>
+    <string name="app_name">یادآور</string>
 
-    <string name="no_task_found">No task found!</string>
-    <string name="deleted">Deleted!</string>
+    <string name="no_task_found">هیچ تسکی پیدا نشد!</string>
+    <string name="deleted">حذف شد!</string>\
 
     <string-array name="months">
-        <item>Farvardin</item>
-        <item>Ordibehesht</item>
-        <item>Khordad</item>
-        <item>Tir</item>
-        <item>Mordad</item>
-        <item>Shahrivar</item>
-        <item>Mehr</item>
-        <item>Aban</item>
-        <item>Azar</item>
-        <item>Dey</item>
-        <item>Bahman</item>
-        <item>Esfand</item>
+        <item>فروردین</item>
+        <item>اردیبهشت</item>
+        <item>خرداد</item>
+        <item>تیر</item>
+        <item>مرداد</item>
+        <item>شهریور</item>
+        <item>مهر</item>
+        <item>آبان</item>
+        <item>آذر</item>
+        <item>دی</item>
+        <item>بهمن</item>
+        <item>اسفند</item>
     </string-array>
 
-    <string name="title">Title</string>
-    <string name="date">Date</string>
-    <string name="occasion">Occasion</string>
-    <string name="description">Description</string>
-    <string name="link">Link</string>
-    <string name="save">Save</string>
-    <string name="saved">Saved!</string>
-    <string name="invalid_title">Task title can not be empty!</string>
-    <string name="something_went_wrong">Something went wrong!</string>
-    <string name="today">Today</string>
-    <string name="time">Time</string>
-    <string name="cancel">Cancel</string>
-    <string name="ok">OK</string>
+    <string name="title">عنوان</string>
+    <string name="date">تاریخ</string>
+    <string name="occasion">رویداد</string>
+    <string name="description">توضیحات</string>
+    <string name="link">لینک</string>
+    <string name="save">ذخیره</string>
+    <string name="saved">ذخیره شد!</string>
+    <string name="invalid_title">عنوان تسک نمی‌تواند خالی باشد!</string>
+    <string name="something_went_wrong">خطایی رخ داد!</string>
+    <string name="today">امروز</string>
+    <string name="time">زمان</string>
+    <string name="cancel">لغو</string>
+    <string name="ok">باشه</string>
 
     <string-array name="occasions">
-        <item>Birthday</item>
-        <item>Installment</item>
-        <item>Anniversary</item>
-        <item>Session</item>
-        <item>Khoms</item>
-        <item>Drug</item>
+        <item>تولد</item>
+        <item>قسط</item>
+        <item>سالگرد</item>
+        <item>جلسه</item>
+        <item>خمس</item>
+        <item>دارو</item>
     </string-array>
 
 </resources>

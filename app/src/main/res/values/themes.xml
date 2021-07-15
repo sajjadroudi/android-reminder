@@ -12,6 +12,10 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+
+        <!-- Apply custom font to the entire app -->
+        <item name="android:fontFamily">@font/koodak</item>
+        <item name="fontFamily">@font/koodak</item>
     </style>
 
     <style name="ColoredCircleStyle">

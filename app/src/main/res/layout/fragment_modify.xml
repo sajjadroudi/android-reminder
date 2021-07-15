@@ -23,7 +23,7 @@
             android:id="@+id/edt_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="Title"
+            tools:text="@string/title"
             android:hint="@string/title"
             android:text="@={viewModel.title}"/>
 
@@ -36,7 +36,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="0.7"
                 android:layout_height="wrap_content"
-                tools:text="Date"
+                tools:text="@string/date"
                 android:textColor="@color/black"
                 android:textSize="19sp"
                 android:hint="@string/date"
@@ -46,7 +46,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="0.3"
                 android:layout_height="wrap_content"
-                tools:text="Time"
+                tools:text="@string/time"
                 android:textColor="@color/black"
                 android:textSize="19sp"
                 android:hint="@string/time"
@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textSize="19sp"
-            tools:text="Occasion"
+            tools:text="@string/occasion"
             android:hint="@string/occasion"
             android:text="@{Utils.toLocaleString(viewModel.occasion)}"/>
 
@@ -67,7 +67,7 @@
             android:id="@+id/edt_link"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="Link"
+            tools:text="@string/link"
             android:hint="@string/link"
             android:text="@={viewModel.link}"/>
 
@@ -77,9 +77,9 @@
             android:layout_height="wrap_content"
             android:minHeight="100dp"
             android:ems="10"
-            android:gravity="start|top"
+            android:gravity="right|top"
             android:inputType="textMultiLine"
-            tools:text="Description"
+            tools:text="@string/description"
             android:hint="@string/description"
             android:text="@={viewModel.desc}"/>
 
