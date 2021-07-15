@@ -57,7 +57,7 @@ public class TimeUtils {
             return res.getString(R.string.tomorrow);
 
         if(isInTheNext6Days(persianCalendar)) {
-            int dayIndex = persianCalendar.get(Calendar.DAY_OF_WEEK);
+            int dayIndex = persianCalendar.get(Calendar.DAY_OF_WEEK) - 1;
             return res.getStringArray(R.array.week_days)[dayIndex];
         }
 

@@ -24,8 +24,8 @@ public class ModifyViewModel extends ViewModel {
 
     public final ObservableField<String> title = new ObservableField<>();
     public final ObservableField<Occasion> occasion = new ObservableField<>();
-    public final ObservableField<Calendar> date = new ObservableField<>();
-    public final ObservableField<Calendar> time = new ObservableField<>();
+    public final ObservableField<Calendar> date = new ObservableField<>(Calendar.getInstance());
+    public final ObservableField<Calendar> time = new ObservableField<>(Calendar.getInstance());
     public final ObservableField<String> details = new ObservableField<>();
     public final ObservableField<String> location = new ObservableField<>();
     public final ObservableField<String> desc = new ObservableField<>();

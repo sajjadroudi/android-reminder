@@ -106,15 +106,13 @@ public class ModifyFragment extends Fragment {
 
         binding.btnCancel.setOnClickListener((v) -> navigateBack());
 
-        binding.txtDate.setOnClickListener(v -> {
+        binding.dateTimeContainer.setOnClickListener(v -> {
             showDatePickerDialog(selectedCalendar -> {
                 viewModel.setDateCalendar(selectedCalendar);
-            });
-        });
 
-        binding.txtTime.setOnClickListener(v -> {
-            showTimePickerDialog((hour, minute) -> {
-                viewModel.setTime(hour, minute);
+                showTimePickerDialog((hour, minute) -> {
+                    viewModel.setTime(hour, minute);
+                });
             });
         });
 

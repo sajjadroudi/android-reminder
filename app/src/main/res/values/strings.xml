@@ -44,13 +44,13 @@
     </string-array>
 
     <string-array name="week_days">
-        <item>شنبه</item>
         <item>یکشنبه</item>
         <item>دوشنبه</item>
         <item>سه‌شنبه</item>
         <item>چهارشنبه</item>
         <item>پنجشنبه</item>
         <item>جمعه</item>
+        <item>شنبه</item>
     </string-array>
 
     <string name="icon_calendar_day">&#xf783;</string>
