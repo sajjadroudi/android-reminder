@@ -2,14 +2,11 @@ package com.mobiliha.eventsbadesaba.ui.custom;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.util.AttributeSet;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
-
-import com.mobiliha.eventsbadesaba.R;
 
 public class FontIcon extends AppCompatTextView {
 
@@ -29,10 +26,10 @@ public class FontIcon extends AppCompatTextView {
     }
 
     private void init() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Typeface typeface = getResources().getFont(R.font.awesome_light_6_pro);
-            setTypeface(typeface);
-        }
+        Typeface typeface = Typeface.createFromAsset(
+                getContext().getAssets(), "awesome_light_6_pro.otf"
+        );
+        setTypeface(typeface);
     }
 
 }
