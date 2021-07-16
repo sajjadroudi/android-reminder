@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 
+import com.mobiliha.eventsbadesaba.util.FontManager;
+
 public class FontIcon extends AppCompatTextView {
 
     public FontIcon(@NonNull Context context) {
@@ -26,9 +28,7 @@ public class FontIcon extends AppCompatTextView {
     }
 
     private void init() {
-        Typeface typeface = Typeface.createFromAsset(
-                getContext().getAssets(), "awesome_light_6_pro.otf"
-        );
+        Typeface typeface = FontManager.createTypeface(FontManager.AWESOME_FONT);
         setTypeface(typeface);
     }
 

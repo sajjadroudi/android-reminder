@@ -101,6 +101,12 @@ public class ListFragment extends Fragment {
         return binding.getRoot();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        navigateToAddFragment();
+    }
+
     private void fetchTasks() {
         viewModel.getTaskList()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -141,7 +147,10 @@ public class ListFragment extends Fragment {
 
     private void navigateToAddFragment() {
         NavController navController = NavHostFragment.findNavController(this);
-        navController.navigate(R.id.action_list_to_modify);
+        String title = getString(R.string.add_task);
+        navController.navigate(
+                ListFragmentDirections.actionListToModify(title)
+        );
     }
 
     @Override

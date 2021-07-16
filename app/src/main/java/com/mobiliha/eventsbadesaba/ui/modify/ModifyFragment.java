@@ -106,7 +106,7 @@ public class ModifyFragment extends Fragment {
 
         binding.btnCancel.setOnClickListener((v) -> navigateBack());
 
-        binding.dateTimeContainer.setOnClickListener(v -> {
+        binding.txtDateTime.setOnClickListener(v -> {
             showDatePickerDialog(selectedCalendar -> {
                 viewModel.setDateCalendar(selectedCalendar);
 

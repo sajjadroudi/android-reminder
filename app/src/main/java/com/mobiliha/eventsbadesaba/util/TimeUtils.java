@@ -70,6 +70,28 @@ public class TimeUtils {
     }
 
     /**
+     * 
+     * @param date Date.
+     * @return A string including year, name of month and day.
+     */
+    public static String parsePersianDate(Calendar date) {
+        if(date == null)
+            return null;
+
+        PersianCalendar persianCalendar = new PersianCalendar();
+        persianCalendar.setTimeInMillis(date.getTimeInMillis());
+
+        int year = persianCalendar.get(PersianCalendar.YEAR);
+        int month = persianCalendar.get(PersianCalendar.MONTH);
+        int day = persianCalendar.get(PersianCalendar.DAY_OF_MONTH);
+
+        String monthName = ReminderApp.getAppContext().getResources()
+                .getStringArray(R.array.months)[month];
+
+        return day + " " + monthName + " " + year;
+    }
+
+    /**
      * @param number On string consisting of numbers.
      * @return String of the given number with persian numbers.
      */

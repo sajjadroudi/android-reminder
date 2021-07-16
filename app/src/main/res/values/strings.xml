@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">یادآور</string>
 
-    <string name="no_task_found">هیچ تسکی پیدا نشد!</string>
+    <string name="no_task_found">هیچ یادآوری‌ای پیدا نشد!</string>
     <string name="deleted">حذف شد!</string>\
 
     <string-array name="months">
@@ -19,21 +19,24 @@
         <item>اسفند</item>
     </string-array>
 
+    <string name="tasks">یادآوری‌ها</string>
     <string name="title">عنوان</string>
     <string name="date">تاریخ</string>
-    <string name="occasion">رویداد</string>
+    <string name="occasion">مناسبت</string>
     <string name="description">توضیحات</string>
+    <string name="location">مکان</string>
     <string name="link">لینک</string>
     <string name="save">ذخیره</string>
     <string name="saved">ذخیره شد!</string>
 
-    <string name="invalid_title">عنوان تسک نمی‌تواند خالی باشد!</string>
+    <string name="add_task">افزودن یادآوری</string>
+    <string name="invalid_title">عنوان یادآور نمی‌تواند خالی باشد!</string>
     <string name="long_title">طول عنوان نباید بیشتر از %d حرف باشد!</string>
 
     <string name="something_went_wrong">خطایی رخ داد!</string>
     <string name="today">امروز</string>
     <string name="time">زمان</string>
-    <string name="cancel">لغو</string>
+    <string name="cancel">انصراف</string>
     <string name="ok">باشه</string>
     <string name="tomorrow">فردا</string>
 
@@ -57,5 +60,14 @@
     </string-array>
 
     <string name="icon_calendar_day">&#xf783;</string>
+    <string name="icon_palette">&#xf53f;</string>
+    <string name="icon_circle_plus">&#xf055;</string>
+    <string name="icon_gift">&#xf06b;</string>
+    <string name="icon_calendar_minus">&#xf272;</string>
+    <string name="icon_align_right">&#xf038;</string>
+    <string name="icon_circle_xmark">&#xf057;</string>
+    <string name="icon_link_simple">&#xe1cd;</string>
+    <string name="icon_flag">&#xf024;</string>
+    <string name="icon_memo">&#xe1d8;</string>
 
 </resources>

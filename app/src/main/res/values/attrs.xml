@@ -9,4 +9,27 @@
     <declare-styleable name="ColoredLabel">
         <attr name="labelColor" format="color"/>
     </declare-styleable>
+    
+    <declare-styleable name="CustomTextView">
+        <attr name="customText" format="string"/>
+        <attr name="customHintText" format="string"/>
+        <attr name="customTextSize" format="dimension"/>
+        <attr name="customTextColor" format="color"/>
+        <attr name="customIcon" format="string"/>
+    </declare-styleable>
+    
+    <declare-styleable name="CustomEditText">
+        <attr name="customEditTextText" format="string"/>
+        <attr name="customEditTextTextHintText" format="string"/>
+        <attr name="customEditTextTextTextSize" format="dimension"/>
+        <attr name="customEditTextTextTextColor" format="color"/>
+        <attr name="customEditTextIcon" format="string"/>
+    </declare-styleable>
+
+    <declare-styleable name="CustomDateTimeView">
+        <attr name="customDateTimeDate" format="string"/>
+        <attr name="customDateTimeTime" format="string"/>
+        <attr name="customDateTimeIcon" format="string"/>
+    </declare-styleable>
+
 </resources>
