@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        DbHelper.getInstance(this).close();
+        DbHelper.getInstance().close();
         super.onStop();
     }
 }

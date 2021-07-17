@@ -3,23 +3,23 @@ package com.mobiliha.eventsbadesaba.ui.modify;
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.mobiliha.eventsbadesaba.R;
-import com.mobiliha.eventsbadesaba.data.local.db.DbHelper;
-import com.mobiliha.eventsbadesaba.data.local.db.dao.TaskDao;
 import com.mobiliha.eventsbadesaba.data.local.db.entity.Occasion;
 import com.mobiliha.eventsbadesaba.data.local.db.entity.TaskColor;
-import com.mobiliha.eventsbadesaba.data.repository.TaskRepository;
-import com.mobiliha.eventsbadesaba.databinding.FragmentModifyBinding;
+import com.mobiliha.eventsbadesaba.databinding.FragmentTaskModifyBinding;
 import com.mobiliha.eventsbadesaba.ui.custom.ColoredCircle;
 import com.mobiliha.eventsbadesaba.ui.custom.CustomEditText;
 import com.mobiliha.eventsbadesaba.util.PersianCalendar;
@@ -39,7 +39,7 @@ import ir.hamsaa.persiandatepicker.api.PersianPickerListener;
 /**
  * A fragment to add and edit task.
  */
-public class ModifyFragment extends Fragment {
+public class TaskModifyFragment extends Fragment implements View.OnClickListener {
 
     private interface OnDateSelectListener {
         void onSelect(Calendar calendar);
@@ -55,33 +55,97 @@ public class ModifyFragment extends Fragment {
 
     public static final String TAG = "ModifyFragment";
 
-    private FragmentModifyBinding binding;
-    private ModifyViewModel viewModel;
+    private FragmentTaskModifyBinding binding;
+    private TaskModifyViewModel viewModel;
     private final CompositeDisposable disposables = new CompositeDisposable();
-
-    public ModifyFragment() {
-        super(R.layout.fragment_modify);
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setupViewModel();
+        viewModel = new ViewModelProvider(this).get(TaskModifyViewModel.class);
     }
 
+    @Nullable
     @Override
-    public void onViewCreated(
-            @NonNull View view,
+    public View onCreateView(
+            @NonNull LayoutInflater inflater,
+            @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState
     ) {
-        setupBinding(view);
+        setupUi(inflater, container);
 
-        setupColoredCircleClick();
+        setupClickListener();
 
         setupAdditionalFields();
 
-        binding.btnSave.setOnClickListener((v) -> {
-            viewModel.saveTask()
+        return binding.getRoot();
+    }
+
+    private void setupClickListener() {
+        View[] views = {
+                binding.btnSave,
+                binding.btnCancel,
+                binding.txtDateTime,
+                binding.txtOccasion,
+                binding.blueCircle,
+                binding.greenCircle,
+                binding.redCircle,
+                binding.yellowCircle,
+                binding.txtLocation,
+                binding.txtLink,
+                binding.txtDesc
+        };
+
+        for(View view : views)
+            view.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_save:
+                saveTask();
+                break;
+            case R.id.btn_cancel:
+                navigateBack();
+                break;
+            case R.id.txt_date_time:
+                showDatePickerDialog(selectedCalendar -> {
+                    viewModel.setDateCalendar(selectedCalendar);
+
+                    showTimePickerDialog((hour, minute) -> {
+                        viewModel.setTime(hour, minute);
+                    });
+                });
+                break;
+            case R.id.txt_occasion:
+                showOccasionDialog(occasion -> {
+                    viewModel.setOccasion(occasion);
+                });
+                break;
+
+            case R.id.blue_circle:
+            case R.id.green_circle:
+            case R.id.yellow_circle:
+            case R.id.red_circle:
+                int color = ((ColoredCircle) v).getCircleColor();
+                TaskColor taskColor = TaskColor.getAssociatedTaskColor(color);
+                viewModel.setTaskColor(taskColor);
+                break;
+
+            case R.id.txt_location:
+            case R.id.txt_desc:
+            case R.id.txt_link:
+                AdditionalField field = (AdditionalField) v.getTag();
+                viewModel.addToVisibleAdditionalFields(field);
+                makeVisible(field);
+                break;
+
+        }
+    }
+
+    private void saveTask() {
+        viewModel.saveTask()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new CompletableObserver() {
                     @Override
@@ -106,26 +170,6 @@ public class ModifyFragment extends Fragment {
                         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
                     }
                 });
-        });
-
-        binding.btnCancel.setOnClickListener((v) -> navigateBack());
-
-        binding.txtDateTime.setOnClickListener(v -> {
-            showDatePickerDialog(selectedCalendar -> {
-                viewModel.setDateCalendar(selectedCalendar);
-
-                showTimePickerDialog((hour, minute) -> {
-                    viewModel.setTime(hour, minute);
-                });
-            });
-        });
-
-        binding.txtOccasion.setOnClickListener(v -> {
-            showOccasionDialog(occasion -> {
-                viewModel.setOccasion(occasion);
-            });
-        });
-
     }
 
     private CustomEditText getAssociatedEditText(AdditionalField field) {
@@ -157,16 +201,6 @@ public class ModifyFragment extends Fragment {
         for (AdditionalField field : fields) {
             makeVisible(field);
         }
-
-        View.OnClickListener listener = v -> {
-            AdditionalField field = (AdditionalField) v.getTag();
-            makeVisible(field);
-            viewModel.addToVisibleAdditionalFields(field);
-        };
-
-        binding.txtLocation.setOnClickListener(listener);
-        binding.txtLink.setOnClickListener(listener);
-        binding.txtDesc.setOnClickListener(listener);
     }
 
     private void makeVisible(AdditionalField field) {
@@ -177,25 +211,12 @@ public class ModifyFragment extends Fragment {
         editText.setVisibility(View.VISIBLE);
 
         if(haveAllAdditionalFieldsBeenVisible())
-            binding.additionalFieldsContainer.setVisibility(View.GONE);
+            binding.additionalFieldsTextViewContainer.setVisibility(View.GONE);
     }
 
     private boolean haveAllAdditionalFieldsBeenVisible() {
         return viewModel.getVisibleAdditionalFields().length
                 == AdditionalField.values().length;
-    }
-
-    private void setupColoredCircleClick() {
-        View.OnClickListener clickListener = view -> {
-            int color = ((ColoredCircle) view).getCircleColor();
-            TaskColor taskColor = TaskColor.getAssociatedTaskColor(color);
-            viewModel.setTaskColor(taskColor);
-        };
-
-        binding.blueCircle.setOnClickListener(clickListener);
-        binding.redCircle.setOnClickListener(clickListener);
-        binding.yellowCircle.setOnClickListener(clickListener);
-        binding.greenCircle.setOnClickListener(clickListener);
     }
 
     private void showDatePickerDialog(OnDateSelectListener callback) {
@@ -258,28 +279,25 @@ public class ModifyFragment extends Fragment {
     }
 
     private void showOccasionDialog(OnOccasionSelectListener callback) {
-        new AlertDialog.Builder(getContext())
+        Occasion currentOccasion = viewModel.occasion.get();
+        int index = (currentOccasion == null) ? -1 : currentOccasion.ordinal();
+
+        new AlertDialog.Builder(getContext(), R.style.RightJustifyTheme)
                 .setTitle(R.string.occasion)
-                .setItems(R.array.occasions, (dialog, which) -> {
+                .setSingleChoiceItems(R.array.occasions, index, ((dialog, which) -> {
                     Occasion occasion = Occasion.values()[which];
                     callback.onSelect(occasion);
-                })
+                    dialog.dismiss();
+                }))
                 .create()
                 .show();
     }
 
-    private void setupBinding(View view) {
-        binding = FragmentModifyBinding.bind(view);
+    private void setupUi(LayoutInflater inflater, ViewGroup container) {
+        binding = DataBindingUtil.inflate(
+                inflater, R.layout.fragment_task_modify, container, false
+        );
         binding.setViewModel(viewModel);
-    }
-
-    private void setupViewModel() {
-        TaskDao dao = DbHelper.getInstance(getContext()).getTaskDao();
-        TaskRepository repository = new TaskRepository(dao);
-        viewModel = new ViewModelProvider(
-                this,
-                new ModifyViewModel.Factory(repository)
-        ).get(ModifyViewModel.class);
     }
 
     private void navigateBack() {
@@ -291,6 +309,7 @@ public class ModifyFragment extends Fragment {
     @Override
     public void onDestroy() {
         disposables.clear();
+        binding = null;
         super.onDestroy();
     }
 }

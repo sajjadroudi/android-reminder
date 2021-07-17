@@ -2,7 +2,6 @@ package com.mobiliha.eventsbadesaba.ui.custom;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
@@ -13,9 +12,6 @@ import androidx.annotation.Nullable;
 import com.mobiliha.eventsbadesaba.R;
 
 public class CustomDateTimeView extends LinearLayout {
-
-    public static final float DEFAULT_TEXT_SIZE = 17f;
-    public static final int DEFAULT_TEXT_COLOR = Color.BLACK;
 
     private TextView txtDate;
     private TextView txtTime;
@@ -56,10 +52,10 @@ public class CustomDateTimeView extends LinearLayout {
         mainIcon = findViewById(R.id.icon_main);
 
         // Initialize attributes
-        txtDate.setTextColor(DEFAULT_TEXT_COLOR);
-        txtTime.setTextColor(DEFAULT_TEXT_COLOR);
-        txtDate.setTextSize(DEFAULT_TEXT_SIZE);
-        txtTime.setTextSize(DEFAULT_TEXT_SIZE);
+        txtDate.setTextColor(CustomViewConstants.DEFAULT_TEXT_COLOR);
+        txtTime.setTextColor(CustomViewConstants.DEFAULT_TEXT_COLOR);
+        txtDate.setTextSize(CustomViewConstants.DEFAULT_TEXT_SIZE);
+        txtTime.setTextSize(CustomViewConstants.DEFAULT_TEXT_SIZE);
         setCustomDateTimeDate(date);
         setCustomDateTimeTime(time);
         setCustomDateTimeIcon(icon);

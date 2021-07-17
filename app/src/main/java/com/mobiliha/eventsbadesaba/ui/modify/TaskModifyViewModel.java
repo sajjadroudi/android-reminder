@@ -1,9 +1,7 @@
 package com.mobiliha.eventsbadesaba.ui.modify;
 
-import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.mobiliha.eventsbadesaba.R;
 import com.mobiliha.eventsbadesaba.ReminderApp;
@@ -20,7 +18,7 @@ import java.util.Set;
 
 import io.reactivex.Completable;
 
-public class ModifyViewModel extends ViewModel {
+public class TaskModifyViewModel extends ViewModel {
 
     public static final String TAG = "ModifyViewModel";
 
@@ -36,10 +34,11 @@ public class ModifyViewModel extends ViewModel {
 
     private final TaskRepository repository;
 
+    // Visible additional fields are those that user has been selected to input data
     private final Set<AdditionalField> visibleAdditionalFields;
 
-    public ModifyViewModel(TaskRepository repository) {
-        this.repository = repository;
+    public TaskModifyViewModel() {
+        this.repository = new TaskRepository();
         visibleAdditionalFields = new HashSet<>();
     }
 
@@ -137,24 +136,6 @@ public class ModifyViewModel extends ViewModel {
 
     public void setTaskColor(TaskColor color) {
         this.color.set(color);
-    }
-
-    public static class Factory implements ViewModelProvider.Factory {
-
-        private final TaskRepository repository;
-
-        public Factory(TaskRepository repository) {
-            this.repository = repository;
-        }
-
-        @NonNull
-        @Override
-        public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            if(modelClass.isAssignableFrom(ModifyViewModel.class)) {
-                return (T) new ModifyViewModel(repository);
-            }
-            throw new IllegalArgumentException();
-        }
     }
 
 }

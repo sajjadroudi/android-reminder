@@ -9,13 +9,13 @@
         <import type="android.view.View"/>
         <variable
             name="viewModel"
-            type="com.mobiliha.eventsbadesaba.ui.list.ListViewModel" />
+            type="com.mobiliha.eventsbadesaba.ui.list.TaskListViewModel" />
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.list.ListFragment">
+        tools:context=".ui.list.TaskListFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"

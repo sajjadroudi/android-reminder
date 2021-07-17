@@ -10,7 +10,7 @@
         <import type="com.mobiliha.eventsbadesaba.ui.modify.AdditionalField"/>
         <variable
             name="viewModel"
-            type="com.mobiliha.eventsbadesaba.ui.modify.ModifyViewModel" />
+            type="com.mobiliha.eventsbadesaba.ui.modify.TaskModifyViewModel" />
     </data>
 
     <LinearLayout
@@ -25,7 +25,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:context=".ui.modify.ModifyFragment"
+                tools:context=".ui.modify.TaskModifyFragment"
                 android:paddingTop="24dp"
                 android:paddingLeft="24dp"
                 android:paddingRight="12dp"
@@ -90,7 +90,7 @@
 
 
                 <LinearLayout
-                    android:id="@+id/additional_fields_container"
+                    android:id="@+id/additional_fields_text_view_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/distance_between_modify_fragment_items">
@@ -101,41 +101,22 @@
 
                     <TextView
                         android:id="@+id/txt_desc"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
                         android:text="@string/description"
-                        android:gravity="center"
-                        android:textColor="@color/black"
-                        android:textSize="19sp"
-                        android:background="@drawable/custom_text_view_background"
-                        android:layout_marginLeft="8dp"
-                        android:tag="@{AdditionalField.DESC}"/>
+                        android:tag="@{AdditionalField.DESC}"
+                        style="@style/AdditionalInformationTextViewStyle"/>
 
                     <TextView
                         android:id="@+id/txt_location"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
                         android:text="@string/location"
-                        android:gravity="center"
-                        android:background="@drawable/custom_text_view_background"
-                        android:textColor="@color/black"
-                        android:textSize="19sp"
-                        android:layout_marginLeft="8dp"
-                        android:tag="@{AdditionalField.LOCATION}"/>
+                        android:tag="@{AdditionalField.LOCATION}"
+                        style="@style/AdditionalInformationTextViewStyle"/>
 
                     <TextView
                         android:id="@+id/txt_link"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
                         android:text="@string/link"
-                        android:gravity="center"
-                        android:textColor="@color/black"
-                        android:textSize="19sp"
-                        android:background="@drawable/custom_text_view_background"
-                        android:tag="@{AdditionalField.LINK}"/>
+                        android:tag="@{AdditionalField.LINK}"
+                        android:layout_marginLeft="0dp"
+                        style="@style/AdditionalInformationTextViewStyle"/>
 
                 </LinearLayout>
 
@@ -193,10 +174,9 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="@string/cancel"
-                android:layout_margin="4dp"
-                android:textSize="20sp"
-                style="?android:attr/buttonBarButtonStyle"
-                />
+                android:layout_margin="@dimen/button_margin"
+                android:textSize="@dimen/button_text_size"
+                style="?android:attr/buttonBarButtonStyle" />
 
             <Button
                 android:id="@+id/btn_save"
@@ -204,9 +184,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="@string/save"
-                android:layout_margin="4dp"
-                android:textSize="20sp"
-                />
+                style="@style/SaveButtonStyle"/>
 
         </LinearLayout>
 

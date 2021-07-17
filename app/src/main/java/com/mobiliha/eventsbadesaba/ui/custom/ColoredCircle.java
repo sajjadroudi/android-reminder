@@ -21,7 +21,8 @@ public class ColoredCircle extends View {
     private int color;
     private boolean isChosen;
 
-    private Paint paint;
+    private Paint innerCirclePaint;
+    private Paint outerCirclePaint;
     private int radius;
     private int centerX;
     private int centerY;
@@ -52,8 +53,11 @@ public class ColoredCircle extends View {
             array.recycle();
         }
 
-        paint = new Paint();
-        paint.setAntiAlias(true);
+        innerCirclePaint = new Paint();
+        innerCirclePaint.setAntiAlias(true);
+
+        outerCirclePaint = new Paint();
+        outerCirclePaint.setAntiAlias(true);
     }
 
     public void setCircleStrokeWidth(float value) {
@@ -106,13 +110,12 @@ public class ColoredCircle extends View {
 
         if(isChosen) {
             radius -= strokeWidth;
-            Paint p = new Paint(paint);
-            p.setColor(Color.BLACK);
-            canvas.drawCircle(centerX, centerY, radius + strokeWidth, p);
+            outerCirclePaint.setColor(Color.BLACK);
+            canvas.drawCircle(centerX, centerY, radius + strokeWidth, outerCirclePaint);
         }
 
-        paint.setColor(color);
-        canvas.drawCircle(centerX, centerY, radius, paint);
+        innerCirclePaint.setColor(color);
+        canvas.drawCircle(centerX, centerY, radius, innerCirclePaint);
     }
 
     @Override

@@ -4,8 +4,11 @@ import android.graphics.Color;
 
 import androidx.annotation.ColorInt;
 
+import com.mobiliha.eventsbadesaba.R;
+import com.mobiliha.eventsbadesaba.ReminderApp;
+
 public enum TaskColor {
-    BLUE(Color.BLUE),
+    BLUE(ReminderApp.getAppContext().getResources().getColor(R.color.blue)),
     YELLOW(Color.YELLOW),
     GREEN(Color.GREEN),
     RED(Color.RED);

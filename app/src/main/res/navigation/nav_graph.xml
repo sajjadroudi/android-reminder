@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/listFragment"
-        android:name="com.mobiliha.eventsbadesaba.ui.list.ListFragment"
+        android:name="com.mobiliha.eventsbadesaba.ui.list.TaskListFragment"
         android:label="@string/tasks" >
         <action
             android:id="@+id/action_list_to_modify"
@@ -15,7 +15,7 @@
 
     <fragment
         android:id="@+id/modifyFragment"
-        android:name="com.mobiliha.eventsbadesaba.ui.modify.ModifyFragment"
+        android:name="com.mobiliha.eventsbadesaba.ui.modify.TaskModifyFragment"
         android:label="{title}">
         <argument
             android:name="title"

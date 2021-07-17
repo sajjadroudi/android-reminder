@@ -2,7 +2,6 @@ package com.mobiliha.eventsbadesaba.ui.custom;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +14,6 @@ import androidx.annotation.Nullable;
 import com.mobiliha.eventsbadesaba.R;
 
 public class CustomTextView extends LinearLayout {
-
-    public static final float DEFAULT_TEXT_SIZE = 17f;
-    public static final int DEFAULT_TEXT_COLOR = Color.BLACK;
 
     private TextView txtMain;
     private FontIcon crossIcon;
@@ -41,14 +37,19 @@ public class CustomTextView extends LinearLayout {
         // Initialize layout
         setOrientation(LinearLayout.HORIZONTAL);
 
-        TypedArray array = getContext().obtainStyledAttributes(attrs,
-                R.styleable.CustomTextView, 0, 0);
+        TypedArray array = getContext().obtainStyledAttributes(
+                attrs, R.styleable.CustomTextView, 0, 0
+        );
 
         // Read attributes from xml
         String mainText = array.getString(R.styleable.CustomTextView_customText);
         hintText = array.getString(R.styleable.CustomTextView_customHintText);
-        float textSize = array.getDimension(R.styleable.CustomTextView_customTextSize, DEFAULT_TEXT_SIZE);
-        int textColor = array.getColor(R.styleable.CustomTextView_customTextColor, DEFAULT_TEXT_COLOR);
+        float textSize = array.getDimension(
+                R.styleable.CustomTextView_customTextSize, CustomViewConstants.DEFAULT_TEXT_SIZE
+        );
+        int textColor = array.getColor(
+                R.styleable.CustomTextView_customTextColor, CustomViewConstants.DEFAULT_TEXT_COLOR
+        );
         String icon = array.getString(R.styleable.CustomTextView_customIcon);
 
         array.recycle();

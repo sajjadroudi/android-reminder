@@ -1,5 +1,6 @@
 package com.mobiliha.eventsbadesaba.data.repository;
 
+import com.mobiliha.eventsbadesaba.data.local.db.DbHelper;
 import com.mobiliha.eventsbadesaba.data.local.db.dao.TaskDao;
 import com.mobiliha.eventsbadesaba.data.local.db.entity.Task;
 
@@ -13,8 +14,8 @@ public class TaskRepository {
 
     private final TaskDao dao;
 
-    public TaskRepository(TaskDao dao) {
-        this.dao = dao;
+    public TaskRepository() {
+        this.dao = DbHelper.getInstance().getTaskDao();
     }
 
     public Single<List<Task>> getAllTasks() {

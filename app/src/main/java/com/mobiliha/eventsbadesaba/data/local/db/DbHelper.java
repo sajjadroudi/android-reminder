@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.mobiliha.eventsbadesaba.ReminderApp;
 import com.mobiliha.eventsbadesaba.data.local.db.dao.BaseDao;
 import com.mobiliha.eventsbadesaba.data.local.db.dao.TaskDao;
 
@@ -22,9 +23,9 @@ public class DbHelper extends SQLiteOpenHelper {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
-    public static DbHelper getInstance(Context context) {
+    public static DbHelper getInstance() {
         if(instance == null) {
-            instance = new DbHelper(context);
+            instance = new DbHelper(ReminderApp.getAppContext());
         }
         return instance;
     }

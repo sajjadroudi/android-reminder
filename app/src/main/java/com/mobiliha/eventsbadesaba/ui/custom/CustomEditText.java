@@ -3,7 +3,6 @@ package com.mobiliha.eventsbadesaba.ui.custom;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -14,14 +13,10 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.res.ResourcesCompat;
 
 import com.mobiliha.eventsbadesaba.R;
 
 public class CustomEditText extends LinearLayout {
-
-    public static final float DEFAULT_TEXT_SIZE = 17f;
-    public static final int DEFAULT_TEXT_COLOR = Color.BLACK;
 
     private EditText edtMain;
     private FontIcon crossIcon;
@@ -48,8 +43,12 @@ public class CustomEditText extends LinearLayout {
         // Read attributes from xml
         String text = array.getString(R.styleable.CustomEditText_customEditTextText);
         String hintText = array.getString(R.styleable.CustomEditText_customEditTextTextHintText);
-        float textSize = array.getDimension(R.styleable.CustomEditText_customEditTextTextTextSize, DEFAULT_TEXT_SIZE);
-        int textColor = array.getColor(R.styleable.CustomEditText_customEditTextTextTextColor, DEFAULT_TEXT_COLOR);
+        float textSize = array.getDimension(
+                R.styleable.CustomEditText_customEditTextTextTextSize, CustomViewConstants.DEFAULT_TEXT_SIZE
+        );
+        int textColor = array.getColor(
+                R.styleable.CustomEditText_customEditTextTextTextColor, CustomViewConstants.DEFAULT_TEXT_COLOR
+        );
         String icon = array.getString(R.styleable.CustomEditText_customEditTextIcon);
 
         array.recycle();
