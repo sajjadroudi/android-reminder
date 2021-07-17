@@ -7,6 +7,7 @@
         <import type="com.mobiliha.eventsbadesaba.util.TimeUtils"/>
         <import type="com.mobiliha.eventsbadesaba.util.Utils"/>
         <import type="com.mobiliha.eventsbadesaba.data.local.db.entity.TaskColor"/>
+        <import type="com.mobiliha.eventsbadesaba.ui.modify.AdditionalField"/>
         <variable
             name="viewModel"
             type="com.mobiliha.eventsbadesaba.ui.modify.ModifyViewModel" />
@@ -64,7 +65,8 @@
                     app:customEditTextTextHintText="@string/description"
                     app:customEditTextText="@={viewModel.desc}"
                     app:customEditTextIcon="@string/icon_memo"
-                    android:layout_marginBottom="@dimen/distance_between_modify_fragment_items"/>
+                    android:layout_marginBottom="@dimen/distance_between_modify_fragment_items"
+                    android:visibility="gone"/>
 
                 <com.mobiliha.eventsbadesaba.ui.custom.CustomEditText
                     android:id="@+id/edt_location"
@@ -73,7 +75,8 @@
                     app:customEditTextTextHintText="@string/location"
                     app:customEditTextText="@={viewModel.location}"
                     app:customEditTextIcon="@string/icon_flag"
-                    android:layout_marginBottom="@dimen/distance_between_modify_fragment_items"/>
+                    android:layout_marginBottom="@dimen/distance_between_modify_fragment_items"
+                    android:visibility="gone"/>
 
                 <com.mobiliha.eventsbadesaba.ui.custom.CustomEditText
                     android:id="@+id/edt_link"
@@ -82,7 +85,59 @@
                     app:customEditTextTextHintText="@string/link"
                     app:customEditTextText="@={viewModel.link}"
                     app:customEditTextIcon="@string/icon_link_simple"
-                    android:layout_marginBottom="@dimen/distance_between_modify_fragment_items"/>
+                    android:layout_marginBottom="@dimen/distance_between_modify_fragment_items"
+                    android:visibility="gone"/>
+
+
+                <LinearLayout
+                    android:id="@+id/additional_fields_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/distance_between_modify_fragment_items">
+
+                    <com.mobiliha.eventsbadesaba.ui.custom.FontIcon
+                        android:text="@string/icon_circle_plus"
+                        style="@style/CustomViewMainIcon" />
+
+                    <TextView
+                        android:id="@+id/txt_desc"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="@string/description"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="19sp"
+                        android:background="@drawable/custom_text_view_background"
+                        android:layout_marginLeft="8dp"
+                        android:tag="@{AdditionalField.DESC}"/>
+
+                    <TextView
+                        android:id="@+id/txt_location"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="@string/location"
+                        android:gravity="center"
+                        android:background="@drawable/custom_text_view_background"
+                        android:textColor="@color/black"
+                        android:textSize="19sp"
+                        android:layout_marginLeft="8dp"
+                        android:tag="@{AdditionalField.LOCATION}"/>
+
+                    <TextView
+                        android:id="@+id/txt_link"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="@string/link"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="19sp"
+                        android:background="@drawable/custom_text_view_background"
+                        android:tag="@{AdditionalField.LINK}"/>
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"

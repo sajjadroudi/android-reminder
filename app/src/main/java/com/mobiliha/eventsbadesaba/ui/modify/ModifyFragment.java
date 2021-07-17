@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ import com.mobiliha.eventsbadesaba.data.local.db.entity.TaskColor;
 import com.mobiliha.eventsbadesaba.data.repository.TaskRepository;
 import com.mobiliha.eventsbadesaba.databinding.FragmentModifyBinding;
 import com.mobiliha.eventsbadesaba.ui.custom.ColoredCircle;
+import com.mobiliha.eventsbadesaba.ui.custom.CustomEditText;
 import com.mobiliha.eventsbadesaba.util.PersianCalendar;
 import com.mobiliha.eventsbadesaba.util.TimeUtils;
 import com.mobiliha.eventsbadesaba.util.UserInputException;
@@ -76,6 +78,8 @@ public class ModifyFragment extends Fragment {
 
         setupColoredCircleClick();
 
+        setupAdditionalFields();
+
         binding.btnSave.setOnClickListener((v) -> {
             viewModel.saveTask()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -122,6 +126,63 @@ public class ModifyFragment extends Fragment {
             });
         });
 
+    }
+
+    private CustomEditText getAssociatedEditText(AdditionalField field) {
+        switch (field) {
+            case LINK:
+                return binding.edtLink;
+            case LOCATION:
+                return binding.edtLocation;
+            case DESC:
+                return binding.edtDesc;
+        }
+        throw new IllegalArgumentException();
+    }
+
+    private TextView getAssociatedTextView(AdditionalField field) {
+        switch (field) {
+            case LINK:
+                return binding.txtLink;
+            case LOCATION:
+                return binding.txtLocation;
+            case DESC:
+                return binding.txtDesc;
+        }
+        throw new IllegalArgumentException();
+    }
+
+    private void setupAdditionalFields() {
+        AdditionalField[] fields = viewModel.getVisibleAdditionalFields();
+        for (AdditionalField field : fields) {
+            makeVisible(field);
+        }
+
+        View.OnClickListener listener = v -> {
+            AdditionalField field = (AdditionalField) v.getTag();
+            makeVisible(field);
+            viewModel.addToVisibleAdditionalFields(field);
+        };
+
+        binding.txtLocation.setOnClickListener(listener);
+        binding.txtLink.setOnClickListener(listener);
+        binding.txtDesc.setOnClickListener(listener);
+    }
+
+    private void makeVisible(AdditionalField field) {
+        TextView textView = getAssociatedTextView(field);
+        textView.setVisibility(View.GONE);
+
+        CustomEditText editText = getAssociatedEditText(field);
+        editText.setVisibility(View.VISIBLE);
+
+        if(haveAllAdditionalFieldsBeenVisible())
+            binding.additionalFieldsContainer.setVisibility(View.GONE);
+    }
+
+    private boolean haveAllAdditionalFieldsBeenVisible() {
+        return viewModel.getVisibleAdditionalFields().length
+                == AdditionalField.values().length;
     }
 
     private void setupColoredCircleClick() {

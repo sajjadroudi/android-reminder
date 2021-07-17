@@ -15,6 +15,8 @@ import com.mobiliha.eventsbadesaba.util.UserInputException;
 import com.mobiliha.eventsbadesaba.util.Utils;
 
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 
 import io.reactivex.Completable;
 
@@ -34,8 +36,19 @@ public class ModifyViewModel extends ViewModel {
 
     private final TaskRepository repository;
 
+    private final Set<AdditionalField> visibleAdditionalFields;
+
     public ModifyViewModel(TaskRepository repository) {
         this.repository = repository;
+        visibleAdditionalFields = new HashSet<>();
+    }
+
+    public void addToVisibleAdditionalFields(AdditionalField field) {
+        visibleAdditionalFields.add(field);
+    }
+
+    public AdditionalField[] getVisibleAdditionalFields() {
+        return visibleAdditionalFields.toArray(new AdditionalField[0]);
     }
 
     /**
