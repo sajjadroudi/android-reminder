@@ -77,9 +77,11 @@ public class TaskModifyViewModel extends ViewModel {
     public Single<Task> saveTask() {
         String title = Utils.tryTrim(this.title.get());
 
-        if(title == null) {
+        if(title == null || title.length() < Task.MIN_TITLE_LENGTH) {
             return Single.create(emitter -> {
-                String message = ReminderApp.getAppContext().getString(R.string.invalid_title);
+                String message = ReminderApp.getAppContext().getString(
+                        R.string.short_title, Task.MIN_TITLE_LENGTH
+                );
                 emitter.onError(new UserInputException(message));
             });
         }

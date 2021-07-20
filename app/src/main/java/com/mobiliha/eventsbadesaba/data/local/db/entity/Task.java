@@ -10,6 +10,7 @@ import java.util.Calendar;
 public class Task {
 
     public static final int MAX_TITLE_LENGTH = 40;
+    public static final int MIN_TITLE_LENGTH = 3;
     private static final int DEF_TASK_ID = 0;
 
     private final int taskId;
