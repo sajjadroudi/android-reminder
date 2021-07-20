@@ -18,17 +18,19 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.mobiliha.eventsbadesaba.R;
 import com.mobiliha.eventsbadesaba.data.local.db.entity.Occasion;
+import com.mobiliha.eventsbadesaba.data.local.db.entity.Task;
 import com.mobiliha.eventsbadesaba.data.local.db.entity.TaskColor;
 import com.mobiliha.eventsbadesaba.databinding.FragmentTaskModifyBinding;
 import com.mobiliha.eventsbadesaba.ui.custom.ColoredCircle;
 import com.mobiliha.eventsbadesaba.ui.custom.CustomEditText;
+import com.mobiliha.eventsbadesaba.util.AlarmHelper;
 import com.mobiliha.eventsbadesaba.util.PersianCalendar;
 import com.mobiliha.eventsbadesaba.util.TimeUtils;
 import com.mobiliha.eventsbadesaba.util.UserInputException;
 
 import java.util.Calendar;
 
-import io.reactivex.CompletableObserver;
+import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -57,12 +59,15 @@ public class TaskModifyFragment extends Fragment implements View.OnClickListener
 
     private FragmentTaskModifyBinding binding;
     private TaskModifyViewModel viewModel;
+    private AlarmHelper alarmHelper;
     private final CompositeDisposable disposables = new CompositeDisposable();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = new ViewModelProvider(this).get(TaskModifyViewModel.class);
+
+        alarmHelper = new AlarmHelper(requireContext());
     }
 
     @Nullable
@@ -147,15 +152,16 @@ public class TaskModifyFragment extends Fragment implements View.OnClickListener
     private void saveTask() {
         viewModel.saveTask()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new CompletableObserver() {
+                .subscribe(new SingleObserver<Task>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
                         disposables.add(d);
                     }
 
                     @Override
-                    public void onComplete() {
+                    public void onSuccess(@NonNull Task task) {
                         Toast.makeText(getContext(), R.string.saved, Toast.LENGTH_SHORT).show();
+                        alarmHelper.setAlarm(task);
                         navigateBack();
                     }
 

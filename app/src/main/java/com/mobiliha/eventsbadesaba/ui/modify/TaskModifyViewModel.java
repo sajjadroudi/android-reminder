@@ -16,7 +16,7 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
-import io.reactivex.Completable;
+import io.reactivex.Single;
 
 public class TaskModifyViewModel extends ViewModel {
 
@@ -74,18 +74,18 @@ public class TaskModifyViewModel extends ViewModel {
         time.set(calendar);
     }
 
-    public Completable saveTask() {
+    public Single<Task> saveTask() {
         String title = Utils.tryTrim(this.title.get());
 
         if(title == null) {
-            return Completable.create(emitter -> {
+            return Single.create(emitter -> {
                 String message = ReminderApp.getAppContext().getString(R.string.invalid_title);
                 emitter.onError(new UserInputException(message));
             });
         }
 
         if(title.length() > Task.MAX_TITLE_LENGTH) {
-            return Completable.create(emitter -> {
+            return Single.create(emitter -> {
                 String message = ReminderApp.getAppContext().getString(
                         R.string.long_title, Task.MAX_TITLE_LENGTH
                 );

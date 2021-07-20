@@ -40,6 +40,10 @@
     <string name="ok">باشه</string>
     <string name="tomorrow">فردا</string>
 
+    <string name="primary_channel">کانال اصلی</string>
+    <string name="alarm_at">یادآوری در %s</string>
+    <string name="primary_channel_description">نوتیفیکیشن‌های این کانال مربوط به یادآوری یادآورهای تنظیم‌شده می‌باشد.</string>
+
     <string-array name="occasions">
         <item>تولد</item>
         <item>قسط</item>

@@ -12,6 +12,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.mobiliha.eventsbadesaba.R;
 import com.mobiliha.eventsbadesaba.data.local.db.DbHelper;
+import com.mobiliha.eventsbadesaba.util.NotificationHelper;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,11 +27,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        setupNotification();
+
+        setupNavigation();
+    }
+
+    private void setupNavigation() {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+    }
+
+    private void setupNotification() {
+        NotificationHelper notificationHelper = new NotificationHelper(this);
+        notificationHelper.createPrimaryChannel();
     }
 
     @Override

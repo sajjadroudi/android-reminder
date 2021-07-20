@@ -50,12 +50,12 @@ public class TaskDao {
         });
     }
 
-    public Completable insert(Task task) {
-        return Completable.create(emitter -> {
+    public Single<Task> insert(Task task) {
+        return Single.create(emitter -> {
             try {
                 ContentValues values = Converter.taskToContentValues(task);
                 dao.insert(tableName, values);
-                emitter.onComplete();
+                emitter.onSuccess(task);
             } catch (Exception e) {
                 emitter.onError(e);
             }

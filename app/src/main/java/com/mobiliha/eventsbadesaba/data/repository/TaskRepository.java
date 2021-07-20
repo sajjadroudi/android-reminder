@@ -26,7 +26,7 @@ public class TaskRepository {
         return applyRequirements(dao.getTask(taskId));
     }
 
-    public Completable insert(Task task) {
+    public Single<Task> insert(Task task) {
         return applyRequirements(dao.insert(task));
     }
 
