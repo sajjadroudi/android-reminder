@@ -63,7 +63,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:customEditTextTextHintText="@string/description"
-                    app:customEditTextText="@={viewModel.desc}"
+                    app:customEditTextText="@={viewModel.details}"
                     app:customEditTextIcon="@string/icon_memo"
                     android:layout_marginBottom="@dimen/distance_between_modify_fragment_items"
                     android:visibility="gone"/>

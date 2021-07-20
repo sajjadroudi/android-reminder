@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:custom="http://schemas.android.com/apk/res/com.mobiliha.eventsbadesaba">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <import type="com.mobiliha.eventsbadesaba.util.TimeUtils"/>
@@ -10,6 +9,9 @@
         <variable
             name="task"
             type="com.mobiliha.eventsbadesaba.data.local.db.entity.Task" />
+        <variable
+            name="callback"
+            type="com.mobiliha.eventsbadesaba.ui.list.TaskAdapter.OnItemSelectListener" />
     </data>
 
     <LinearLayout
@@ -21,13 +23,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:context=".ui.list.TaskListFragment"
-            android:padding="16dp">
+            android:padding="16dp"
+            android:onClick="@{() -> callback.onSelect(task)}">
 
             <com.mobiliha.eventsbadesaba.ui.custom.ColoredLabel
                 android:id="@+id/color_label"
                 android:layout_width="7dp"
                 android:layout_height="24dp"
-                custom:labelColor="@{task.color.colorCode}"
+                app:labelColor="@{task.color.colorCode}"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="5dp"

@@ -67,4 +67,73 @@
         <item name="android:layoutDirection" tools:targetApi="jelly_bean_mr1">rtl</item>
     </style>
 
+    <style name="TaskDetailsRowContainerStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_marginBottom">24dp</item>
+        <item name="android:baselineAligned">true</item>
+    </style>
+
+    <style name="TaskDetailsKeyContainerStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">0.45</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="TaskDetailsValueContainerStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">0.55</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="TaskDetailsIconStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    
+    <style name="TaskDetailsKeyStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/hint</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="TaskDetailsValueStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">0.55</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TaskDetailsActionContainerStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">16dp</item>
+    </style>
+
+    <style name="TaskDetailsActionIconStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginBottom">8dp</item>
+    </style>
+
+    <style name="TaskDetailsActionStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
 </resources>

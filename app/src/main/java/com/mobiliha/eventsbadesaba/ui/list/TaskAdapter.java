@@ -12,8 +12,14 @@ import com.mobiliha.eventsbadesaba.data.local.db.entity.Task;
 import com.mobiliha.eventsbadesaba.databinding.AdapterTaskBinding;
 
 public class TaskAdapter extends ListAdapter<Task, TaskAdapter.TaskViewHolder> {
+    
+    public interface OnItemSelectListener {
+        void onSelect(Task task);
+    }
 
-    public TaskAdapter() {
+    private final OnItemSelectListener listener;
+
+    public TaskAdapter(OnItemSelectListener listener) {
         super(new DiffUtil.ItemCallback<Task>() {
             @Override
             public boolean areItemsTheSame(@NonNull Task oldItem, @NonNull Task newItem) {
@@ -25,6 +31,8 @@ public class TaskAdapter extends ListAdapter<Task, TaskAdapter.TaskViewHolder> {
                 return oldItem.equals(newItem);
             }
         });
+
+        this.listener = listener;
     }
 
     @NonNull
@@ -36,7 +44,7 @@ public class TaskAdapter extends ListAdapter<Task, TaskAdapter.TaskViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
         Task task = getCurrentList().get(position);
-        holder.bind(task);
+        holder.bind(task, listener);
     }
 
     public static class TaskViewHolder extends RecyclerView.ViewHolder {
@@ -48,8 +56,9 @@ public class TaskAdapter extends ListAdapter<Task, TaskAdapter.TaskViewHolder> {
             this.binding = binding;
         }
 
-        public void bind(Task task) {
+        public void bind(Task task, OnItemSelectListener listener) {
             binding.setTask(task);
+            binding.setCallback(listener);
             binding.executePendingBindings();
         }
 

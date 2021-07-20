@@ -76,7 +76,9 @@ public class TaskListFragment extends Fragment {
 
     private FragmentTaskListBinding binding;
     private TaskListViewModel viewModel;
-    private TaskAdapter adapter;
+    private TaskAdapter adapter = new TaskAdapter(task -> {
+        navigateToTaskDetails(task.getTaskId());
+    });
     private final CompositeDisposable disposables = new CompositeDisposable();
 
     @Override
@@ -126,7 +128,6 @@ public class TaskListFragment extends Fragment {
         binding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_task_list, container,false
         );
-        adapter = new TaskAdapter();
         binding.recyclerView.setAdapter(adapter);
         itemTouchHelper.attachToRecyclerView(binding.recyclerView);
         binding.setViewModel(viewModel);
@@ -137,6 +138,13 @@ public class TaskListFragment extends Fragment {
         String title = getString(R.string.add_task);
         navController.navigate(
                 TaskListFragmentDirections.actionListToModify(title)
+        );
+    }
+
+    private void navigateToTaskDetails(int taskId) {
+        NavController navController = NavHostFragment.findNavController(TaskListFragment.this);
+        navController.navigate(
+                TaskListFragmentDirections.actionListToDetails(taskId)
         );
     }
 

@@ -28,7 +28,6 @@ public class TaskModifyViewModel extends ViewModel {
     public final ObservableField<Calendar> time = new ObservableField<>(Calendar.getInstance());
     public final ObservableField<String> details = new ObservableField<>();
     public final ObservableField<String> location = new ObservableField<>();
-    public final ObservableField<String> desc = new ObservableField<>();
     public final ObservableField<String> link = new ObservableField<>();
     public final ObservableField<TaskColor> color = new ObservableField<>(TaskColor.BLUE);
 

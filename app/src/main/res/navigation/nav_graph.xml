@@ -11,6 +11,9 @@
         <action
             android:id="@+id/action_list_to_modify"
             app:destination="@id/modifyFragment" />
+        <action
+            android:id="@+id/action_list_to_details"
+            app:destination="@id/taskDetailsFragment" />
     </fragment>
 
     <fragment
@@ -20,6 +23,16 @@
         <argument
             android:name="title"
             app:argType="string"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/taskDetailsFragment"
+        android:name="com.mobiliha.eventsbadesaba.ui.details.TaskDetailsFragment"
+        android:label="@string/task_details_fragment_label">
+
+        <argument android:name="taskId"
+            app:argType="integer"/>
+
     </fragment>
 
 </navigation>
