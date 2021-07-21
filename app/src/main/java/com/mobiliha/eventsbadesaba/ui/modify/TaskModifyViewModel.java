@@ -1,7 +1,10 @@
 package com.mobiliha.eventsbadesaba.ui.modify;
 
+import androidx.annotation.NonNull;
+import androidx.databinding.ObservableArrayList;
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.mobiliha.eventsbadesaba.R;
 import com.mobiliha.eventsbadesaba.ReminderApp;
@@ -13,40 +16,74 @@ import com.mobiliha.eventsbadesaba.util.UserInputException;
 import com.mobiliha.eventsbadesaba.util.Utils;
 
 import java.util.Calendar;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Objects;
 
 import io.reactivex.Single;
+import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 public class TaskModifyViewModel extends ViewModel {
 
+    public static final int NOT_DEFINED = -1;
     public static final String TAG = "ModifyViewModel";
 
-    public final ObservableField<String> title = new ObservableField<>();
-    public final ObservableField<Occasion> occasion = new ObservableField<>();
-    public final ObservableField<Calendar> date = new ObservableField<>(Calendar.getInstance());
-    public final ObservableField<Calendar> time = new ObservableField<>(Calendar.getInstance());
-    public final ObservableField<String> details = new ObservableField<>();
-    public final ObservableField<String> location = new ObservableField<>();
-    public final ObservableField<String> link = new ObservableField<>();
-    public final ObservableField<TaskColor> color = new ObservableField<>(TaskColor.BLUE);
+    public final ObservableField<Task> task = new ObservableField<>(new Task());
+    // Visible fields are additional fields that user has been selected to input more information
+    public final ObservableArrayList<AdditionalField> visibleFields = new ObservableArrayList<>();
 
     private final TaskRepository repository;
+    private final Mode mode;
+    private final CompositeDisposable disposables = new CompositeDisposable();
 
-    // Visible additional fields are those that user has been selected to input data
-    private final Set<AdditionalField> visibleAdditionalFields;
+    public TaskModifyViewModel(int taskId) {
+        this.repository = new TaskRepository();
+        mode = (taskId == NOT_DEFINED) ? Mode.INSERT : Mode.UPDATE;
+
+        // Set current time as due date
+        task.get().setDueDate(Calendar.getInstance());
+        task.notifyChange();
+
+        if(taskId != NOT_DEFINED) {
+            repository.getTask(taskId)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new SingleObserver<Task>() {
+                        @Override
+                        public void onSubscribe(@NonNull Disposable d) {
+                            disposables.add(d);
+                        }
+
+                        @Override
+                        public void onSuccess(@NonNull Task task) {
+                            if(task.getDetails() != null)
+                                addToVisibleAdditionalFields(AdditionalField.DESC);
+
+                            if(task.getLocation() != null)
+                                addToVisibleAdditionalFields(AdditionalField.LOCATION);
+
+                            if(task.getLink() != null)
+                                addToVisibleAdditionalFields(AdditionalField.LINK);
+
+                            TaskModifyViewModel.this.task.set(task);
+                        }
+
+                        @Override
+                        public void onError(@NonNull Throwable e) {
+
+                        }
+                    });
+        }
+    }
 
     public TaskModifyViewModel() {
-        this.repository = new TaskRepository();
-        visibleAdditionalFields = new HashSet<>();
+        this(NOT_DEFINED);
     }
 
     public void addToVisibleAdditionalFields(AdditionalField field) {
-        visibleAdditionalFields.add(field);
-    }
+        if(!visibleFields.contains(field))
+            visibleFields.add(field);
 
-    public AdditionalField[] getVisibleAdditionalFields() {
-        return visibleAdditionalFields.toArray(new AdditionalField[0]);
     }
 
     /**
@@ -54,11 +91,14 @@ public class TaskModifyViewModel extends ViewModel {
      * @param value Calendar contains desired year, month and day.
      */
     public void setDateCalendar(Calendar value) {
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = task.get().getDueDate();
+
         calendar.set(Calendar.YEAR, value.get(Calendar.YEAR));
         calendar.set(Calendar.MONTH, value.get(Calendar.MONTH));
         calendar.set(Calendar.DAY_OF_MONTH, value.get(Calendar.DAY_OF_MONTH));
-        date.set(calendar);
+
+        task.get().setDueDate(calendar);
+        task.notifyChange();
     }
 
     /**
@@ -67,76 +107,98 @@ public class TaskModifyViewModel extends ViewModel {
      * @param minute Minute.
      */
     public void setTime(int hour, int minute) {
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = task.get().getDueDate();
+
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
-        time.set(calendar);
+
+        task.get().setDueDate(calendar);
+        task.notifyChange();
     }
 
     public Single<Task> saveTask() {
-        String title = Utils.tryTrim(this.title.get());
+        Task task = Objects.requireNonNull(this.task.get());
 
-        if(title == null || title.length() < Task.MIN_TITLE_LENGTH) {
+        try {
+            validateTask(task);
+        } catch (IllegalArgumentException e) {
             return Single.create(emitter -> {
-                String message = ReminderApp.getAppContext().getString(
-                        R.string.short_title, Task.MIN_TITLE_LENGTH
-                );
-                emitter.onError(new UserInputException(message));
+                UserInputException exception = new UserInputException(e.getMessage());
+                emitter.onError(exception);
             });
+        }
+
+        return (mode == Mode.INSERT) ? repository.insert(task)
+                : repository.update(task);
+    }
+
+    private void validateTask(Task task) {
+        String title = Utils.tryTrim(task.getTitle());
+        if(title == null || title.length() < Task.MIN_TITLE_LENGTH) {
+            String message = ReminderApp.getAppContext().getString(
+                    R.string.short_title, Task.MIN_TITLE_LENGTH
+            );
+            throw new IllegalArgumentException(message);
         }
 
         if(title.length() > Task.MAX_TITLE_LENGTH) {
-            return Single.create(emitter -> {
-                String message = ReminderApp.getAppContext().getString(
-                        R.string.long_title, Task.MAX_TITLE_LENGTH
-                );
-                emitter.onError(new UserInputException(message));
-            });
+            String message = ReminderApp.getAppContext().getString(
+                    R.string.long_title, Task.MAX_TITLE_LENGTH
+            );
+            throw new IllegalArgumentException(message);
         }
 
-        Task task = new Task(
-                title,
-                buildDueDate(date.get(), time.get()),
-                occasion.get(),
-                Utils.tryTrim(details.get()),
-                Utils.tryTrim(location.get()),
-                Utils.tryTrim(link.get()),
-                color.get()
-        );
-
-        return repository.insert(task);
-    }
-
-    private Calendar buildDueDate(Calendar date, Calendar time) {
-        if(date == null || time == null)
-            return null;
-
-        Calendar dueDate = Calendar.getInstance();
-
-        dueDate.set(Calendar.YEAR, date.get(Calendar.YEAR));
-        dueDate.set(Calendar.MONTH, date.get(Calendar.MONTH));
-        dueDate.set(Calendar.DAY_OF_MONTH, date.get(Calendar.DAY_OF_MONTH));
-
-        dueDate.set(Calendar.HOUR_OF_DAY, time.get(Calendar.HOUR_OF_DAY));
-        dueDate.set(Calendar.MINUTE, time.get(Calendar.MINUTE));
-
-        return dueDate;
+        if(task.getDueDate() == null) {
+            String message = ReminderApp.getAppContext().getString(
+                    R.string.empty_due_date
+            );
+            throw new IllegalArgumentException(message);
+        }
     }
 
     public void setOccasion(Occasion occasion) {
-        this.occasion.set(occasion);
+        task.get().setOccasion(occasion);
+        task.notifyChange();
     }
 
-    public Calendar getTimeCalendar() {
-        return time.get();
+    public Occasion getOccasion() {
+        return task.get().getOccasion();
     }
 
-    public Calendar getDateCalendar() {
-        return date.get();
+    public Calendar getDueDate() {
+        return task.get().getDueDate();
     }
 
     public void setTaskColor(TaskColor color) {
-        this.color.set(color);
+        task.get().setColor(color);
+        task.notifyChange();
+    }
+
+    public Mode getMode() {
+        return mode;
+    }
+
+    @Override
+    protected void onCleared() {
+        disposables.clear();
+        super.onCleared();
+    }
+
+    public static class Factory implements ViewModelProvider.Factory {
+
+        private final int taskId;
+
+        public Factory(int taskId) {
+            this.taskId = taskId;
+        }
+
+        @NonNull
+        @Override
+        public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+            if(modelClass.isAssignableFrom(TaskModifyViewModel.class))
+                return (T) new TaskModifyViewModel(taskId);
+            throw new IllegalArgumentException();
+        }
     }
 
 }

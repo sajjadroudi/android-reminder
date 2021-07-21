@@ -29,15 +29,19 @@ public class AlarmHelper {
         if(isPast(task.getDueDate()))
             return;
 
+        if(task.getTaskId() == Task.NOT_INITIALIZED_TASK_ID)
+            throw new IllegalStateException("taskId has not been initialized.");
+
         long dueDate = task.getDueDate().getTimeInMillis();
+        int taskId = task.getTaskId();
 
         Intent intent = new Intent(context, AlarmReceiver.class);
-        intent.putExtra(AlarmReceiver.EXTRA_TASK_ID, task.getTaskId());
+        intent.putExtra(AlarmReceiver.EXTRA_TASK_ID, taskId);
         intent.putExtra(AlarmReceiver.EXTRA_TASK_TITLE, task.getTitle());
         intent.putExtra(AlarmReceiver.EXTRA_TASK_DUE_DATE, dueDate);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                context, task.getTaskId(), intent, PendingIntent.FLAG_UPDATE_CURRENT
+                context, taskId, intent, PendingIntent.FLAG_UPDATE_CURRENT
         );
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -61,7 +65,16 @@ public class AlarmHelper {
         }
     }
 
+    public void updateAlarm(Task task) {
+        cancelAlarm(task);
+        setAlarm(task);
+    }
+
     public void cancelAlarm(@NonNull Task task) {
+
+        if(task.getTaskId() == Task.NOT_INITIALIZED_TASK_ID)
+            throw new IllegalStateException("taskId has not been initialized.");
+
         Intent intent = new Intent(context, AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
                 context, task.getTaskId(), intent, PendingIntent.FLAG_NO_CREATE

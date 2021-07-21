@@ -11,9 +11,9 @@ public class Task {
 
     public static final int MAX_TITLE_LENGTH = 40;
     public static final int MIN_TITLE_LENGTH = 3;
-    private static final int DEF_TASK_ID = 0;
+    public static final int NOT_INITIALIZED_TASK_ID = -1;
 
-    private final int taskId;
+    private int taskId;
     private String title;
     private Calendar dueDate;
     private Occasion occasion;
@@ -51,11 +51,21 @@ public class Task {
             String link,
             TaskColor color
     ) {
-        this(DEF_TASK_ID, title,
+        this(NOT_INITIALIZED_TASK_ID, title,
                 dueDate == null ? 0 : dueDate.getTimeInMillis(),
                 occasion == null ? null : occasion.toString(),
                 details, location, link,
                 color == null ? null : color.toString());
+    }
+
+    public Task(int taskId, Task task) {
+        this(task.getTitle(), task.getDueDate(), task.getOccasion(),
+                task.getDetails(), task.getLocation(), task.getLink(), task.getColor());
+        this.taskId = taskId;
+    }
+
+    public Task() {
+        this.taskId = NOT_INITIALIZED_TASK_ID;
     }
 
     public int getTaskId() {
@@ -66,7 +76,7 @@ public class Task {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(@NonNull String title) {
         this.title = title;
     }
 
@@ -87,7 +97,7 @@ public class Task {
     }
 
     public void setDetails(String details) {
-        this.details = details;
+        this.details = Utils.tryTrim(details);
     }
 
     public void setOccasion(Occasion occasion) {
@@ -108,7 +118,7 @@ public class Task {
     }
 
     public void setLocation(String location) {
-        this.location = location;
+        this.location = Utils.tryTrim(location);
     }
 
     public String getLink() {
@@ -116,7 +126,7 @@ public class Task {
     }
 
     public void setLink(String link) {
-        this.link = link;
+        this.link = Utils.tryTrim(link);
     }
 
     public TaskColor getColor() {

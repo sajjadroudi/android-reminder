@@ -54,21 +54,27 @@ public class TaskDao {
         return Single.create(emitter -> {
             try {
                 ContentValues values = Converter.taskToContentValues(task);
-                dao.insert(tableName, values);
-                emitter.onSuccess(task);
+                long taskId = dao.insert(tableName, values);
+
+                if(taskId > Integer.MAX_VALUE)
+                    throw new IllegalStateException("taskId is too big.");
+
+                Task insertedTask = new Task((int) taskId, task);
+
+                emitter.onSuccess(insertedTask);
             } catch (Exception e) {
                 emitter.onError(e);
             }
         });
     }
 
-    public Completable update(Task task) {
-        return Completable.create(emitter -> {
+    public Single<Task> update(Task task) {
+        return Single.create(emitter -> {
            try {
                String whereClause = DbContract.TaskEntry.COL_NAME_TASK_ID + " = ?";
                String[] whereArgs = { String.valueOf(task.getTaskId()) };
                dao.update(tableName, Converter.taskToContentValues(task), whereClause, whereArgs);
-               emitter.onComplete();
+               emitter.onSuccess(task);
            } catch (Exception e) {
                emitter.onError(e);
            }

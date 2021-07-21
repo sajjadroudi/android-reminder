@@ -38,12 +38,12 @@ public class BaseDao {
         return query(table, null, null, null);
     }
 
-    public void insert(
+    public long insert(
         String table,
         ContentValues values
     ) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.insert(table, null, values);
+        return db.insert(table, null, values);
     }
 
     public void update(

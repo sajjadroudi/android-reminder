@@ -8,6 +8,7 @@
         <import type="com.mobiliha.eventsbadesaba.util.Utils"/>
         <import type="com.mobiliha.eventsbadesaba.data.local.db.entity.TaskColor"/>
         <import type="com.mobiliha.eventsbadesaba.ui.modify.AdditionalField"/>
+        <import type="android.view.View"/>
         <variable
             name="viewModel"
             type="com.mobiliha.eventsbadesaba.ui.modify.TaskModifyViewModel" />
@@ -36,7 +37,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:customEditTextTextHintText="@string/title"
-                    app:customEditTextText="@={viewModel.title}"
+                    app:customEditTextText="@={viewModel.task.title}"
                     app:customEditTextIcon="@string/icon_align_right"
                     android:layout_marginBottom="@dimen/distance_between_modify_fragment_items"/>
 
@@ -44,8 +45,8 @@
                     android:id="@+id/txt_date_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:customDateTimeDate="@{TimeUtils.parsePersianDate(viewModel.date)}"
-                    app:customDateTimeTime="@{TimeUtils.extractTime(viewModel.time)}"
+                    app:customDateTimeDate="@{TimeUtils.parsePersianDate(viewModel.task.dueDate)}"
+                    app:customDateTimeTime="@{TimeUtils.extractTime(viewModel.task.dueDate)}"
                     app:customDateTimeIcon="@string/icon_calendar_day"
                     android:layout_marginBottom="@dimen/distance_between_modify_fragment_items"/>
 
@@ -54,7 +55,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:customHintText="@string/occasion"
-                    app:customText="@{Utils.toLocaleString(viewModel.occasion)}"
+                    app:customText="@{Utils.toLocaleString(viewModel.task.occasion)}"
                     app:customIcon="@string/icon_gift"
                     android:layout_marginBottom="@dimen/distance_between_modify_fragment_items"/>
 
@@ -63,37 +64,38 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:customEditTextTextHintText="@string/description"
-                    app:customEditTextText="@={viewModel.details}"
+                    app:customEditTextText="@={viewModel.task.details}"
                     app:customEditTextIcon="@string/icon_memo"
                     android:layout_marginBottom="@dimen/distance_between_modify_fragment_items"
-                    android:visibility="gone"/>
+                    android:visibility="@{viewModel.visibleFields.contains(AdditionalField.DESC) ? View.VISIBLE : View.GONE}"/>
 
                 <com.mobiliha.eventsbadesaba.ui.custom.CustomEditText
                     android:id="@+id/edt_location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:customEditTextTextHintText="@string/location"
-                    app:customEditTextText="@={viewModel.location}"
+                    app:customEditTextText="@={viewModel.task.location}"
                     app:customEditTextIcon="@string/icon_flag"
                     android:layout_marginBottom="@dimen/distance_between_modify_fragment_items"
-                    android:visibility="gone"/>
+                    android:visibility="@{viewModel.visibleFields.contains(AdditionalField.LOCATION) ? View.VISIBLE : View.GONE}"/>
 
                 <com.mobiliha.eventsbadesaba.ui.custom.CustomEditText
                     android:id="@+id/edt_link"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:customEditTextTextHintText="@string/link"
-                    app:customEditTextText="@={viewModel.link}"
+                    app:customEditTextText="@={viewModel.task.link}"
                     app:customEditTextIcon="@string/icon_link_simple"
                     android:layout_marginBottom="@dimen/distance_between_modify_fragment_items"
-                    android:visibility="gone"/>
+                    android:visibility="@{viewModel.visibleFields.contains(AdditionalField.LINK) ? View.VISIBLE : View.GONE}"/>
 
 
                 <LinearLayout
                     android:id="@+id/additional_fields_text_view_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/distance_between_modify_fragment_items">
+                    android:layout_marginBottom="@dimen/distance_between_modify_fragment_items"
+                    android:visibility="@{viewModel.visibleFields.size == AdditionalField.values().length ? View.GONE : View.VISIBLE}">
 
                     <com.mobiliha.eventsbadesaba.ui.custom.FontIcon
                         android:text="@string/icon_circle_plus"
@@ -103,20 +105,23 @@
                         android:id="@+id/txt_desc"
                         android:text="@string/description"
                         android:tag="@{AdditionalField.DESC}"
-                        style="@style/AdditionalInformationTextViewStyle"/>
+                        style="@style/AdditionalInformationTextViewStyle"
+                        android:visibility="@{viewModel.visibleFields.contains(AdditionalField.DESC) ? View.GONE : View.VISIBLE}"/>
 
                     <TextView
                         android:id="@+id/txt_location"
                         android:text="@string/location"
                         android:tag="@{AdditionalField.LOCATION}"
-                        style="@style/AdditionalInformationTextViewStyle"/>
+                        style="@style/AdditionalInformationTextViewStyle"
+                        android:visibility="@{viewModel.visibleFields.contains(AdditionalField.LOCATION) ? View.GONE : View.VISIBLE}"/>
 
                     <TextView
                         android:id="@+id/txt_link"
                         android:text="@string/link"
                         android:tag="@{AdditionalField.LINK}"
                         android:layout_marginLeft="0dp"
-                        style="@style/AdditionalInformationTextViewStyle"/>
+                        style="@style/AdditionalInformationTextViewStyle"
+                        android:visibility="@{viewModel.visibleFields.contains(AdditionalField.LINK) ? View.GONE : View.VISIBLE}"/>
 
                 </LinearLayout>
 
@@ -137,25 +142,25 @@
                     <com.mobiliha.eventsbadesaba.ui.custom.ColoredCircle
                         android:id="@+id/blue_circle"
                         app:circleColor="@{TaskColor.BLUE.colorCode}"
-                        app:circleChosen="@{viewModel.color.colorCode == TaskColor.BLUE.colorCode}"
+                        app:circleChosen="@{viewModel.task.color.colorCode == TaskColor.BLUE.colorCode}"
                         style="@style/ColoredCircleStyle"/>
 
                     <com.mobiliha.eventsbadesaba.ui.custom.ColoredCircle
                         android:id="@+id/yellow_circle"
                         app:circleColor="@{TaskColor.YELLOW.colorCode}"
-                        app:circleChosen="@{viewModel.color.colorCode == TaskColor.YELLOW.colorCode}"
+                        app:circleChosen="@{viewModel.task.color.colorCode == TaskColor.YELLOW.colorCode}"
                         style="@style/ColoredCircleStyle"/>
 
                     <com.mobiliha.eventsbadesaba.ui.custom.ColoredCircle
                         android:id="@+id/green_circle"
                         app:circleColor="@{TaskColor.GREEN.colorCode}"
-                        app:circleChosen="@{viewModel.color.colorCode == TaskColor.GREEN.colorCode}"
+                        app:circleChosen="@{viewModel.task.color.colorCode == TaskColor.GREEN.colorCode}"
                         style="@style/ColoredCircleStyle"/>
 
                     <com.mobiliha.eventsbadesaba.ui.custom.ColoredCircle
                         android:id="@+id/red_circle"
                         app:circleColor="@{TaskColor.RED.colorCode}"
-                        app:circleChosen="@{viewModel.color.colorCode == TaskColor.RED.colorCode}"
+                        app:circleChosen="@{viewModel.task.color.colorCode == TaskColor.RED.colorCode}"
                         style="@style/ColoredCircleStyle"/>
                 </LinearLayout>
 

@@ -32,6 +32,7 @@
     <string name="add_task">افزودن یادآوری</string>
     <string name="short_title">عنوان باید حداقل شامل %d حرف باشد!</string>
     <string name="long_title">طول عنوان نباید بیشتر از %d حرف باشد!</string>
+    <string name="empty_due_date">تاریخ شروع نمی‌تواند خالی باشد!</string>
 
     <string name="something_went_wrong">خطایی رخ داد!</string>
     <string name="today">امروز</string>
@@ -49,6 +50,7 @@
     <string name="edit">ویرایش</string>
     <string name="delete">حذف</string>
     <string name="share">اشتراک گذاری</string>
+    <string name="edit_task">ویرایش یادآوری</string>
 
     <string-array name="occasions">
         <item>تولد</item>

@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
@@ -17,6 +18,8 @@ import android.widget.Toast;
 import com.mobiliha.eventsbadesaba.R;
 import com.mobiliha.eventsbadesaba.data.local.db.entity.Task;
 import com.mobiliha.eventsbadesaba.databinding.FragmentTaskDetailsBinding;
+import com.mobiliha.eventsbadesaba.ui.modify.TaskModifyFragment;
+import com.mobiliha.eventsbadesaba.ui.modify.TaskModifyFragmentArgs;
 
 import io.reactivex.CompletableObserver;
 import io.reactivex.disposables.CompositeDisposable;
@@ -52,6 +55,10 @@ public class TaskDetailsFragment extends Fragment implements View.OnClickListene
     @Override
     public void onClick(View v) {
         Task task = viewModel.task.get();
+
+        if(task == null)
+            return;
+
         switch (v.getId()) {
             case R.id.btn_delete:
                 deleteTask(task);
@@ -61,13 +68,13 @@ public class TaskDetailsFragment extends Fragment implements View.OnClickListene
                 Toast.makeText(getContext(), "Not implemented yet!", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.btn_edit:
-                // TODO
-                Toast.makeText(getContext(), "Not implemented yet!", Toast.LENGTH_SHORT).show();
+                navigateToModify(task.getTaskId());
                 break;
         }
     }
 
     private void deleteTask(Task task) {
+        // TODO : incomplete
         viewModel.deleteTask(task)
                 .subscribe(new CompletableObserver() {
                     @Override
@@ -88,6 +95,15 @@ public class TaskDetailsFragment extends Fragment implements View.OnClickListene
                         Log.e(TAG, "onError: ", e);
                     }
                 });
+    }
+
+    private void navigateToModify(int taskId) {
+        NavController navController = NavHostFragment.findNavController(this);
+        String title = getString(R.string.edit_task);
+        navController.navigate(
+                TaskDetailsFragmentDirections.actionDetailsToModify(title)
+                    .setTaskId(taskId)
+        );
     }
 
     private void navigateBack() {

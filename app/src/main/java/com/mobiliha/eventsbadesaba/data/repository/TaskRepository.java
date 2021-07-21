@@ -30,7 +30,7 @@ public class TaskRepository {
         return applyRequirements(dao.insert(task));
     }
 
-    public Completable update(Task task) {
+    public Single<Task> update(Task task) {
         return applyRequirements(dao.update(task));
     }
 

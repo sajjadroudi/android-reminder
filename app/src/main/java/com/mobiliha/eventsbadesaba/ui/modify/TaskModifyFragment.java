@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,10 +21,8 @@ import com.mobiliha.eventsbadesaba.data.local.db.entity.Task;
 import com.mobiliha.eventsbadesaba.data.local.db.entity.TaskColor;
 import com.mobiliha.eventsbadesaba.databinding.FragmentTaskModifyBinding;
 import com.mobiliha.eventsbadesaba.ui.custom.ColoredCircle;
-import com.mobiliha.eventsbadesaba.ui.custom.CustomEditText;
+import com.mobiliha.eventsbadesaba.ui.details.TaskDetailsFragmentDirections;
 import com.mobiliha.eventsbadesaba.util.AlarmHelper;
-import com.mobiliha.eventsbadesaba.util.PersianCalendar;
-import com.mobiliha.eventsbadesaba.util.TimeUtils;
 import com.mobiliha.eventsbadesaba.util.UserInputException;
 
 import java.util.Calendar;
@@ -34,18 +31,11 @@ import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import ir.hamsaa.persiandatepicker.PersianDatePickerDialog;
-import ir.hamsaa.persiandatepicker.api.PersianPickerDate;
-import ir.hamsaa.persiandatepicker.api.PersianPickerListener;
 
 /**
  * A fragment to add and edit task.
  */
 public class TaskModifyFragment extends Fragment implements View.OnClickListener {
-
-    private interface OnDateSelectListener {
-        void onSelect(Calendar calendar);
-    }
 
     private interface OnTimeSelectListener {
         void onSelect(int hour, int minute);
@@ -65,7 +55,7 @@ public class TaskModifyFragment extends Fragment implements View.OnClickListener
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = new ViewModelProvider(this).get(TaskModifyViewModel.class);
+        setupViewModel();
 
         alarmHelper = new AlarmHelper(requireContext());
     }
@@ -80,8 +70,6 @@ public class TaskModifyFragment extends Fragment implements View.OnClickListener
         setupUi(inflater, container);
 
         setupClickListener();
-
-        setupAdditionalFields();
 
         return binding.getRoot();
     }
@@ -124,8 +112,8 @@ public class TaskModifyFragment extends Fragment implements View.OnClickListener
                 });
                 break;
             case R.id.txt_occasion:
-                showOccasionDialog(occasion -> {
-                    viewModel.setOccasion(occasion);
+                showOccasionDialog(selectedOccasion -> {
+                    viewModel.setOccasion(selectedOccasion);
                 });
                 break;
 
@@ -143,7 +131,6 @@ public class TaskModifyFragment extends Fragment implements View.OnClickListener
             case R.id.txt_link:
                 AdditionalField field = (AdditionalField) v.getTag();
                 viewModel.addToVisibleAdditionalFields(field);
-                makeVisible(field);
                 break;
 
         }
@@ -161,7 +148,13 @@ public class TaskModifyFragment extends Fragment implements View.OnClickListener
                     @Override
                     public void onSuccess(@NonNull Task task) {
                         Toast.makeText(getContext(), R.string.saved, Toast.LENGTH_SHORT).show();
-                        alarmHelper.setAlarm(task);
+
+                        if(viewModel.getMode() == Mode.INSERT) {
+                            alarmHelper.setAlarm(task);
+                        } else {
+                            alarmHelper.updateAlarm(task);
+                        }
+
                         navigateBack();
                     }
 
@@ -178,89 +171,9 @@ public class TaskModifyFragment extends Fragment implements View.OnClickListener
                 });
     }
 
-    private CustomEditText getAssociatedEditText(AdditionalField field) {
-        switch (field) {
-            case LINK:
-                return binding.edtLink;
-            case LOCATION:
-                return binding.edtLocation;
-            case DESC:
-                return binding.edtDesc;
-        }
-        throw new IllegalArgumentException();
-    }
-
-    private TextView getAssociatedTextView(AdditionalField field) {
-        switch (field) {
-            case LINK:
-                return binding.txtLink;
-            case LOCATION:
-                return binding.txtLocation;
-            case DESC:
-                return binding.txtDesc;
-        }
-        throw new IllegalArgumentException();
-    }
-
-    private void setupAdditionalFields() {
-        AdditionalField[] fields = viewModel.getVisibleAdditionalFields();
-        for (AdditionalField field : fields) {
-            makeVisible(field);
-        }
-    }
-
-    private void makeVisible(AdditionalField field) {
-        TextView textView = getAssociatedTextView(field);
-        textView.setVisibility(View.GONE);
-
-        CustomEditText editText = getAssociatedEditText(field);
-        editText.setVisibility(View.VISIBLE);
-
-        if(haveAllAdditionalFieldsBeenVisible())
-            binding.additionalFieldsTextViewContainer.setVisibility(View.GONE);
-    }
-
-    private boolean haveAllAdditionalFieldsBeenVisible() {
-        return viewModel.getVisibleAdditionalFields().length
-                == AdditionalField.values().length;
-    }
-
-    private void showDatePickerDialog(OnDateSelectListener callback) {
-        Calendar date = viewModel.getDateCalendar();
-        PersianCalendar calendar = new PersianCalendar();
-        if(date != null) {
-            calendar = TimeUtils.toPersianCalendar(date);
-        }
-
-        PersianCalendar now = new PersianCalendar();
-        final int minYear = now.get(Calendar.YEAR);
-        final int maxYear = now.get(Calendar.YEAR) + 100;
-
-        new PersianDatePickerDialog(getContext())
-                .setPositiveButtonResource(R.string.ok)
-                .setNegativeButtonResource(R.string.cancel)
-                .setTodayButton(getString(R.string.today))
-                .setTodayButtonVisible(true)
-                .setMinYear(minYear)
-                .setMaxYear(maxYear)
-                .setInitDate(calendar.getTime())
-                .setTitleType(PersianDatePickerDialog.WEEKDAY_DAY_MONTH_YEAR)
-                .setShowInBottomSheet(false)
-                .setListener(new PersianPickerListener() {
-                    @Override
-                    public void onDateSelected(PersianPickerDate persianPickerDate) {
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTimeInMillis(persianPickerDate.getTimestamp());
-                        calendar.set(Calendar.HOUR_OF_DAY, 0);
-                        calendar.set(Calendar.MINUTE, 0);
-                        callback.onSelect(calendar);
-                    }
-
-                    @Override
-                    public void onDismissed() {
-
-                    }
-                }).show();
+    private void showDatePickerDialog(DatePickerDialog.OnDateSelectListener callback) {
+        new DatePickerDialog(getContext(), viewModel.getDueDate(), callback)
+                .show();
     }
 
     private void showTimePickerDialog(OnTimeSelectListener callback) {
@@ -268,11 +181,11 @@ public class TaskModifyFragment extends Fragment implements View.OnClickListener
             callback.onSelect(hourOfDay, minute);
         };
 
-        Calendar time = viewModel.getTimeCalendar();
+        Calendar initTime = viewModel.getDueDate();
         int hour = 0, minute = 0;
-        if(time != null) {
-            hour = time.get(Calendar.HOUR_OF_DAY);
-            minute = time.get(Calendar.MINUTE);
+        if(initTime != null) {
+            hour = initTime.get(Calendar.HOUR_OF_DAY);
+            minute = initTime.get(Calendar.MINUTE);
         }
 
         new TimePickerDialog(
@@ -285,7 +198,7 @@ public class TaskModifyFragment extends Fragment implements View.OnClickListener
     }
 
     private void showOccasionDialog(OnOccasionSelectListener callback) {
-        Occasion currentOccasion = viewModel.occasion.get();
+        Occasion currentOccasion = viewModel.getOccasion();
         int index = (currentOccasion == null) ? -1 : currentOccasion.ordinal();
 
         new AlertDialog.Builder(getContext(), R.style.RightJustifyTheme)
@@ -297,6 +210,14 @@ public class TaskModifyFragment extends Fragment implements View.OnClickListener
                 }))
                 .create()
                 .show();
+    }
+
+    private void setupViewModel() {
+        int taskId = TaskModifyFragmentArgs.fromBundle(getArguments()).getTaskId();
+        viewModel = new ViewModelProvider(
+                this,
+                new TaskModifyViewModel.Factory(taskId)
+        ).get(TaskModifyViewModel.class);
     }
 
     private void setupUi(LayoutInflater inflater, ViewGroup container) {
