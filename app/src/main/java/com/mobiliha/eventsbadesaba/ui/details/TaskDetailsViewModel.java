@@ -27,10 +27,19 @@ public class TaskDetailsViewModel extends ViewModel {
     private final CompositeDisposable disposables = new CompositeDisposable();
     public final ObservableField<Task> task = new ObservableField<>();
     public final ObservableField<String> taskOccasion = new ObservableField<>();
+    private final int taskId;
 
     public TaskDetailsViewModel(int taskId) {
         repository = new TaskRepository();
+        this.taskId = taskId;
+    }
 
+    public Completable deleteTask(Task task) {
+        return repository.delete(task)
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public void fetchTask() {
         repository.getTask(taskId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<Task>() {
@@ -50,11 +59,6 @@ public class TaskDetailsViewModel extends ViewModel {
                         Log.e(TAG, "onError: ", e);
                     }
                 });
-    }
-
-    public Completable deleteTask(Task task) {
-        return repository.delete(task)
-                .observeOn(AndroidSchedulers.mainThread());
     }
 
     private void updateTaskOccasion(Task task) {

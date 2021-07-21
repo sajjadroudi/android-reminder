@@ -57,6 +57,8 @@ public class TaskDetailsFragment extends Fragment implements View.OnClickListene
     ) {
         setupUi(inflater, container);
 
+        viewModel.fetchTask();
+
         setupClickListener();
 
         return binding.getRoot();
