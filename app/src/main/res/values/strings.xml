@@ -40,6 +40,8 @@
     <string name="cancel">انصراف</string>
     <string name="ok">باشه</string>
     <string name="tomorrow">فردا</string>
+    <string name="yes">بله</string>
+    <string name="no">خیر</string>
 
     <string name="primary_channel">کانال اصلی</string>
     <string name="alarm_at">یادآوری در %s</string>
@@ -84,5 +86,7 @@
     <string name="icon_share_nodes">&#xf1e0;</string>
     <string name="icon_trash_can">&#xf2ed;</string>
     <string name="icon_pen">&#xf304;</string>
+    <string name="delete_task">حذف یادآور</string>
+    <string name="are_you_sure">آیا مطمئنید؟</string>
 
 </resources>

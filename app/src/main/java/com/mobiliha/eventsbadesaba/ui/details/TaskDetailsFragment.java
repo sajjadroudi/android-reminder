@@ -1,5 +1,7 @@
 package com.mobiliha.eventsbadesaba.ui.details;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,6 +22,7 @@ import com.mobiliha.eventsbadesaba.data.local.db.entity.Task;
 import com.mobiliha.eventsbadesaba.databinding.FragmentTaskDetailsBinding;
 import com.mobiliha.eventsbadesaba.ui.modify.TaskModifyFragment;
 import com.mobiliha.eventsbadesaba.ui.modify.TaskModifyFragmentArgs;
+import com.mobiliha.eventsbadesaba.util.AlarmHelper;
 
 import io.reactivex.CompletableObserver;
 import io.reactivex.disposables.CompositeDisposable;
@@ -27,16 +30,23 @@ import io.reactivex.disposables.Disposable;
 
 public class TaskDetailsFragment extends Fragment implements View.OnClickListener {
 
+    private interface OnConfirmListener {
+        void onConfirm();
+    }
+
     public static final String TAG = "TaskDetailsFragment";
 
     private FragmentTaskDetailsBinding binding;
     private TaskDetailsViewModel viewModel;
+    private AlarmHelper alarmHelper;
     private CompositeDisposable disposables = new CompositeDisposable();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupViewModel();
+
+        alarmHelper = new AlarmHelper(requireContext());
     }
 
     @Override
@@ -61,7 +71,7 @@ public class TaskDetailsFragment extends Fragment implements View.OnClickListene
 
         switch (v.getId()) {
             case R.id.btn_delete:
-                deleteTask(task);
+                showConfirmationDialog(() -> deleteTask(task));
                 break;
             case R.id.btn_share:
                 // TODO
@@ -73,8 +83,19 @@ public class TaskDetailsFragment extends Fragment implements View.OnClickListene
         }
     }
 
+    private void showConfirmationDialog(OnConfirmListener callback) {
+        new AlertDialog.Builder(getContext())
+                .setTitle(R.string.delete_task)
+                .setMessage(R.string.are_you_sure)
+                .setPositiveButton(R.string.yes, (dialog, which) -> {
+                    callback.onConfirm();
+                })
+                .setNegativeButton(R.string.no, null)
+                .create()
+                .show();
+    }
+
     private void deleteTask(Task task) {
-        // TODO : incomplete
         viewModel.deleteTask(task)
                 .subscribe(new CompletableObserver() {
                     @Override
@@ -86,6 +107,7 @@ public class TaskDetailsFragment extends Fragment implements View.OnClickListene
                     public void onComplete() {
                         // TODO: Show a snack bar and let the user undo the deletion
                         Toast.makeText(getContext(), R.string.deleted, Toast.LENGTH_SHORT).show();
+                        alarmHelper.cancelAlarm(task);
                         navigateBack();
                     }
 
