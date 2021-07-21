@@ -3,12 +3,16 @@ package com.mobiliha.eventsbadesaba.util;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Bundle;
 
 import androidx.core.app.NotificationCompat;
+import androidx.navigation.NavDeepLinkBuilder;
 
 import com.mobiliha.eventsbadesaba.R;
+import com.mobiliha.eventsbadesaba.ui.details.TaskDetailsFragmentArgs;
 
 import java.util.Calendar;
 
@@ -43,21 +47,33 @@ public class NotificationHelper {
     }
 
     public void sendNotification(int taskId, String title, long dueDate) {
-        Notification notification = buildNotification(title, dueDate);
+        Notification notification = buildNotification(taskId, title, dueDate);
         manager.notify(taskId, notification);
     }
 
-    private Notification buildNotification(String title, long dueDate) {
+    private Notification buildNotification(int taskId, String title, long dueDate) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(dueDate);
 
         String time = TimeUtils.extractTime(calendar);
         String contentText = context.getString(R.string.alarm_at, time);
 
+        // TODO: Literal string shouldn't be used as key
+        Bundle bundle = new Bundle();
+        bundle.putInt("taskId", taskId);
+
+        PendingIntent pendingIntent = new NavDeepLinkBuilder(context)
+                .setGraph(R.navigation.nav_graph)
+                .setDestination(R.id.taskDetailsFragment)
+                .setArguments(bundle)
+                .createPendingIntent();
+
         return new NotificationCompat.Builder(context, PRIMARY_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_alarm)
                 .setContentTitle(title)
                 .setContentText(contentText)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .build();
