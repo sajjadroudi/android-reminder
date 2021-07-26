@@ -6,4 +6,6 @@
     <dimen name="distance_between_modify_fragment_items">12dp</dimen>
     <dimen name="button_margin">4dp</dimen>
     <dimen name="button_text_size">18sp</dimen>
+
+    <dimen name="colored_radio_button_stroke_width">2dp</dimen>
 </resources>

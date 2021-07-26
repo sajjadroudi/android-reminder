@@ -20,8 +20,6 @@ import com.mobiliha.eventsbadesaba.data.local.db.entity.Occasion;
 import com.mobiliha.eventsbadesaba.data.local.db.entity.Task;
 import com.mobiliha.eventsbadesaba.data.local.db.entity.TaskColor;
 import com.mobiliha.eventsbadesaba.databinding.FragmentTaskModifyBinding;
-import com.mobiliha.eventsbadesaba.ui.custom.ColoredCircle;
-import com.mobiliha.eventsbadesaba.ui.details.TaskDetailsFragmentDirections;
 import com.mobiliha.eventsbadesaba.util.AlarmHelper;
 import com.mobiliha.eventsbadesaba.util.UserInputException;
 
@@ -71,6 +69,11 @@ public class TaskModifyFragment extends Fragment implements View.OnClickListener
 
         setupClickListener();
 
+        binding.coloredCirclesGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            TaskColor taskColor = (TaskColor) group.findViewById(checkedId).getTag();
+            viewModel.setTaskColor(taskColor);
+        });
+
         return binding.getRoot();
     }
 
@@ -80,10 +83,6 @@ public class TaskModifyFragment extends Fragment implements View.OnClickListener
                 binding.btnCancel,
                 binding.txtDateTime,
                 binding.txtOccasion,
-                binding.blueCircle,
-                binding.greenCircle,
-                binding.redCircle,
-                binding.yellowCircle,
                 binding.txtLocation,
                 binding.txtLink,
                 binding.txtDesc
@@ -115,15 +114,6 @@ public class TaskModifyFragment extends Fragment implements View.OnClickListener
                 showOccasionDialog(selectedOccasion -> {
                     viewModel.setOccasion(selectedOccasion);
                 });
-                break;
-
-            case R.id.blue_circle:
-            case R.id.green_circle:
-            case R.id.yellow_circle:
-            case R.id.red_circle:
-                int color = ((ColoredCircle) v).getCircleColor();
-                TaskColor taskColor = TaskColor.getAssociatedTaskColor(color);
-                viewModel.setTaskColor(taskColor);
                 break;
 
             case R.id.txt_location:

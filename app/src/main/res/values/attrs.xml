@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="ColoredCircle">
-        <attr name="circleStrokeWidth" format="dimension"/>
-        <attr name="circleColor" format="color"/>
-        <attr name="circleChosen" format="boolean"/>
-    </declare-styleable>
 
     <declare-styleable name="ColoredLabel">
         <attr name="labelColor" format="color"/>

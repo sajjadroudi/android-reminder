@@ -139,29 +139,43 @@
                         android:text="@string/icon_palette"
                         android:gravity="center"/>
 
-                    <com.mobiliha.eventsbadesaba.ui.custom.ColoredCircle
-                        android:id="@+id/blue_circle"
-                        app:circleColor="@{TaskColor.BLUE.colorCode}"
-                        app:circleChosen="@{viewModel.task.color.colorCode == TaskColor.BLUE.colorCode}"
-                        style="@style/ColoredCircleStyle"/>
+                    <RadioGroup
+                        android:id="@+id/colored_circles_group"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="right">
 
-                    <com.mobiliha.eventsbadesaba.ui.custom.ColoredCircle
-                        android:id="@+id/yellow_circle"
-                        app:circleColor="@{TaskColor.YELLOW.colorCode}"
-                        app:circleChosen="@{viewModel.task.color.colorCode == TaskColor.YELLOW.colorCode}"
-                        style="@style/ColoredCircleStyle"/>
+                        <RadioButton
+                            android:id="@+id/blue_circle"
+                            android:background="@drawable/blue_radio_button_background"
+                            android:checked="@{viewModel.task.color == TaskColor.BLUE}"
+                            android:tag="@{TaskColor.BLUE}"
+                            style="@style/TaskColorRadioButtonStyle"/>
 
-                    <com.mobiliha.eventsbadesaba.ui.custom.ColoredCircle
-                        android:id="@+id/green_circle"
-                        app:circleColor="@{TaskColor.GREEN.colorCode}"
-                        app:circleChosen="@{viewModel.task.color.colorCode == TaskColor.GREEN.colorCode}"
-                        style="@style/ColoredCircleStyle"/>
+                        <RadioButton
+                            android:id="@+id/yellow_circle"
+                            android:background="@drawable/yellow_radio_button_background"
+                            android:checked="@{viewModel.task.color == TaskColor.YELLOW}"
+                            android:tag="@{TaskColor.YELLOW}"
+                            style="@style/TaskColorRadioButtonStyle"/>
 
-                    <com.mobiliha.eventsbadesaba.ui.custom.ColoredCircle
-                        android:id="@+id/red_circle"
-                        app:circleColor="@{TaskColor.RED.colorCode}"
-                        app:circleChosen="@{viewModel.task.color.colorCode == TaskColor.RED.colorCode}"
-                        style="@style/ColoredCircleStyle"/>
+                        <RadioButton
+                            android:id="@+id/green_circle"
+                            android:background="@drawable/green_radio_button_background"
+                            android:checked="@{viewModel.task.color == TaskColor.GREEN}"
+                            android:tag="@{TaskColor.GREEN}"
+                            style="@style/TaskColorRadioButtonStyle"/>
+
+                        <RadioButton
+                            android:id="@+id/red_circle"
+                            android:background="@drawable/red_radio_button_background"
+                            android:checked="@{viewModel.task.color == TaskColor.RED}"
+                            android:tag="@{TaskColor.RED}"
+                            style="@style/TaskColorRadioButtonStyle"/>
+
+                    </RadioGroup>
+
                 </LinearLayout>
 
             </LinearLayout>
