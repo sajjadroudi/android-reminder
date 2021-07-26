@@ -12,11 +12,5 @@
         <attr name="customTextColor" format="color"/>
         <attr name="customIcon" format="string"/>
     </declare-styleable>
-    
-    <declare-styleable name="CustomDateTimeView">
-        <attr name="customDateTimeDate" format="string"/>
-        <attr name="customDateTimeTime" format="string"/>
-        <attr name="customDateTimeIcon" format="string"/>
-    </declare-styleable>
 
 </resources>

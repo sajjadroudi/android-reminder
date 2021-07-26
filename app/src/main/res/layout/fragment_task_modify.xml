@@ -42,13 +42,13 @@
                     bind:text="@={viewModel.task.title}"
                     android:layout_marginBottom="@dimen/distance_between_modify_fragment_items"/>
 
-                <com.mobiliha.eventsbadesaba.ui.custom.CustomDateTimeView
+                <include
                     android:id="@+id/txt_date_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:customDateTimeDate="@{TimeUtils.parsePersianDate(viewModel.task.dueDate)}"
-                    app:customDateTimeTime="@{TimeUtils.extractTime(viewModel.task.dueDate)}"
-                    app:customDateTimeIcon="@string/icon_calendar_day"
+                    layout="@layout/layout_date_time"
+                    bind:icon="@{@string/icon_calendar_day}"
+                    bind:calendar="@{viewModel.task.dueDate}"
                     android:layout_marginBottom="@dimen/distance_between_modify_fragment_items"/>
 
                 <com.mobiliha.eventsbadesaba.ui.custom.CustomTextView

@@ -81,7 +81,7 @@ public class TaskModifyFragment extends Fragment implements View.OnClickListener
         View[] views = {
                 binding.btnSave,
                 binding.btnCancel,
-                binding.txtDateTime,
+                binding.txtDateTime.getRoot(),
                 binding.txtOccasion,
                 binding.txtLocation,
                 binding.txtLink,
