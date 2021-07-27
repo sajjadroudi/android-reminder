@@ -1,18 +1,21 @@
 package com.mobiliha.eventsbadesaba.ui.modify;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 import androidx.databinding.ObservableArrayList;
 import androidx.databinding.ObservableField;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.mobiliha.eventsbadesaba.R;
 import com.mobiliha.eventsbadesaba.ReminderApp;
+import com.mobiliha.eventsbadesaba.ui.core.Event;
 import com.mobiliha.eventsbadesaba.data.local.db.entity.Occasion;
 import com.mobiliha.eventsbadesaba.data.local.db.entity.Task;
 import com.mobiliha.eventsbadesaba.data.local.db.entity.TaskColor;
 import com.mobiliha.eventsbadesaba.data.repository.TaskRepository;
-import com.mobiliha.eventsbadesaba.util.UserInputException;
 import com.mobiliha.eventsbadesaba.util.Utils;
 
 import java.util.Calendar;
@@ -32,6 +35,13 @@ public class TaskModifyViewModel extends ViewModel {
     public final ObservableField<Task> task = new ObservableField<>(new Task());
     // Visible fields are additional fields that user has been selected to input more information
     public final ObservableArrayList<AdditionalField> visibleFields = new ObservableArrayList<>();
+
+    private final MutableLiveData<Event<String>> message = new MutableLiveData<>();
+    private final MutableLiveData<Event<Task>> actionSetAlarm = new MutableLiveData<>();
+    private final MutableLiveData<Event<Task>> actionUpdateAlarm = new MutableLiveData<>();
+    private final MutableLiveData<Event<Boolean>> actionNavigateBack = new MutableLiveData<>();
+    private final MutableLiveData<Event<Boolean>> actionShowDueDateDialog = new MutableLiveData<>();
+    private final MutableLiveData<Event<Boolean>> actionShowOccasionDialog = new MutableLiveData<>();
 
     private final TaskRepository repository;
     private final Mode mode;
@@ -83,7 +93,6 @@ public class TaskModifyViewModel extends ViewModel {
     public void addToVisibleAdditionalFields(AdditionalField field) {
         if(!visibleFields.contains(field))
             visibleFields.add(field);
-
     }
 
     /**
@@ -116,20 +125,94 @@ public class TaskModifyViewModel extends ViewModel {
         task.notifyChange();
     }
 
-    public Single<Task> saveTask() {
+    public void saveTask() {
         Task task = Objects.requireNonNull(this.task.get());
 
         try {
             validateTask(task);
         } catch (IllegalArgumentException e) {
-            return Single.create(emitter -> {
-                UserInputException exception = new UserInputException(e.getMessage());
-                emitter.onError(exception);
-            });
+            showMessage(e.getMessage());
         }
 
-        return (mode == Mode.INSERT) ? repository.insert(task)
+        Single<Task> single = (mode == Mode.INSERT) ? repository.insert(task)
                 : repository.update(task);
+
+        single
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new SingleObserver<Task>() {
+                @Override
+                public void onSubscribe(@NonNull Disposable d) {
+                    disposables.add(d);
+                }
+
+                @Override
+                public void onSuccess(@NonNull Task task) {
+                    showMessage(R.string.saved);
+
+                    if(mode == Mode.INSERT) {
+                        actionSetAlarm.postValue(new Event<>(task));
+                    } else {
+                        actionUpdateAlarm.postValue(new Event<>(task));
+                    }
+
+                    navigateBack();
+                }
+
+                @Override
+                public void onError(@NonNull Throwable e) {
+                    showMessage(R.string.something_went_wrong);
+                }
+            });
+    }
+
+    public void navigateBack() {
+        actionNavigateBack.postValue(new Event<>(true));
+    }
+
+    public void showDueDateDialog() {
+        actionShowDueDateDialog.postValue(new Event<>(true));
+    }
+
+    public void showOccasionDialog() {
+        actionShowOccasionDialog.postValue(new Event<>(true));
+    }
+
+    public void setOccasion(Occasion occasion) {
+        task.get().setOccasion(occasion);
+        task.notifyChange();
+    }
+
+    public Occasion getOccasion() {
+        return task.get().getOccasion();
+    }
+
+    public Calendar getDueDate() {
+        return task.get().getDueDate();
+    }
+
+    public void setTaskColor(TaskColor color) {
+        task.get().setColor(color);
+        task.notifyChange();
+    }
+
+    public LiveData<Event<Boolean>> getActionShowDueDateDialog() {
+        return actionShowDueDateDialog;
+    }
+
+    public LiveData<Event<Boolean>> getActionShowOccasionDialog() {
+        return actionShowOccasionDialog;
+    }
+
+    public LiveData<Event<Boolean>> getActionNavigateBack() {
+        return actionNavigateBack;
+    }
+
+    public LiveData<Event<Task>> getActionSetAlarm() {
+        return actionSetAlarm;
+    }
+
+    public LiveData<Event<Task>> getActionUpdateAlarm() {
+        return actionUpdateAlarm;
     }
 
     private void validateTask(Task task) {
@@ -156,26 +239,15 @@ public class TaskModifyViewModel extends ViewModel {
         }
     }
 
-    public void setOccasion(Occasion occasion) {
-        task.get().setOccasion(occasion);
-        task.notifyChange();
+
+    private void showMessage(String message) {
+        if(message != null)
+            this.message.postValue(new Event<>(message));
     }
 
-    public Occasion getOccasion() {
-        return task.get().getOccasion();
-    }
-
-    public Calendar getDueDate() {
-        return task.get().getDueDate();
-    }
-
-    public void setTaskColor(TaskColor color) {
-        task.get().setColor(color);
-        task.notifyChange();
-    }
-
-    public Mode getMode() {
-        return mode;
+    private void showMessage(@StringRes int resId) {
+        String message = ReminderApp.getAppContext().getString(resId);
+        showMessage(message);
     }
 
     @Override

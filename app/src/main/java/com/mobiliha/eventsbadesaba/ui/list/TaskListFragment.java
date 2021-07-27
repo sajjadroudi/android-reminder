@@ -1,7 +1,6 @@
 package com.mobiliha.eventsbadesaba.ui.list;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,14 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.mobiliha.eventsbadesaba.R;
 import com.mobiliha.eventsbadesaba.data.local.db.entity.Task;
 import com.mobiliha.eventsbadesaba.databinding.FragmentTaskListBinding;
-
-import java.util.List;
-
-import io.reactivex.CompletableObserver;
-import io.reactivex.SingleObserver;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
 
 public class TaskListFragment extends Fragment {
 
@@ -49,37 +40,15 @@ public class TaskListFragment extends Fragment {
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             int position = viewHolder.getAdapterPosition();
             Task task = adapter.getCurrentList().get(position);
-
-            viewModel.deleteTask(task)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new CompletableObserver() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        disposables.add(d);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        // TODO: show a snack bar and let the user undo the deletion
-                        Toast.makeText(getContext(), R.string.deleted, Toast.LENGTH_SHORT).show();
-                        fetchTasks();
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        Toast.makeText(getContext(), R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
-                        Log.e(TAG, "onError: ", e);
-                    }
-                });
+            viewModel.deleteTask(task);
         }
     });
 
     private FragmentTaskListBinding binding;
     private TaskListViewModel viewModel;
     private TaskAdapter adapter = new TaskAdapter(task -> {
-        navigateToTaskDetails(task.getTaskId());
+        viewModel.navigateToTaskDetails(task);
     });
-    private final CompositeDisposable disposables = new CompositeDisposable();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -95,33 +64,42 @@ public class TaskListFragment extends Fragment {
     ) {
         setupUi(inflater, container);
 
-        fetchTasks();
+        setupObservers();
 
-        binding.fab.setOnClickListener(v -> navigateToAddFragment());
-        
+        viewModel.fetchTaskList();
+
         return binding.getRoot();
     }
 
-    private void fetchTasks() {
-        viewModel.getTaskList()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<List<Task>>() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        disposables.add(d);
-                    }
+    private void setupObservers() {
+        viewModel.getTaskList().observe(getViewLifecycleOwner(), tasks -> {
+            adapter.submitList(tasks);
+        });
 
-                    @Override
-                    public void onSuccess(@NonNull List<Task> tasks) {
-                        adapter.submitList(tasks);
-                    }
+        viewModel.getMessage().observe(getViewLifecycleOwner(), message -> {
+            message.handleIfNotNull(result -> {
+                Toast.makeText(getContext(), result, Toast.LENGTH_SHORT).show();
+            });
+        });
 
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        Toast.makeText(getContext(), R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
-                        Log.e(TAG, "onError: ", e);
-                    }
-                });
+        viewModel.getActionNavigateToAddTask().observe(getViewLifecycleOwner(), doesNavigate -> {
+            doesNavigate.handleIfNotNull(result -> {
+                NavController navController = NavHostFragment.findNavController(this);
+                String title = getString(R.string.add_task);
+                navController.navigate(
+                        TaskListFragmentDirections.actionListToModify(title)
+                );
+            });
+        });
+
+        viewModel.getActionNavigateToTaskDetails().observe(getViewLifecycleOwner(), task -> {
+            task.handleIfNotNull(result -> {
+                NavController navController = NavHostFragment.findNavController(TaskListFragment.this);
+                navController.navigate(
+                        TaskListFragmentDirections.actionListToDetails(result.getTaskId())
+                );
+            });
+        });
     }
 
     private void setupUi(LayoutInflater inflater, ViewGroup container) {
@@ -131,26 +109,11 @@ public class TaskListFragment extends Fragment {
         binding.recyclerView.setAdapter(adapter);
         itemTouchHelper.attachToRecyclerView(binding.recyclerView);
         binding.setViewModel(viewModel);
-    }
-
-    private void navigateToAddFragment() {
-        NavController navController = NavHostFragment.findNavController(this);
-        String title = getString(R.string.add_task);
-        navController.navigate(
-                TaskListFragmentDirections.actionListToModify(title)
-        );
-    }
-
-    private void navigateToTaskDetails(int taskId) {
-        NavController navController = NavHostFragment.findNavController(TaskListFragment.this);
-        navController.navigate(
-                TaskListFragmentDirections.actionListToDetails(taskId)
-        );
+        binding.setLifecycleOwner(getViewLifecycleOwner());
     }
 
     @Override
     public void onDestroy() {
-        disposables.clear();
         binding = null;
         super.onDestroy();
     }

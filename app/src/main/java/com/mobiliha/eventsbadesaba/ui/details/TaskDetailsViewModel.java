@@ -3,17 +3,21 @@ package com.mobiliha.eventsbadesaba.ui.details;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.ObservableField;
+import androidx.annotation.StringRes;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.mobiliha.eventsbadesaba.R;
 import com.mobiliha.eventsbadesaba.ReminderApp;
+import com.mobiliha.eventsbadesaba.ui.core.Event;
 import com.mobiliha.eventsbadesaba.data.local.db.entity.Occasion;
 import com.mobiliha.eventsbadesaba.data.local.db.entity.Task;
 import com.mobiliha.eventsbadesaba.data.repository.TaskRepository;
 
-import io.reactivex.Completable;
+import io.reactivex.CompletableObserver;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -25,8 +29,26 @@ public class TaskDetailsViewModel extends ViewModel {
 
     private final TaskRepository repository;
     private final CompositeDisposable disposables = new CompositeDisposable();
-    public final ObservableField<Task> task = new ObservableField<>();
-    public final ObservableField<String> taskOccasion = new ObservableField<>();
+
+    private final MutableLiveData<Event<String>> message = new MutableLiveData<>();
+    private final MutableLiveData<Event<Task>> actionCancelAlarm = new MutableLiveData<>();
+    private final MutableLiveData<Event<Boolean>> actionNavigateBack = new MutableLiveData<>();
+    private final MutableLiveData<Event<Integer>> actionNavigateToModify = new MutableLiveData<>();
+    private final MutableLiveData<Event<Task>> actionConfirmTaskDeletion = new MutableLiveData<>();
+    private final MutableLiveData<Event<Task>> actionShareTask = new MutableLiveData<>();
+
+    private final MutableLiveData<Task> task = new MutableLiveData<>();
+    public final LiveData<String> taskOccasion = Transformations.map(task, task -> {
+        Occasion occasion = task.getOccasion();
+        if(occasion == null)
+            return null;
+
+        int index = occasion.ordinal();
+        String occasionStr = ReminderApp.getAppContext()
+                .getResources().getStringArray(R.array.occasions)[index];
+        return occasionStr;
+    });
+
     private final int taskId;
 
     public TaskDetailsViewModel(int taskId) {
@@ -34,9 +56,46 @@ public class TaskDetailsViewModel extends ViewModel {
         this.taskId = taskId;
     }
 
-    public Completable deleteTask(Task task) {
-        return repository.delete(task)
-                .observeOn(AndroidSchedulers.mainThread());
+    public void confirmTaskDeletion() {
+        Task task = this.task.getValue();
+        if(task == null) return;
+
+        actionConfirmTaskDeletion.postValue(new Event<>(task));
+    }
+
+    public void deleteTask(Task task) {
+        repository.delete(task)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        disposables.add(d);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        showMessage(R.string.deleted);
+
+                        actionCancelAlarm.postValue(new Event<>(task));
+
+                        actionNavigateBack.postValue(new Event<>(true));
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        showMessage(R.string.something_went_wrong);
+                    }
+                });
+    }
+
+    public void navigateToModify() {
+        actionNavigateToModify.postValue(new Event<>(taskId));
+    }
+
+    public void shareTask() {
+        Task task = this.task.getValue();
+        if(task != null)
+            actionShareTask.postValue(new Event<>(task));
     }
 
     public void fetchTask() {
@@ -50,8 +109,7 @@ public class TaskDetailsViewModel extends ViewModel {
 
                     @Override
                     public void onSuccess(@NonNull Task task) {
-                        TaskDetailsViewModel.this.task.set(task);
-                        updateTaskOccasion(task);
+                        TaskDetailsViewModel.this.task.setValue(task);
                     }
 
                     @Override
@@ -61,14 +119,37 @@ public class TaskDetailsViewModel extends ViewModel {
                 });
     }
 
-    private void updateTaskOccasion(Task task) {
-        Occasion occasion = task.getOccasion();
-        if(occasion != null) {
-            int index = occasion.ordinal();
-            String occasionStr = ReminderApp.getAppContext()
-                    .getResources().getStringArray(R.array.occasions)[index];
-            taskOccasion.set(occasionStr);
-        }
+    public LiveData<Event<Task>> getActionCancelAlarm() {
+        return actionCancelAlarm;
+    }
+
+    public LiveData<Event<Boolean>> getActionNavigateBack() {
+        return actionNavigateBack;
+    }
+
+    public LiveData<Event<String>> getMessage() {
+        return message;
+    }
+
+    public LiveData<Task> getTask() {
+        return task;
+    }
+
+    public LiveData<Event<Integer>> getActionNavigateToModify() {
+        return actionNavigateToModify;
+    }
+
+    public LiveData<Event<Task>> getActionShareTask() {
+        return actionShareTask;
+    }
+
+    public LiveData<Event<Task>> getActionConfirmTaskDeletion() {
+        return actionConfirmTaskDeletion;
+    }
+
+    private void showMessage(@StringRes int resId) {
+        String message = ReminderApp.getAppContext().getString(resId);
+        this.message.postValue(new Event<>(message));
     }
 
     @Override

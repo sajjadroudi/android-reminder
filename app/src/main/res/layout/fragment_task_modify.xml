@@ -43,22 +43,22 @@
                     android:layout_marginBottom="@dimen/distance_between_modify_fragment_items"/>
 
                 <include
-                    android:id="@+id/txt_date_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     layout="@layout/layout_date_time"
                     bind:icon="@{@string/icon_calendar_day}"
                     bind:calendar="@{viewModel.task.dueDate}"
+                    bind:clickListener="@{() -> viewModel.showDueDateDialog()}"
                     android:layout_marginBottom="@dimen/distance_between_modify_fragment_items"/>
 
                 <com.mobiliha.eventsbadesaba.ui.custom.CustomTextView
-                    android:id="@+id/txt_occasion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:customHintText="@string/occasion"
                     app:customText="@{Utils.toLocaleString(viewModel.task.occasion)}"
                     app:customIcon="@string/icon_gift"
-                    android:layout_marginBottom="@dimen/distance_between_modify_fragment_items"/>
+                    android:layout_marginBottom="@dimen/distance_between_modify_fragment_items"
+                    android:onClick="@{() -> viewModel.showOccasionDialog()}"/>
 
                 <include
                     android:layout_height="wrap_content"
@@ -92,7 +92,6 @@
 
 
                 <LinearLayout
-                    android:id="@+id/additional_fields_text_view_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/distance_between_modify_fragment_items"
@@ -103,26 +102,23 @@
                         style="@style/CustomViewMainIcon" />
 
                     <TextView
-                        android:id="@+id/txt_desc"
                         android:text="@string/description"
-                        android:tag="@{AdditionalField.DESC}"
                         style="@style/AdditionalInformationTextViewStyle"
-                        android:visibility="@{viewModel.visibleFields.contains(AdditionalField.DESC) ? View.GONE : View.VISIBLE}"/>
+                        android:visibility="@{viewModel.visibleFields.contains(AdditionalField.DESC) ? View.GONE : View.VISIBLE}"
+                        android:onClick="@{() -> viewModel.addToVisibleAdditionalFields(AdditionalField.DESC)}"/>
 
                     <TextView
-                        android:id="@+id/txt_location"
                         android:text="@string/location"
-                        android:tag="@{AdditionalField.LOCATION}"
                         style="@style/AdditionalInformationTextViewStyle"
-                        android:visibility="@{viewModel.visibleFields.contains(AdditionalField.LOCATION) ? View.GONE : View.VISIBLE}"/>
+                        android:visibility="@{viewModel.visibleFields.contains(AdditionalField.LOCATION) ? View.GONE : View.VISIBLE}"
+                        android:onClick="@{() -> viewModel.addToVisibleAdditionalFields(AdditionalField.LOCATION)}"/>
 
                     <TextView
-                        android:id="@+id/txt_link"
                         android:text="@string/link"
-                        android:tag="@{AdditionalField.LINK}"
                         android:layout_marginLeft="0dp"
                         style="@style/AdditionalInformationTextViewStyle"
-                        android:visibility="@{viewModel.visibleFields.contains(AdditionalField.LINK) ? View.GONE : View.VISIBLE}"/>
+                        android:visibility="@{viewModel.visibleFields.contains(AdditionalField.LINK) ? View.GONE : View.VISIBLE}"
+                        android:onClick="@{() -> viewModel.addToVisibleAdditionalFields(AdditionalField.LINK)}"/>
 
                 </LinearLayout>
 
@@ -148,28 +144,24 @@
                         android:gravity="right">
 
                         <RadioButton
-                            android:id="@+id/blue_circle"
                             android:background="@drawable/blue_radio_button_background"
                             android:checked="@{viewModel.task.color == TaskColor.BLUE}"
                             android:tag="@{TaskColor.BLUE}"
                             style="@style/TaskColorRadioButtonStyle"/>
 
                         <RadioButton
-                            android:id="@+id/yellow_circle"
                             android:background="@drawable/yellow_radio_button_background"
                             android:checked="@{viewModel.task.color == TaskColor.YELLOW}"
                             android:tag="@{TaskColor.YELLOW}"
                             style="@style/TaskColorRadioButtonStyle"/>
 
                         <RadioButton
-                            android:id="@+id/green_circle"
                             android:background="@drawable/green_radio_button_background"
                             android:checked="@{viewModel.task.color == TaskColor.GREEN}"
                             android:tag="@{TaskColor.GREEN}"
                             style="@style/TaskColorRadioButtonStyle"/>
 
                         <RadioButton
-                            android:id="@+id/red_circle"
                             android:background="@drawable/red_radio_button_background"
                             android:checked="@{viewModel.task.color == TaskColor.RED}"
                             android:tag="@{TaskColor.RED}"
@@ -189,21 +181,21 @@
             android:padding="8dp">
 
             <Button
-                android:id="@+id/btn_cancel"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="@string/cancel"
                 android:layout_margin="@dimen/button_margin"
                 android:textSize="@dimen/button_text_size"
+                android:onClick="@{() -> viewModel.navigateBack()}"
                 style="?android:attr/buttonBarButtonStyle" />
 
             <Button
-                android:id="@+id/btn_save"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="@string/save"
+                android:onClick="@{() -> viewModel.saveTask()}"
                 style="@style/SaveButtonStyle"/>
 
         </LinearLayout>

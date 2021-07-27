@@ -11,12 +11,17 @@
         <variable
             name="calendar"
             type="java.util.Calendar" />
+
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
     </data>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{clickListener}">
 
         <com.mobiliha.eventsbadesaba.ui.custom.FontIcon
             android:id="@+id/icon_main"

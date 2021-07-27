@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,23 +16,16 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.mobiliha.eventsbadesaba.R;
 import com.mobiliha.eventsbadesaba.data.local.db.entity.Occasion;
-import com.mobiliha.eventsbadesaba.data.local.db.entity.Task;
 import com.mobiliha.eventsbadesaba.data.local.db.entity.TaskColor;
 import com.mobiliha.eventsbadesaba.databinding.FragmentTaskModifyBinding;
 import com.mobiliha.eventsbadesaba.util.AlarmHelper;
-import com.mobiliha.eventsbadesaba.util.UserInputException;
 
 import java.util.Calendar;
-
-import io.reactivex.SingleObserver;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
 
 /**
  * A fragment to add and edit task.
  */
-public class TaskModifyFragment extends Fragment implements View.OnClickListener {
+public class TaskModifyFragment extends Fragment {
 
     private interface OnTimeSelectListener {
         void onSelect(int hour, int minute);
@@ -48,7 +40,6 @@ public class TaskModifyFragment extends Fragment implements View.OnClickListener
     private FragmentTaskModifyBinding binding;
     private TaskModifyViewModel viewModel;
     private AlarmHelper alarmHelper;
-    private final CompositeDisposable disposables = new CompositeDisposable();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,7 +58,7 @@ public class TaskModifyFragment extends Fragment implements View.OnClickListener
     ) {
         setupUi(inflater, container);
 
-        setupClickListener();
+        setupObservers();
 
         binding.coloredCirclesGroup.setOnCheckedChangeListener((group, checkedId) -> {
             TaskColor taskColor = (TaskColor) group.findViewById(checkedId).getTag();
@@ -77,88 +68,52 @@ public class TaskModifyFragment extends Fragment implements View.OnClickListener
         return binding.getRoot();
     }
 
-    private void setupClickListener() {
-        View[] views = {
-                binding.btnSave,
-                binding.btnCancel,
-                binding.txtDateTime.getRoot(),
-                binding.txtOccasion,
-                binding.txtLocation,
-                binding.txtLink,
-                binding.txtDesc
-        };
+    private void setupObservers() {
+        viewModel.getActionShowDueDateDialog().observe(getViewLifecycleOwner(), show -> {
+            show.handleIfNotNull(result -> {
+                if(result) {
+                    showDatePickerDialog(selectedCalendar -> {
+                        viewModel.setDateCalendar(selectedCalendar);
 
-        for(View view : views)
-            view.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_save:
-                saveTask();
-                break;
-            case R.id.btn_cancel:
-                navigateBack();
-                break;
-            case R.id.txt_date_time:
-                showDatePickerDialog(selectedCalendar -> {
-                    viewModel.setDateCalendar(selectedCalendar);
-
-                    showTimePickerDialog((hour, minute) -> {
-                        viewModel.setTime(hour, minute);
+                        showTimePickerDialog((hour, minute) -> {
+                            viewModel.setTime(hour, minute);
+                        });
                     });
-                });
-                break;
-            case R.id.txt_occasion:
-                showOccasionDialog(selectedOccasion -> {
-                    viewModel.setOccasion(selectedOccasion);
-                });
-                break;
+                }
+            });
+        });
 
-            case R.id.txt_location:
-            case R.id.txt_desc:
-            case R.id.txt_link:
-                AdditionalField field = (AdditionalField) v.getTag();
-                viewModel.addToVisibleAdditionalFields(field);
-                break;
+        viewModel.getActionShowOccasionDialog().observe(getViewLifecycleOwner(), callback -> {
+            callback.handleIfNotNull(result -> {
+                if(result) {
+                    showOccasionDialog(selectedOccasion -> {
+                        viewModel.setOccasion(selectedOccasion);
+                    });
+                }
+            });
+        });
 
-        }
-    }
+        viewModel.getActionSetAlarm().observe(getViewLifecycleOwner(), task -> {
+            task.handleIfNotNull(result -> {
+                alarmHelper.setAlarm(result);
+            });
+        });
 
-    private void saveTask() {
-        viewModel.saveTask()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<Task>() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        disposables.add(d);
-                    }
+        viewModel.getActionUpdateAlarm().observe(getViewLifecycleOwner(), task -> {
+            task.handleIfNotNull(result -> {
+                alarmHelper.updateAlarm(result);
+            });
+        });
 
-                    @Override
-                    public void onSuccess(@NonNull Task task) {
-                        Toast.makeText(getContext(), R.string.saved, Toast.LENGTH_SHORT).show();
-
-                        if(viewModel.getMode() == Mode.INSERT) {
-                            alarmHelper.setAlarm(task);
-                        } else {
-                            alarmHelper.updateAlarm(task);
-                        }
-
-                        navigateBack();
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        String message;
-                        if(e instanceof UserInputException) {
-                            message = e.getMessage();
-                        } else {
-                            message = getString(R.string.something_went_wrong);
-                        }
-                        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-                    }
-                });
+        viewModel.getActionNavigateBack().observe(getViewLifecycleOwner(), doesNavigate -> {
+            doesNavigate.handleIfNotNull(result -> {
+                if(result) {
+                    NavHostFragment
+                            .findNavController(this)
+                            .popBackStack();
+                }
+            });
+        });
     }
 
     private void showDatePickerDialog(DatePickerDialog.OnDateSelectListener callback) {
@@ -217,15 +172,8 @@ public class TaskModifyFragment extends Fragment implements View.OnClickListener
         binding.setViewModel(viewModel);
     }
 
-    private void navigateBack() {
-        NavHostFragment
-            .findNavController(this)
-            .popBackStack();
-    }
-
     @Override
     public void onDestroy() {
-        disposables.clear();
         binding = null;
         super.onDestroy();
     }

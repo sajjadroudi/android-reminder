@@ -196,7 +196,7 @@
             android:gravity="center">
 
             <LinearLayout
-                android:id="@+id/btn_edit"
+                android:onClick="@{() -> viewModel.navigateToModify()}"
                 style="@style/TaskDetailsActionContainerStyle">
                 <com.mobiliha.eventsbadesaba.ui.custom.FontIcon
                     style="@style/TaskDetailsActionIconStyle"
@@ -207,7 +207,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/btn_delete"
+                android:onClick="@{() -> viewModel.confirmTaskDeletion()}"
                 style="@style/TaskDetailsActionContainerStyle">
                 <com.mobiliha.eventsbadesaba.ui.custom.FontIcon
                     style="@style/TaskDetailsActionIconStyle"
@@ -218,7 +218,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/btn_share"
+                android:onClick="@{() -> viewModel.shareTask()}"
                 style="@style/TaskDetailsActionContainerStyle">
                 <com.mobiliha.eventsbadesaba.ui.custom.FontIcon
                     style="@style/TaskDetailsActionIconStyle"
