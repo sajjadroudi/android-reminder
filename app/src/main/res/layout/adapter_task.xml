@@ -25,16 +25,17 @@
             tools:context=".ui.list.TaskListFragment"
             android:padding="@dimen/adapter_task_root_padding"
             android:onClick="@{() -> callback.onSelect(task)}">
-
-            <com.mobiliha.eventsbadesaba.ui.custom.ColoredLabel
+            
+            <ImageView
                 android:id="@+id/color_label"
                 android:layout_width="@dimen/adapter_task_colored_label_width"
                 android:layout_height="@dimen/adapter_task_colored_label_height"
-                app:labelColor="@{task.color.colorCode}"
+                app:taskColor="@{task.color}"
                 android:layout_marginRight="@dimen/adapter_task_colored_label_margin_right"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@id/txt_title"
-                app:layout_constraintBottom_toBottomOf="@id/txt_title"/>
+                app:layout_constraintBottom_toBottomOf="@id/txt_title"
+                android:background="@drawable/colored_label_background"/>
 
             <TextView
                 android:id="@+id/txt_title"

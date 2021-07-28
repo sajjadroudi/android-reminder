@@ -34,12 +34,13 @@
                     android:orientation="horizontal"
                     android:layout_marginBottom="@dimen/task_details_title_container_margin_bottom">
 
-                    <com.mobiliha.eventsbadesaba.ui.custom.ColoredLabel
+                    <ImageView
                         android:layout_width="@dimen/task_details_colored_label_width"
                         android:layout_height="@dimen/task_details_colored_label_height"
-                        app:labelColor="@{viewModel.task.color.colorCode}"
+                        app:taskColor="@{viewModel.task.color}"
                         android:layout_marginLeft="@dimen/task_details_colored_label_margin_left"
-                        android:layout_gravity="center_vertical"/>
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/colored_label_background"/>
 
                     <TextView
                         android:layout_width="wrap_content"

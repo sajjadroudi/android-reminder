@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <declare-styleable name="ColoredLabel">
-        <attr name="labelColor" format="color"/>
-    </declare-styleable>
-    
     <declare-styleable name="CustomTextView">
         <attr name="customText" format="string"/>
         <attr name="customHintText" format="string"/>

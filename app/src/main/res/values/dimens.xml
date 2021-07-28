@@ -61,4 +61,6 @@
     <dimen name="task_list_fab_margin">16dp</dimen>
     <dimen name="task_list_list_empty_text_size">17sp</dimen>
 
+    <dimen name="colored_label_corner_radius">4dp</dimen>
+
 </resources>
