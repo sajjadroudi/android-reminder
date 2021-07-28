@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+        
+        <variable
+            name="icon"
+            type="String" />
+        
+        <variable
+            name="text"
+            type="String" />
+    </data>
+
+    <LinearLayout
+        android:onClick="@{clickListener}"
+        style="@style/TaskDetailsActionContainerStyle">
+
+        <com.mobiliha.eventsbadesaba.ui.custom.FontIcon
+            style="@style/TaskDetailsActionIconStyle"
+            android:text="@{icon}" />
+
+        <TextView
+            style="@style/TaskDetailsActionStyle"
+            android:text="@{text}" />
+    </LinearLayout>
+
+</layout>
