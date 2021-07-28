@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:visibility="@{viewModel.isListEmpty ? View.VISIBLE : View.GONE}"
             android:text="@string/no_task_found"
-            android:textSize="17sp"
+            android:textSize="@dimen/task_list_list_empty_text_size"
             android:textColor="@color/black"
             android:layout_gravity="center"/>
 
@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|left"
-            android:layout_margin="16dp"
+            android:layout_margin="@dimen/task_list_fab_margin"
             android:onClick="@{() -> viewModel.navigateToAddTask()}"/>
 
     </FrameLayout>

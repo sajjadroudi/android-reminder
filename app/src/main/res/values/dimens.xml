@@ -1,11 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="custom_view_margin_padding">16dp</dimen>
-    <dimen name="custom_view_radius_corner">4dp</dimen>
-    <dimen name="custom_view_main_icon_layout_width">45dp</dimen>
-    <dimen name="distance_between_modify_fragment_items">12dp</dimen>
-    <dimen name="button_margin">4dp</dimen>
-    <dimen name="button_text_size">18sp</dimen>
 
-    <dimen name="colored_radio_button_stroke_width">2dp</dimen>
+    <!-- Adapter task  -->
+    <dimen name="adapter_task_root_padding">16dp</dimen>
+    <dimen name="adapter_task_colored_label_width">7dp</dimen>
+    <dimen name="adapter_task_colored_label_height">24dp</dimen>
+    <dimen name="adapter_task_colored_label_margin_right">12dp</dimen>
+    <dimen name="adapter_task_title_text_size">20sp</dimen>
+    <dimen name="adapter_task_title_margin_right">16dp</dimen>
+    <dimen name="adapter_task_date_margin_top">10dp</dimen>
+    <dimen name="adapter_task_date_margin_right">4dp</dimen>
+    <dimen name="adapter_task_occasion_size">16sp</dimen>
+    <dimen name="adapter_task_icon_occasion_margin_left">24dp</dimen>
+    <dimen name="adapter_task_time_margin_top">8dp</dimen>
+    <dimen name="adapter_task_divider_height">1dp</dimen>
+
+    <!-- Fragment task details  -->
+    <dimen name="task_details_rows_container_padding">32dp</dimen>
+    <dimen name="task_details_title_container_margin_bottom">32dp</dimen>
+    <dimen name="task_details_colored_label_width">6dp</dimen>
+    <dimen name="task_details_colored_label_height">32dp</dimen>
+    <dimen name="task_details_colored_label_margin_left">20dp</dimen>
+    <dimen name="task_details_title_text_size">19sp</dimen>
+    <dimen name="task_details_time_margin_right">16dp</dimen>
+    <dimen name="task_details_divider_height">1dp</dimen>
+    <dimen name="task_details_action_text_size">16sp</dimen>
+    <dimen name="task_details_action_icon_text_size">20sp</dimen>
+    <dimen name="task_details_action_icon_margin_bottom">8dp</dimen>
+    <dimen name="task_details_action_container_padding">16dp</dimen>
+    <dimen name="task_details_value_text_size">14sp</dimen>
+    <dimen name="task_details_key_text_size">16sp</dimen>
+    <dimen name="task_details_icon_text_size">20sp</dimen>
+    <dimen name="task_details_icon_margin_left">16dp</dimen>
+    <dimen name="task_details_row_container_margin_bottom">24dp</dimen>
+
+    <!-- Fragment task modify  -->
+    <dimen name="task_modify_rows_container_padding_top">24dp</dimen>
+    <dimen name="task_modify_rows_container_padding_left">24dp</dimen>
+    <dimen name="task_modify_rows_container_padding_right">12dp</dimen>
+    <dimen name="task_modify_colored_radio_button_width_height">26dp</dimen>
+    <dimen name="task_modify_colored_radio_button_group_padding">4dp</dimen>
+    <dimen name="task_modify_colored_radio_button_margin_left_right">16dp</dimen>
+    <dimen name="task_modify_colored_radio_button_stroke_width">2dp</dimen>
+    <dimen name="task_modify_field_icon_width">45dp</dimen>
+    <dimen name="task_modify_row_margin_bottom">12dp</dimen>
+    <dimen name="task_modify_action_button_margin">4dp</dimen>
+    <dimen name="task_modify_action_button_text_size">18sp</dimen>
+    <dimen name="task_modify_field_padding">16dp</dimen>
+    <dimen name="task_modify_additional_information_text_view_margin_left">8dp</dimen>
+    <dimen name="task_modify_additional_information_text_view_text_size">16sp</dimen>
+    <dimen name="task_modify_cross_icon_text_size">20sp</dimen>
+    <dimen name="task_modify_field_icon_text_size">20sp</dimen>
+    <dimen name="task_modify_cross_icon_margin_right">@dimen/task_modify_field_padding</dimen>
+    <dimen name="task_modify_due_date_text_size">17sp</dimen>
+    <dimen name="task_modify_edit_text_text_size">17sp</dimen>
+    <dimen name="task_modify_edit_text_cursor_width">1dp</dimen>
+    <dimen name="task_modify_field_radius_corner">4dp</dimen>
+
+    <!-- Fragment task list -->
+    <dimen name="task_list_fab_margin">16dp</dimen>
+    <dimen name="task_list_list_empty_text_size">17sp</dimen>
+
 </resources>

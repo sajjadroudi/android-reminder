@@ -23,15 +23,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:context=".ui.list.TaskListFragment"
-            android:padding="16dp"
+            android:padding="@dimen/adapter_task_root_padding"
             android:onClick="@{() -> callback.onSelect(task)}">
 
             <com.mobiliha.eventsbadesaba.ui.custom.ColoredLabel
                 android:id="@+id/color_label"
-                android:layout_width="7dp"
-                android:layout_height="24dp"
+                android:layout_width="@dimen/adapter_task_colored_label_width"
+                android:layout_height="@dimen/adapter_task_colored_label_height"
                 app:labelColor="@{task.color.colorCode}"
-                android:layout_marginRight="12dp"
+                android:layout_marginRight="@dimen/adapter_task_colored_label_margin_right"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@id/txt_title"
                 app:layout_constraintBottom_toBottomOf="@id/txt_title"/>
@@ -41,10 +41,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{task.title}"
-                android:textSize="20sp"
+                android:textSize="@dimen/adapter_task_title_text_size"
                 android:textColor="@color/black"
                 tools:text="تولد فلانی"
-                android:layout_marginRight="16dp"
+                android:layout_marginRight="@dimen/adapter_task_title_margin_right"
                 app:layout_constraintRight_toLeftOf="@id/color_label"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/txt_date"/>
@@ -55,8 +55,8 @@
                 android:layout_height="wrap_content"
                 android:text="@{TimeUtils.extractPersianDate(task.dueDate)}"
                 android:textColor="@color/gray"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="4dp"
+                android:layout_marginTop="@dimen/adapter_task_date_margin_top"
+                android:layout_marginRight="@dimen/adapter_task_date_margin_right"
                 tools:text="۱۱ اردیبهشت ۱۴۰۰"
                 app:layout_constraintTop_toBottomOf="@id/txt_title"
                 app:layout_constraintRight_toRightOf="@id/txt_title"
@@ -66,12 +66,12 @@
                 android:id="@+id/icon_occasion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
+                android:textSize="@dimen/adapter_task_occasion_size"
                 android:textColor="@color/gray"
                 android:text="@string/icon_calendar_day"
                 android:visibility="@{task.occasion == null ? View.INVISIBLE : View.VISIBLE}"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="24dp"
+                android:layout_marginLeft="@dimen/adapter_task_icon_occasion_margin_left"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/txt_time"/>
@@ -81,7 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{TimeUtils.extractTime(task.dueDate)}"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/adapter_task_time_margin_top"
                 android:layout_gravity="center_horizontal"
                 android:textColor="@color/gray"
                 tools:text="۱۱:۲۳"
@@ -95,7 +95,7 @@
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="@dimen/adapter_task_divider_height"
             android:background="?android:attr/listDivider"/>
 
     </LinearLayout>

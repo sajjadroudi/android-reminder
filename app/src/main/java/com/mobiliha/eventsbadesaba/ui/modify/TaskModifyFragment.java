@@ -60,7 +60,7 @@ public class TaskModifyFragment extends Fragment {
 
         setupObservers();
 
-        binding.coloredCirclesGroup.setOnCheckedChangeListener((group, checkedId) -> {
+        binding.coloredRadioButtonGroup.setOnCheckedChangeListener((group, checkedId) -> {
             TaskColor taskColor = (TaskColor) group.findViewById(checkedId).getTag();
             viewModel.setTaskColor(taskColor);
         });

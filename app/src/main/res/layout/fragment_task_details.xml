@@ -26,26 +26,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="32dp">
+                android:padding="@dimen/task_details_rows_container_padding">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginBottom="32dp">
+                    android:layout_marginBottom="@dimen/task_details_title_container_margin_bottom">
 
                     <com.mobiliha.eventsbadesaba.ui.custom.ColoredLabel
-                        android:layout_width="6dp"
-                        android:layout_height="32dp"
+                        android:layout_width="@dimen/task_details_colored_label_width"
+                        android:layout_height="@dimen/task_details_colored_label_height"
                         app:labelColor="@{viewModel.task.color.colorCode}"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginLeft="@dimen/task_details_colored_label_margin_left"
                         android:layout_gravity="center_vertical"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
-                        android:textSize="19sp"
+                        android:textSize="@dimen/task_details_title_text_size"
                         android:text="@{viewModel.task.title}"
                         tools:text="تولد"/>
 
@@ -80,7 +80,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             style="@style/TaskDetailsValueStyle"
-                            android:layout_marginRight="16dp"
+                            android:layout_marginRight="@dimen/task_details_time_margin_right"
                             android:text="@{TimeUtils.extractTime(viewModel.task.dueDate)}"/>
 
                     </LinearLayout>
@@ -126,7 +126,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="@dimen/task_details_divider_height"
             android:background="?android:attr/listDivider" />
 
         <LinearLayout

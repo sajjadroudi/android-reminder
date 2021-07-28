@@ -26,32 +26,32 @@
         <com.mobiliha.eventsbadesaba.ui.custom.FontIcon
             android:id="@+id/icon_main"
             android:text="@{icon}"
-            style="@style/CustomViewMainIcon" />
+            style="@style/TaskModifyFieldIcon" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="@drawable/custom_edit_text_background">
+            android:background="@drawable/task_modify_edit_text_background">
 
             <EditText
                 android:id="@+id/edt_main"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:background="@color/custom_view_background"
-                android:textCursorDrawable="@drawable/edit_text_cursor"
+                android:background="@color/task_modify_field_background"
+                android:textCursorDrawable="@drawable/task_modify_edit_text_cursor"
                 android:textColorHint="@color/hint"
                 android:inputType="text"
                 android:hint="@{hint}"
                 android:text="@={text}"
-                android:textSize="17sp"
+                android:textSize="@dimen/task_modify_edit_text_text_size"
                 android:textColor="@color/black"/>
 
             <com.mobiliha.eventsbadesaba.ui.custom.FontIcon
                 android:id="@+id/icon_cross"
-                style="@style/CustomViewCrossIcon"
+                style="@style/TaskModifyCrossIconStyle"
                 android:visibility="@{(text == null || text.empty) ? View.INVISIBLE : View.VISIBLE}"
                 android:onClick="@{() -> ViewUtils.makeEmpty(edtMain)}"/>
         </LinearLayout>

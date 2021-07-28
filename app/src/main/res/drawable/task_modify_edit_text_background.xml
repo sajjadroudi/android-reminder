@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_enabled="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/task_modify_field_background" />
+            <corners android:radius="@dimen/task_modify_field_radius_corner" />
+            <padding
+                android:bottom="@dimen/task_modify_field_padding"
+                android:left="@dimen/task_modify_field_padding"
+                android:top="@dimen/task_modify_field_padding"
+                android:right="@dimen/task_modify_field_padding"/>
+        </shape>
+    </item>
+
+</selector>

@@ -18,39 +18,34 @@
         <item name="fontFamily">@font/iransans_fa</item>
     </style>
 
-    <style name="CustomViewMainIcon">
+    <style name="TaskModifyFieldIcon">
         <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_width">@dimen/custom_view_main_icon_layout_width</item>
+        <item name="android:layout_width">@dimen/task_modify_field_icon_width</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">@dimen/task_modify_field_icon_text_size</item>
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="CustomViewCrossIcon">
+    <style name="TaskModifyCrossIconStyle">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:visibility">invisible</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">@dimen/task_modify_cross_icon_text_size</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:text">@string/icon_circle_xmark</item>
-        <item name="android:layout_marginRight">@dimen/custom_view_margin_padding</item>
+        <item name="android:layout_marginRight">@dimen/task_modify_cross_icon_margin_right</item>
     </style>
 
-    <style name="AdditionalInformationTextViewStyle">
+    <style name="TaskModifyAdditionalInformationTextViewStyle">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:background">@drawable/custom_text_view_background</item>
-        <item name="android:layout_marginLeft">8dp</item>
-    </style>
-
-    <style name="SaveButtonStyle">
-        <item name="android:layout_margin">@dimen/button_margin</item>
-        <item name="android:textSize">@dimen/button_text_size</item>
+        <item name="android:textSize">@dimen/task_modify_additional_information_text_view_text_size</item>
+        <item name="android:background">@drawable/task_modify_text_view_background</item>
+        <item name="android:layout_marginLeft">@dimen/task_modify_additional_information_text_view_margin_left</item>
     </style>
 
     <style name="RightJustifyTheme" parent="ThemeOverlay.AppCompat.Dialog.Alert">
@@ -61,7 +56,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">horizontal</item>
-        <item name="android:layout_marginBottom">24dp</item>
+        <item name="android:layout_marginBottom">@dimen/task_details_row_container_margin_bottom</item>
         <item name="android:baselineAligned">true</item>
     </style>
 
@@ -80,10 +75,10 @@
     <style name="TaskDetailsIconStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginLeft">@dimen/task_details_icon_margin_left</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">@dimen/task_details_icon_text_size</item>
         <item name="android:textStyle">bold</item>
     </style>
     
@@ -91,7 +86,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/hint</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">@dimen/task_details_key_text_size</item>
     </style>
 
     <style name="TaskDetailsValueStyle">
@@ -100,41 +95,39 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">@dimen/task_details_value_text_size</item>
     </style>
 
     <style name="TaskDetailsActionContainerStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:padding">16dp</item>
+        <item name="android:padding">@dimen/task_details_action_container_padding</item>
     </style>
 
     <style name="TaskDetailsActionIconStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">@dimen/task_details_action_icon_text_size</item>
         <item name="android:layout_gravity">center</item>
-        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_marginBottom">@dimen/task_details_action_icon_margin_bottom</item>
     </style>
 
     <style name="TaskDetailsActionStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">@dimen/task_details_action_text_size</item>
     </style>
 
-    <style name="TaskColorRadioButtonStyle">
-        <item name="android:layout_width">26dp</item>
-        <item name="android:layout_height">26dp</item>
+    <style name="TaskModifyColorRadioButtonStyle">
+        <item name="android:layout_width">@dimen/task_modify_colored_radio_button_width_height</item>
+        <item name="android:layout_height">@dimen/task_modify_colored_radio_button_width_height</item>
         <item name="android:button">@null</item>
         <item name="buttonCompat">@null</item>
-        <item name="android:layout_marginTop">4dp</item>
-        <item name="android:layout_marginBottom">4dp</item>
-        <item name="android:layout_marginRight">16dp</item>
-        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginRight">@dimen/task_modify_colored_radio_button_margin_left_right</item>
+        <item name="android:layout_marginLeft">@dimen/task_modify_colored_radio_button_margin_left_right</item>
     </style>
 
 </resources>
