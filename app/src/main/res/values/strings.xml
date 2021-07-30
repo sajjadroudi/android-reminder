@@ -57,6 +57,7 @@
     <string name="delete_task">حذف یادآور</string>
     <string name="are_you_sure">آیا مطمئنید؟</string>
     <string name="no_internet">خطا در اتصال به اینترنت!</string>
+    <string name="extra_share_text">دریافت یادآوری از بادصبا\nیادآوری «%s» با شما به اشتراک گذاشته شده است، برای دیدن جزئیات یادآوری و ذخیره آن در بادصبا، بر روی لینک زیر کلیک کنید.\n%s</string>
 
     <string-array name="occasions">
         <item>تولد</item>

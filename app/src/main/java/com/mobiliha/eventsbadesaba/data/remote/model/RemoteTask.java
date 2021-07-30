@@ -12,7 +12,7 @@ public class RemoteTask {
     private final long dueDate;
 
     private final String title;
-    private final Integer occasion;
+    private final int occasion;
     private final int color;
     private final String description;
     private final String link;
@@ -27,7 +27,7 @@ public class RemoteTask {
             String shareId,
             long dueDate,
             String title,
-            Integer occasion,
+            int occasion,
             int color,
             String description,
             String link,
@@ -50,7 +50,7 @@ public class RemoteTask {
                 task.getShareId(),
                 task.getDueDate().getTimeInMillis(),
                 task.getTitle(),
-                task.getOccasion() == null ? null : task.getOccasion().ordinal() + 1,
+                task.getOccasion() == null ? 0 : task.getOccasion().ordinal() + 1,
                 task.getColor().ordinal(),
                 task.getDetails(),
                 task.getLink(),

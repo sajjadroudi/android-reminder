@@ -57,43 +57,6 @@ public class TaskDetailsViewModel extends ViewModel {
         this.taskId = taskId;
     }
 
-    public void saveTaskInServer() {
-        Task task = this.task.getValue();
-        if(task == null)
-            return;
-
-        if(task.isTokenValid())
-            return; // Token is still valid so we don't need to send a request to the server.
-
-        repository.saveTaskInServer(task)
-                .map(info -> {
-                    task.setShareLink(info.getLink());
-                    task.setShareId(info.getBaseId());
-                    task.setToken(info.getToken());
-
-                    return task;
-                })
-                .flatMap(info -> repository.update(task))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<Task>() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        disposables.add(d);
-                    }
-
-                    @Override
-                    public void onSuccess(@NonNull Task task) {
-                        TaskDetailsViewModel.this.task.postValue(task);
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        int resId = Utils.extractMessage(e);
-                        showMessage(resId);
-                    }
-                });
-    }
-
     public void confirmTaskDeletion() {
         Task task = this.task.getValue();
         if(task == null) return;
@@ -132,8 +95,43 @@ public class TaskDetailsViewModel extends ViewModel {
 
     public void shareTask() {
         Task task = this.task.getValue();
-        if(task != null)
+        if(task == null)
+            return;
+
+        if(task.isTokenValid()) {
             actionShareTask.postValue(new Event<>(task));
+            return; // Token is still valid so we don't need to send a request to the server.
+        }
+
+        repository.saveTaskInServer(task)
+                .map(info -> {
+                    task.setShareLink(info.getLink());
+                    task.setShareId(info.getBaseId());
+                    task.setToken(info.getToken());
+
+                    return task;
+                })
+                .flatMap(info -> repository.update(task))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<Task>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        disposables.add(d);
+                    }
+
+                    @Override
+                    public void onSuccess(@NonNull Task task) {
+                        TaskDetailsViewModel.this.task.postValue(task);
+
+                        actionShareTask.postValue(new Event<>(task));
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        int resId = Utils.extractMessage(e);
+                        showMessage(resId);
+                    }
+                });
     }
 
     public void fetchTask() {

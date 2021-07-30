@@ -1,6 +1,7 @@
 package com.mobiliha.eventsbadesaba.ui.details;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -85,10 +86,14 @@ public class TaskDetailsFragment extends Fragment {
             });
         });
 
-        viewModel.getActionShareTask().observe(getViewLifecycleOwner(), task -> {
-            task.handleIfNotNull(result -> {
-                // TODO
-                viewModel.saveTaskInServer();
+        viewModel.getActionShareTask().observe(getViewLifecycleOwner(), taskToShare -> {
+            taskToShare.handleIfNotNull(result -> {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                String text = getString(R.string.extra_share_text, result.getTitle(), result.getShareLink());
+                intent.putExtra(Intent.EXTRA_TEXT, text);
+                intent = Intent.createChooser(intent, null);
+                startActivity(intent);
             });
         });
 
