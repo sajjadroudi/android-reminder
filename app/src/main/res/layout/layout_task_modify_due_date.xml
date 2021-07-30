@@ -21,8 +21,7 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="@{clickListener}">
+        android:layout_height="wrap_content">
 
         <com.mobiliha.eventsbadesaba.ui.custom.FontIcon
             android:id="@+id/icon_main"
@@ -33,7 +32,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/task_modify_text_view_background">
+            android:background="@drawable/task_modify_text_view_background"
+            android:onClick="@{clickListener}">
 
             <TextView
                 android:id="@+id/txt_date"

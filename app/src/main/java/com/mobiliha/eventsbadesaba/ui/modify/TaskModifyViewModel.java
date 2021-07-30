@@ -126,12 +126,15 @@ public class TaskModifyViewModel extends ViewModel {
     }
 
     public void saveTask() {
+        trimTitle();
+
         Task task = Objects.requireNonNull(this.task.get());
 
         try {
             validateTask(task);
         } catch (IllegalArgumentException e) {
             showMessage(e.getMessage());
+            return;
         }
 
         Single<Task> single = (mode == Mode.INSERT) ? repository.insert(task)
@@ -195,6 +198,10 @@ public class TaskModifyViewModel extends ViewModel {
         task.notifyChange();
     }
 
+    public LiveData<Event<String>> getMessage() {
+        return message;
+    }
+
     public LiveData<Event<Boolean>> getActionShowDueDateDialog() {
         return actionShowDueDateDialog;
     }
@@ -216,7 +223,8 @@ public class TaskModifyViewModel extends ViewModel {
     }
 
     private void validateTask(Task task) {
-        String title = Utils.tryTrim(task.getTitle());
+        String title = task.getTitle();
+
         if(title == null || title.length() < Task.MIN_TITLE_LENGTH) {
             String message = ReminderApp.getAppContext().getString(
                     R.string.short_title, Task.MIN_TITLE_LENGTH
@@ -239,6 +247,12 @@ public class TaskModifyViewModel extends ViewModel {
         }
     }
 
+    private void trimTitle() {
+        Task task = Objects.requireNonNull(this.task.get());
+        String newTitle = Utils.tryTrim(task.getTitle());
+        task.setTitle(newTitle);
+        this.task.notifyChange();
+    }
 
     private void showMessage(String message) {
         if(message != null)

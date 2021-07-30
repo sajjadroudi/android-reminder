@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -69,6 +70,12 @@ public class TaskModifyFragment extends Fragment {
     }
 
     private void setupObservers() {
+        viewModel.getMessage().observe(getViewLifecycleOwner(), message -> {
+            message.handleIfNotNull(result -> {
+                Toast.makeText(getContext(), result, Toast.LENGTH_SHORT).show();
+            });
+        });
+
         viewModel.getActionShowDueDateDialog().observe(getViewLifecycleOwner(), show -> {
             show.handleIfNotNull(result -> {
                 if(result) {

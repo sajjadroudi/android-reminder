@@ -115,6 +115,7 @@
                     <TextView
                         android:text="@string/link"
                         style="@style/TaskModifyAdditionalInformationTextViewStyle"
+                        android:layout_marginLeft="0dp"
                         android:visibility="@{viewModel.visibleFields.contains(AdditionalField.LINK) ? View.GONE : View.VISIBLE}"
                         android:onClick="@{() -> viewModel.addToVisibleAdditionalFields(AdditionalField.LINK)}"/>
 

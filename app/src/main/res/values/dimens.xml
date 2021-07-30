@@ -48,7 +48,7 @@
     <dimen name="task_modify_action_button_text_size">18sp</dimen>
     <dimen name="task_modify_field_padding">16dp</dimen>
     <dimen name="task_modify_additional_information_text_view_margin_left">8dp</dimen>
-    <dimen name="task_modify_additional_information_text_view_text_size">16sp</dimen>
+    <dimen name="task_modify_additional_information_text_view_text_size">12sp</dimen>
     <dimen name="task_modify_cross_icon_text_size">20sp</dimen>
     <dimen name="task_modify_field_icon_text_size">20sp</dimen>
     <dimen name="task_modify_cross_icon_margin_right">@dimen/task_modify_field_padding</dimen>

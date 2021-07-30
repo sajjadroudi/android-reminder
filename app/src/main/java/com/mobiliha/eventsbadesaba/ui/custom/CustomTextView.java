@@ -104,6 +104,11 @@ public class CustomTextView extends LinearLayout {
         return txtMain.getText().toString();
     }
 
+    @Override
+    public void setOnClickListener(@Nullable OnClickListener l) {
+        findViewById(R.id.text_container).setOnClickListener(l);
+    }
+
     public void setCustomHintText(String hintText) {
         txtMain.setText(hintText);
     }

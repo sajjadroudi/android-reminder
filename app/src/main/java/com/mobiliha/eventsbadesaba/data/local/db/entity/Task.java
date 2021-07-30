@@ -167,10 +167,11 @@ public class Task {
         return taskId == task.taskId &&
                 Utils.equals(title, task.title) &&
                 Utils.equals(dueDate, task.dueDate) &&
-                Utils.equals(occasion, task.occasion) &&
+                occasion == task.occasion &&
                 Utils.equals(details, task.details) &&
                 Utils.equals(location, task.location) &&
-                Utils.equals(link, task.link);
+                Utils.equals(link, task.link) &&
+                color == task.color;
     }
 
 }
