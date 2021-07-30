@@ -54,6 +54,10 @@
     <string name="share">اشتراک گذاری</string>
     <string name="edit_task">ویرایش یادآوری</string>
 
+    <string name="delete_task">حذف یادآور</string>
+    <string name="are_you_sure">آیا مطمئنید؟</string>
+    <string name="no_internet">خطا در اتصال به اینترنت!</string>
+
     <string-array name="occasions">
         <item>تولد</item>
         <item>قسط</item>
@@ -86,7 +90,5 @@
     <string name="icon_share_nodes">&#xf1e0;</string>
     <string name="icon_trash_can">&#xf2ed;</string>
     <string name="icon_pen">&#xf304;</string>
-    <string name="delete_task">حذف یادآور</string>
-    <string name="are_you_sure">آیا مطمئنید؟</string>
 
 </resources>

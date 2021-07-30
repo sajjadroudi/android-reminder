@@ -88,6 +88,7 @@ public class TaskDetailsFragment extends Fragment {
         viewModel.getActionShareTask().observe(getViewLifecycleOwner(), task -> {
             task.handleIfNotNull(result -> {
                 // TODO
+                viewModel.saveTaskInServer();
             });
         });
 

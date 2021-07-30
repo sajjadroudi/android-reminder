@@ -4,6 +4,8 @@ import com.mobiliha.eventsbadesaba.R;
 import com.mobiliha.eventsbadesaba.ReminderApp;
 import com.mobiliha.eventsbadesaba.data.local.db.entity.Occasion;
 
+import java.net.UnknownHostException;
+
 public class Utils {
 
     public static boolean equals(Object a, Object b) {
@@ -31,6 +33,13 @@ public class Utils {
         String occasionStr = occasions[occasion.ordinal()];
 
         return occasionStr;
+    }
+
+    public static int extractMessage(Throwable throwable) {
+        int resId = R.string.something_went_wrong;
+        if(throwable instanceof UnknownHostException)
+            resId = R.string.no_internet;
+        return resId;
     }
 
 }

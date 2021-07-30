@@ -3,6 +3,10 @@ package com.mobiliha.eventsbadesaba.data.repository;
 import com.mobiliha.eventsbadesaba.data.local.db.DbHelper;
 import com.mobiliha.eventsbadesaba.data.local.db.dao.TaskDao;
 import com.mobiliha.eventsbadesaba.data.local.db.entity.Task;
+import com.mobiliha.eventsbadesaba.data.remote.BadeSabaApi;
+import com.mobiliha.eventsbadesaba.data.remote.RetrofitHelper;
+import com.mobiliha.eventsbadesaba.data.remote.model.RemoteTask;
+import com.mobiliha.eventsbadesaba.data.remote.model.ShareInfo;
 
 import java.util.List;
 
@@ -13,9 +17,11 @@ import io.reactivex.schedulers.Schedulers;
 public class TaskRepository {
 
     private final TaskDao dao;
+    private final BadeSabaApi api;
 
     public TaskRepository() {
         this.dao = DbHelper.getInstance().getTaskDao();
+        api = RetrofitHelper.createBadeSabaApi();
     }
 
     public Single<List<Task>> getAllTasks() {
@@ -40,6 +46,11 @@ public class TaskRepository {
 
     public Completable deleteAll() {
         return applyRequirements(dao.deleteAll());
+    }
+
+    public Single<ShareInfo> saveTaskInServer(Task task) {
+        RemoteTask remoteTask = new RemoteTask(task);
+        return applyRequirements(api.saveTask(remoteTask));
     }
 
     private <T> Single<T> applyRequirements(Single<T> value) {

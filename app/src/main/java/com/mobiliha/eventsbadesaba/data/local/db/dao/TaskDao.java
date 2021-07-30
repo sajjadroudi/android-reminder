@@ -114,7 +114,10 @@ public class TaskDao {
         String location = cursor.getString(cursor.getColumnIndex(DbContract.TaskEntry.COL_NAME_LOCATION));
         String link = cursor.getString(cursor.getColumnIndex(DbContract.TaskEntry.COL_NAME_LINK));
         String color = cursor.getString(cursor.getColumnIndex(DbContract.TaskEntry.COL_NAME_COLOR));
-        return new Task(taskId, title, dueDate, occasion, details, location, link, color);
+        String token = cursor.getString(cursor.getColumnIndex(DbContract.TaskEntry.COL_NAME_TOKEN));
+        String shareId = cursor.getString(cursor.getColumnIndex(DbContract.TaskEntry.COL_NAME_SHARE_ID));
+        String shareLink = cursor.getString(cursor.getColumnIndex(DbContract.TaskEntry.COL_NAME_SHARE_LINK));
+        return new Task(taskId, title, dueDate, occasion, details, location, link, color, token, shareId, shareLink);
     }
 
     private List<Task> extractTasks(Cursor cursor) {

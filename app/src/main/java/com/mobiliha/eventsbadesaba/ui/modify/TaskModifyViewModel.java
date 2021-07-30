@@ -137,6 +137,8 @@ public class TaskModifyViewModel extends ViewModel {
             return;
         }
 
+        task.invalidateToken();
+
         Single<Task> single = (mode == Mode.INSERT) ? repository.insert(task)
                 : repository.update(task);
 

@@ -12,10 +12,11 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.mobiliha.eventsbadesaba.R;
 import com.mobiliha.eventsbadesaba.ReminderApp;
-import com.mobiliha.eventsbadesaba.ui.core.Event;
 import com.mobiliha.eventsbadesaba.data.local.db.entity.Occasion;
 import com.mobiliha.eventsbadesaba.data.local.db.entity.Task;
 import com.mobiliha.eventsbadesaba.data.repository.TaskRepository;
+import com.mobiliha.eventsbadesaba.ui.core.Event;
+import com.mobiliha.eventsbadesaba.util.Utils;
 
 import io.reactivex.CompletableObserver;
 import io.reactivex.SingleObserver;
@@ -54,6 +55,43 @@ public class TaskDetailsViewModel extends ViewModel {
     public TaskDetailsViewModel(int taskId) {
         repository = new TaskRepository();
         this.taskId = taskId;
+    }
+
+    public void saveTaskInServer() {
+        Task task = this.task.getValue();
+        if(task == null)
+            return;
+
+        if(task.isTokenValid())
+            return; // Token is still valid so we don't need to send a request to the server.
+
+        repository.saveTaskInServer(task)
+                .map(info -> {
+                    task.setShareLink(info.getLink());
+                    task.setShareId(info.getBaseId());
+                    task.setToken(info.getToken());
+
+                    return task;
+                })
+                .flatMap(info -> repository.update(task))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<Task>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        disposables.add(d);
+                    }
+
+                    @Override
+                    public void onSuccess(@NonNull Task task) {
+                        TaskDetailsViewModel.this.task.postValue(task);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        int resId = Utils.extractMessage(e);
+                        showMessage(resId);
+                    }
+                });
     }
 
     public void confirmTaskDeletion() {

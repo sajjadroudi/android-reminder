@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import com.mobiliha.eventsbadesaba.data.local.db.Converter;
 import com.mobiliha.eventsbadesaba.util.Utils;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class Task {
@@ -13,7 +14,7 @@ public class Task {
     public static final int MIN_TITLE_LENGTH = 3;
     public static final int NOT_INITIALIZED_TASK_ID = -1;
 
-    private int taskId;
+    private final int taskId;
     private String title;
     private Calendar dueDate;
     private Occasion occasion;
@@ -21,6 +22,10 @@ public class Task {
     private String location;
     private String link;
     private TaskColor color = TaskColor.BLUE;
+
+    private String token;
+    private String shareId;
+    private String shareLink;
 
     public Task(
             int taskId,
@@ -30,7 +35,10 @@ public class Task {
             String details,
             String location,
             String link,
-            String color
+            String color,
+            String token,
+            String shareId,
+            String shareLink
     ) {
         this.taskId = taskId;
         setTitle(title);
@@ -40,32 +48,37 @@ public class Task {
         setLocation(location);
         setLink(link);
         setColor(color);
-    }
-
-    public Task(
-            @NonNull String title,
-            Calendar dueDate,
-            Occasion occasion,
-            String details,
-            String location,
-            String link,
-            TaskColor color
-    ) {
-        this(NOT_INITIALIZED_TASK_ID, title,
-                dueDate == null ? 0 : dueDate.getTimeInMillis(),
-                occasion == null ? null : occasion.toString(),
-                details, location, link,
-                color == null ? null : color.toString());
+        setToken(token);
+        setShareId(shareId);
+        setShareLink(shareLink);
     }
 
     public Task(int taskId, Task task) {
-        this(task.getTitle(), task.getDueDate(), task.getOccasion(),
-                task.getDetails(), task.getLocation(), task.getLink(), task.getColor());
-        this.taskId = taskId;
+        this(
+                taskId,
+                task.getTitle(),
+                task.getDueDate().getTimeInMillis(),
+                task.getOccasion() == null ? null : task.getOccasion().toString(),
+                task.getDetails(),
+                task.getLocation(),
+                task.getLink(),
+                task.getColor() == null ? null : task.getColor().toString(),
+                task.getToken(),
+                task.getShareId(),
+                task.getShareLink()
+        );
     }
 
     public Task() {
         this.taskId = NOT_INITIALIZED_TASK_ID;
+    }
+
+    public void invalidateToken() {
+        setToken(null);
+    }
+
+    public boolean isTokenValid() {
+        return token != null;
     }
 
     public int getTaskId() {
@@ -144,18 +157,45 @@ public class Task {
         setColor(color);
     }
 
+    public String getShareId() {
+        return shareId;
+    }
+
+    public void setShareId(String shareId) {
+        this.shareId = shareId;
+    }
+
+    public String getShareLink() {
+        return shareLink;
+    }
+
+    public void setShareLink(String shareLink) {
+        this.shareLink = shareLink;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     @NonNull
     @Override
     public String toString() {
         return "Task{" +
                 "taskId=" + taskId +
                 ", title='" + title + '\'' +
-                ", dueDate=" + dueDate +
+                ", dueDate=" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(dueDate.getTime()) +
                 ", occasion=" + occasion +
                 ", details='" + details + '\'' +
                 ", location='" + location + '\'' +
                 ", link='" + link + '\'' +
                 ", color=" + color +
+                ", token='" + token + '\'' +
+                ", shareId='" + shareId + '\'' +
+                ", shareLink='" + shareLink + '\'' +
                 '}';
     }
 

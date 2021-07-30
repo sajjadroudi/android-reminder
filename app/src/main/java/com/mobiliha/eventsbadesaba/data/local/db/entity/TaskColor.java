@@ -6,10 +6,10 @@ import com.mobiliha.eventsbadesaba.R;
 import com.mobiliha.eventsbadesaba.ReminderApp;
 
 public enum TaskColor {
-    BLUE(ReminderApp.getAppContext().getResources().getColor(R.color.blue)),
-    YELLOW(ReminderApp.getAppContext().getResources().getColor(R.color.yellow)),
+    RED(ReminderApp.getAppContext().getResources().getColor(R.color.red)),
     GREEN(ReminderApp.getAppContext().getResources().getColor(R.color.green)),
-    RED(ReminderApp.getAppContext().getResources().getColor(R.color.red));
+    YELLOW(ReminderApp.getAppContext().getResources().getColor(R.color.yellow)),
+    BLUE(ReminderApp.getAppContext().getResources().getColor(R.color.blue));
 
     @ColorInt
     private final int colorCode;

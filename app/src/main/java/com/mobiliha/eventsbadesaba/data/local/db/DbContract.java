@@ -14,6 +14,9 @@ public class DbContract {
         public static final String COL_NAME_LOCATION = "location";
         public static final String COL_NAME_LINK = "link";
         public static final String COL_NAME_COLOR = "color";
+        public static final String COL_NAME_TOKEN = "token";
+        public static final String COL_NAME_SHARE_ID = "share_id";
+        public static final String COL_NAME_SHARE_LINK = "share_link";
 
         public static final String SQL_CREATE_TABLE =
                 "CREATE TABLE " + TABLE_NAME + " (" +
@@ -24,7 +27,10 @@ public class DbContract {
                         COL_NAME_DETAILS + " TEXT, " +
                         COL_NAME_LOCATION + " TEXT, " +
                         COL_NAME_LINK + " TEXT," +
-                        COL_NAME_COLOR + " TEXT" +
+                        COL_NAME_COLOR + " TEXT," +
+                        COL_NAME_TOKEN + " TEXT," +
+                        COL_NAME_SHARE_ID + " TEXT," +
+                        COL_NAME_SHARE_LINK + " TEXT" +
                     ")";
 
         public static final String SQL_DROP_TABLE =

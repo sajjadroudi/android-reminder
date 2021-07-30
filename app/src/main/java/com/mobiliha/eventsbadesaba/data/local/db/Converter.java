@@ -20,6 +20,9 @@ public class Converter {
         values.put(DbContract.TaskEntry.COL_NAME_LOCATION, task.getLocation());
         values.put(DbContract.TaskEntry.COL_NAME_LINK, task.getLink());
         values.put(DbContract.TaskEntry.COL_NAME_COLOR, task.getColor().toString());
+        values.put(DbContract.TaskEntry.COL_NAME_TOKEN, task.getToken());
+        values.put(DbContract.TaskEntry.COL_NAME_SHARE_ID, task.getShareId());
+        values.put(DbContract.TaskEntry.COL_NAME_SHARE_LINK, task.getShareLink());
         return values;
     }
 
