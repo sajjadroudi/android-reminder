@@ -3,8 +3,9 @@
     package="com.mobiliha.eventsbadesaba">
 
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name=".ReminderApp"
@@ -15,6 +16,46 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EventsBadeSaba"
         android:usesCleartextTraffic="true">
+
+        <service android:name=".example.job_scheduler.SyncJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
+
+        <service android:name=".example.job_scheduler.UploadJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
+
+        <activity android:name=".example.job_scheduler.ExampleJobActivity"></activity>
+
+        <receiver
+            android:name=".example.alarmmanager.ExampleAlarmReceiver"
+            android:enabled="true"
+            android:exported="false" />
+
+        <activity android:name=".example.intent_service.ExampleIntentServiceActivity" />
+
+        <service
+            android:name=".example.intent_service.InfoProcessorIntentService"
+            android:exported="false" />
+        <service
+            android:name=".example.service.NotifyService"
+            android:enabled="true"
+            android:exported="false" />
+        <service
+            android:name=".example.service.MusicPlayerService"
+            android:enabled="true"
+            android:exported="false" />
+        <service
+            android:name=".example.service.RandomGeneratorService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <activity android:name=".example.service.ExampleServiceActivity" />
+        <activity android:name=".example.broadcast_receiver.ExampleBRActivity" />
+        <activity android:name=".example.alarmmanager.ExampleAlarmActivity"></activity>
+        <activity android:name=".example.asynctask.ExampleAsyncTaskActivity" />
+        <activity android:name=".example.workmanager.ExampleWorkActivity" />
+        <activity android:name=".example.exercise.num_3.ExampleExercise3Activity" />
+        <activity android:name=".example.exercise.num_2.ExampleExercise2Activity" />
+        <activity android:name=".example.exercise.num_1.ExampleExercise1Activity" />
 
         <receiver
             android:name=".receiver.BootReceiver"
