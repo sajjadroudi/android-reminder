@@ -80,7 +80,8 @@ public class TaskDetailsFragment extends Fragment {
                 NavController navController = NavHostFragment.findNavController(this);
                 String title = getString(R.string.edit_task);
                 navController.navigate(
-                        TaskDetailsFragmentDirections.actionDetailsToModify(title)
+                        TaskDetailsFragmentDirections.actionDetailsToModify()
+                                .setTitle(title)
                                 .setTaskId(result)
                 );
             });

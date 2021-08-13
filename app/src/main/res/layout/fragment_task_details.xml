@@ -12,155 +12,168 @@
             type="com.mobiliha.eventsbadesaba.ui.details.TaskDetailsViewModel" />
     </data>
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/task_details_rows_container_padding">
+                android:layout_height="0dp"
+                android:layout_weight="1">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="@dimen/task_details_title_container_margin_bottom">
+                    android:orientation="vertical"
+                    android:padding="@dimen/task_details_rows_container_padding">
 
-                    <ImageView
-                        android:layout_width="@dimen/task_details_colored_label_width"
-                        android:layout_height="@dimen/task_details_colored_label_height"
-                        app:taskColor="@{viewModel.task.color}"
-                        android:layout_marginLeft="@dimen/task_details_colored_label_margin_left"
-                        android:layout_gravity="center_vertical"
-                        android:background="@drawable/colored_label_background"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/task_details_title_text_size"
-                        android:text="@{viewModel.task.title}"
-                        tools:text="تولد"/>
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="@dimen/task_details_title_container_margin_bottom">
 
-                </LinearLayout>
-
-                <LinearLayout
-                    style="@style/TaskDetailsRowContainerStyle">
-
-                    <LinearLayout
-                        style="@style/TaskDetailsKeyContainerStyle">
-
-                        <com.mobiliha.eventsbadesaba.ui.custom.FontIcon
-                            style="@style/TaskDetailsIconStyle"
-                            android:text="@string/icon_calendar_day"/>
-
-                        <TextView
-                            style="@style/TaskDetailsKeyStyle"
-                            android:text="@string/start_date"/>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        style="@style/TaskDetailsValueContainerStyle">
+                        <ImageView
+                            android:layout_width="@dimen/task_details_colored_label_width"
+                            android:layout_height="@dimen/task_details_colored_label_height"
+                            app:taskColor="@{viewModel.task.color}"
+                            android:layout_marginLeft="@dimen/task_details_colored_label_margin_left"
+                            android:layout_gravity="center_vertical"
+                            android:background="@drawable/colored_label_background"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            style="@style/TaskDetailsValueStyle"
-                            android:text="@{TimeUtils.parsePersianDate(viewModel.task.dueDate)}"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            style="@style/TaskDetailsValueStyle"
-                            android:layout_marginRight="@dimen/task_details_time_margin_right"
-                            android:text="@{TimeUtils.extractTime(viewModel.task.dueDate)}"/>
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/task_details_title_text_size"
+                            android:text="@{viewModel.task.title}"
+                            tools:text="تولد"/>
 
                     </LinearLayout>
 
+                    <LinearLayout
+                        style="@style/TaskDetailsRowContainerStyle">
+
+                        <LinearLayout
+                            style="@style/TaskDetailsKeyContainerStyle">
+
+                            <com.mobiliha.eventsbadesaba.ui.custom.FontIcon
+                                style="@style/TaskDetailsIconStyle"
+                                android:text="@string/icon_calendar_day"/>
+
+                            <TextView
+                                style="@style/TaskDetailsKeyStyle"
+                                android:text="@string/start_date"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            style="@style/TaskDetailsValueContainerStyle">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/TaskDetailsValueStyle"
+                                android:text="@{TimeUtils.parsePersianDate(viewModel.task.dueDate)}"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/TaskDetailsValueStyle"
+                                android:layout_marginRight="@dimen/task_details_time_margin_right"
+                                android:text="@{TimeUtils.extractTime(viewModel.task.dueDate)}"/>
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <include
+                        layout="@layout/layout_task_details_row"
+                        style="@style/TaskDetailsRowContainerStyle"
+                        android:visibility="@{viewModel.task.occasion == null ? View.GONE : View.VISIBLE}"
+                        bind:icon="@{@string/icon_calendar_minus}"
+                        bind:keyText="@{@string/occasion}"
+                        bind:valueText="@{viewModel.taskOccasion}"/>
+
+                    <include
+                        layout="@layout/layout_task_details_row"
+                        style="@style/TaskDetailsRowContainerStyle"
+                        android:visibility="@{viewModel.task.details == null ? View.GONE : View.VISIBLE}"
+                        bind:icon="@{@string/icon_memo}"
+                        bind:keyText="@{@string/description}"
+                        bind:valueText="@{viewModel.task.details}"/>
+
+                    <include
+                        layout="@layout/layout_task_details_row"
+                        style="@style/TaskDetailsRowContainerStyle"
+                        android:visibility="@{viewModel.task.location == null ? View.GONE : View.VISIBLE}"
+                        bind:icon="@{@string/icon_flag}"
+                        bind:keyText="@{@string/location}"
+                        bind:valueText="@{viewModel.task.location}"/>
+
+                    <include
+                        layout="@layout/layout_task_details_row"
+                        style="@style/TaskDetailsRowContainerStyle"
+                        android:visibility="@{viewModel.task.link == null ? View.GONE : View.VISIBLE}"
+                        bind:icon="@{@string/icon_link_simple}"
+                        bind:keyText="@{@string/link}"
+                        bind:valueText="@{viewModel.task.link}"/>
 
                 </LinearLayout>
 
-                <include
-                    layout="@layout/layout_task_details_row"
-                    style="@style/TaskDetailsRowContainerStyle"
-                    android:visibility="@{viewModel.task.occasion == null ? View.GONE : View.VISIBLE}"
-                    bind:icon="@{@string/icon_calendar_minus}"
-                    bind:keyText="@{@string/occasion}"
-                    bind:valueText="@{viewModel.taskOccasion}"/>
+            </ScrollView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/task_details_divider_height"
+                android:background="?android:attr/listDivider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
 
                 <include
-                    layout="@layout/layout_task_details_row"
-                    style="@style/TaskDetailsRowContainerStyle"
-                    android:visibility="@{viewModel.task.details == null ? View.GONE : View.VISIBLE}"
-                    bind:icon="@{@string/icon_memo}"
-                    bind:keyText="@{@string/description}"
-                    bind:valueText="@{viewModel.task.details}"/>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    layout="@layout/layout_task_details_action"
+                    bind:icon="@{@string/icon_pen}"
+                    bind:text="@{@string/edit}"
+                    bind:clickListener="@{() -> viewModel.navigateToModify()}"/>
 
                 <include
-                    layout="@layout/layout_task_details_row"
-                    style="@style/TaskDetailsRowContainerStyle"
-                    android:visibility="@{viewModel.task.location == null ? View.GONE : View.VISIBLE}"
-                    bind:icon="@{@string/icon_flag}"
-                    bind:keyText="@{@string/location}"
-                    bind:valueText="@{viewModel.task.location}"/>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    layout="@layout/layout_task_details_action"
+                    bind:icon="@{@string/icon_trash_can}"
+                    bind:text="@{@string/delete}"
+                    bind:clickListener="@{() -> viewModel.confirmTaskDeletion()}"/>
 
                 <include
-                    layout="@layout/layout_task_details_row"
-                    style="@style/TaskDetailsRowContainerStyle"
-                    android:visibility="@{viewModel.task.link == null ? View.GONE : View.VISIBLE}"
-                    bind:icon="@{@string/icon_link_simple}"
-                    bind:keyText="@{@string/link}"
-                    bind:valueText="@{viewModel.task.link}"/>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    layout="@layout/layout_task_details_action"
+                    bind:icon="@{@string/icon_share_nodes}"
+                    bind:text="@{@string/share}"
+                    bind:clickListener="@{() -> viewModel.shareTask()}"/>
 
             </LinearLayout>
 
-        </ScrollView>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/task_details_divider_height"
-            android:background="?android:attr/listDivider" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
-
-            <include
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                layout="@layout/layout_task_details_action"
-                bind:icon="@{@string/icon_pen}"
-                bind:text="@{@string/edit}"
-                bind:clickListener="@{() -> viewModel.navigateToModify()}"/>
-
-            <include
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                layout="@layout/layout_task_details_action"
-                bind:icon="@{@string/icon_trash_can}"
-                bind:text="@{@string/delete}"
-                bind:clickListener="@{() -> viewModel.confirmTaskDeletion()}"/>
-
-            <include
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                layout="@layout/layout_task_details_action"
-                bind:icon="@{@string/icon_share_nodes}"
-                bind:text="@{@string/share}"
-                bind:clickListener="@{() -> viewModel.shareTask()}"/>
-
         </LinearLayout>
 
-    </LinearLayout>
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{viewModel.showProgressBar ? View.VISIBLE : View.INVISIBLE}"/>
+
+    </FrameLayout>
+
 </layout>

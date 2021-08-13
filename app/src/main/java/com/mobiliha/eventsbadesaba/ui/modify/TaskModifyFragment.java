@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -41,10 +42,14 @@ public class TaskModifyFragment extends Fragment {
     private FragmentTaskModifyBinding binding;
     private TaskModifyViewModel viewModel;
     private AlarmHelper alarmHelper;
+    private TaskModifyFragmentArgs args;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        args = TaskModifyFragmentArgs.fromBundle(getArguments());
+
         setupViewModel();
 
         alarmHelper = new AlarmHelper(requireContext());
@@ -60,6 +65,11 @@ public class TaskModifyFragment extends Fragment {
         setupUi(inflater, container);
 
         setupObservers();
+
+        // A task from outside has been shared
+        if(args.getToken() != null) {
+            ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle(R.string.add_task);
+        }
 
         binding.coloredRadioButtonGroup.setOnCheckedChangeListener((group, checkedId) -> {
             TaskColor taskColor = (TaskColor) group.findViewById(checkedId).getTag();
@@ -165,10 +175,18 @@ public class TaskModifyFragment extends Fragment {
     }
 
     private void setupViewModel() {
-        int taskId = TaskModifyFragmentArgs.fromBundle(getArguments()).getTaskId();
+        TaskModifyViewModel.Factory factory;
+        String token = args.getToken();
+        if(token != null) {
+            factory = new TaskModifyViewModel.Factory(token);
+        } else {
+            int taskId = args.getTaskId();
+            factory = new TaskModifyViewModel.Factory(taskId);
+        }
+
         viewModel = new ViewModelProvider(
                 this,
-                new TaskModifyViewModel.Factory(taskId)
+                factory
         ).get(TaskModifyViewModel.class);
     }
 
@@ -177,6 +195,7 @@ public class TaskModifyFragment extends Fragment {
                 inflater, R.layout.fragment_task_modify, container, false
         );
         binding.setViewModel(viewModel);
+        binding.setLifecycleOwner(getViewLifecycleOwner());
     }
 
     @Override

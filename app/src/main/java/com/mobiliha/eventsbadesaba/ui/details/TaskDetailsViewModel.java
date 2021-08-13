@@ -37,6 +37,7 @@ public class TaskDetailsViewModel extends ViewModel {
     private final MutableLiveData<Event<Integer>> actionNavigateToModify = new MutableLiveData<>();
     private final MutableLiveData<Event<Task>> actionConfirmTaskDeletion = new MutableLiveData<>();
     private final MutableLiveData<Event<Task>> actionShareTask = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> showProgressBar = new MutableLiveData<>(false);
 
     private final MutableLiveData<Task> task = new MutableLiveData<>();
     public final LiveData<String> taskOccasion = Transformations.map(task, task -> {
@@ -103,6 +104,8 @@ public class TaskDetailsViewModel extends ViewModel {
             return; // Token is still valid so we don't need to send a request to the server.
         }
 
+        showProgressBar.postValue(true);
+
         repository.saveTaskInServer(task)
                 .map(info -> {
                     task.setShareLink(info.getLink());
@@ -113,6 +116,7 @@ public class TaskDetailsViewModel extends ViewModel {
                 })
                 .flatMap(info -> repository.update(task))
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnTerminate(() -> showProgressBar.postValue(false))
                 .subscribe(new SingleObserver<Task>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
@@ -181,6 +185,10 @@ public class TaskDetailsViewModel extends ViewModel {
 
     public LiveData<Event<Task>> getActionConfirmTaskDeletion() {
         return actionConfirmTaskDeletion;
+    }
+
+    public LiveData<Boolean> getShowProgressBar() {
+        return showProgressBar;
     }
 
     private void showMessage(@StringRes int resId) {

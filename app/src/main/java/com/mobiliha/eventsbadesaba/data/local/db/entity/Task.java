@@ -3,6 +3,7 @@ package com.mobiliha.eventsbadesaba.data.local.db.entity;
 import androidx.annotation.NonNull;
 
 import com.mobiliha.eventsbadesaba.data.local.db.Converter;
+import com.mobiliha.eventsbadesaba.data.remote.model.RemoteTask;
 import com.mobiliha.eventsbadesaba.util.Utils;
 
 import java.text.SimpleDateFormat;
@@ -69,6 +70,22 @@ public class Task {
         );
     }
 
+    public Task(RemoteTask remoteTask) {
+        this.taskId = NOT_INITIALIZED_TASK_ID;
+        setTitle(remoteTask.getTitle());
+        setDueDate(remoteTask.getDueDate());
+
+        int occasionIndex = remoteTask.getOccasion() - 1;
+        if (occasionIndex >= 0)
+            setOccasion(occasionIndex);
+
+        setDetails(remoteTask.getDescription());
+        setLocation(remoteTask.getLocation());
+        setLink(remoteTask.getLink());
+        setColor(remoteTask.getColor());
+        setShareId(remoteTask.getShareId()); // TODO : I am not confident about setting this field
+    }
+
     public Task() {
         this.taskId = NOT_INITIALIZED_TASK_ID;
     }
@@ -122,6 +139,11 @@ public class Task {
         setOccasion(occasion);
     }
 
+    public void setOccasion(int occasionIndex) {
+        Occasion occasion = Occasion.values()[occasionIndex];
+        setOccasion(occasion);
+    }
+
     public Occasion getOccasion() {
         return occasion;
     }
@@ -144,6 +166,11 @@ public class Task {
 
     public TaskColor getColor() {
         return color;
+    }
+
+    public void setColor(int colorIndex) {
+        TaskColor taskColor = TaskColor.values()[colorIndex];
+        setColor(taskColor);
     }
 
     public void setColor(TaskColor color) {

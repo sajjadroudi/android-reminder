@@ -42,6 +42,7 @@ public class TaskModifyViewModel extends ViewModel {
     private final MutableLiveData<Event<Boolean>> actionNavigateBack = new MutableLiveData<>();
     private final MutableLiveData<Event<Boolean>> actionShowDueDateDialog = new MutableLiveData<>();
     private final MutableLiveData<Event<Boolean>> actionShowOccasionDialog = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> showProgressBar = new MutableLiveData<>(false);
 
     private final TaskRepository repository;
     private final Mode mode;
@@ -84,6 +85,37 @@ public class TaskModifyViewModel extends ViewModel {
                         }
                     });
         }
+    }
+
+    public TaskModifyViewModel(String token) {
+        this.repository = new TaskRepository();
+        mode = Mode.INSERT;
+
+        showProgressBar.postValue(true);
+
+        repository.getTaskFromServer(token)
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnTerminate(() -> showProgressBar.postValue(false))
+                .subscribe(new SingleObserver<Task>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        disposables.add(d);
+                    }
+
+                    @Override
+                    public void onSuccess(@NonNull Task task) {
+                        setupAdditionalVisibleFields(task);
+
+                        TaskModifyViewModel.this.task.set(task);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        showMessage(Utils.extractMessage(e));
+
+                        navigateBack();
+                    }
+                });
     }
 
     public TaskModifyViewModel() {
@@ -165,7 +197,7 @@ public class TaskModifyViewModel extends ViewModel {
 
                 @Override
                 public void onError(@NonNull Throwable e) {
-                    showMessage(R.string.something_went_wrong);
+                    showMessage(Utils.extractMessage(e));
                 }
             });
     }
@@ -224,6 +256,10 @@ public class TaskModifyViewModel extends ViewModel {
         return actionUpdateAlarm;
     }
 
+    public LiveData<Boolean> getShowProgressBar() {
+        return showProgressBar;
+    }
+
     private void validateTask(Task task) {
         String title = task.getTitle();
 
@@ -266,6 +302,17 @@ public class TaskModifyViewModel extends ViewModel {
         showMessage(message);
     }
 
+    private void setupAdditionalVisibleFields(Task task) {
+        if(task.getDetails() != null)
+            addToVisibleAdditionalFields(AdditionalField.DESC);
+
+        if(task.getLocation() != null)
+            addToVisibleAdditionalFields(AdditionalField.LOCATION);
+
+        if(task.getLink() != null)
+            addToVisibleAdditionalFields(AdditionalField.LINK);
+    }
+
     @Override
     protected void onCleared() {
         disposables.clear();
@@ -274,17 +321,25 @@ public class TaskModifyViewModel extends ViewModel {
 
     public static class Factory implements ViewModelProvider.Factory {
 
-        private final int taskId;
+        private int taskId = NOT_DEFINED;
+        private String token;
 
         public Factory(int taskId) {
             this.taskId = taskId;
+        }
+
+        public Factory(String token) {
+            this.token = token;
         }
 
         @NonNull
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             if(modelClass.isAssignableFrom(TaskModifyViewModel.class))
-                return (T) new TaskModifyViewModel(taskId);
+                if(token != null)
+                    return (T) new TaskModifyViewModel(token);
+                else
+                    return (T) new TaskModifyViewModel(taskId);
             throw new IllegalArgumentException();
         }
     }

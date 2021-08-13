@@ -13,10 +13,11 @@ public class RetrofitHelper {
             .connectTimeout(5, TimeUnit.SECONDS)
             .readTimeout(5, TimeUnit.SECONDS)
             .callTimeout(5, TimeUnit.SECONDS)
+            .addInterceptor(new MainInterceptor())
             .build();
 
     private static final Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("https://api.baadesaba.ir/")
+            .baseUrl("http://api.baadesaba.ir/")
             .client(client)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())

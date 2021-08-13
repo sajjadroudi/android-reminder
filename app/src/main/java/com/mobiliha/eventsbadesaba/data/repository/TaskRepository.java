@@ -53,6 +53,11 @@ public class TaskRepository {
         return applyRequirements(api.saveTask(remoteTask));
     }
 
+    public Single<Task> getTaskFromServer(String token) {
+        return applyRequirements(api.getTask(token).map(Task::new));
+    }
+
+
     private <T> Single<T> applyRequirements(Single<T> value) {
         return value.subscribeOn(Schedulers.io());
     }

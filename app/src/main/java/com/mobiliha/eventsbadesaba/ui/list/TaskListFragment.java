@@ -87,7 +87,8 @@ public class TaskListFragment extends Fragment {
                 NavController navController = NavHostFragment.findNavController(this);
                 String title = getString(R.string.add_task);
                 navController.navigate(
-                        TaskListFragmentDirections.actionListToModify(title)
+                        TaskListFragmentDirections.actionListToModify()
+                            .setTitle(title)
                 );
             });
         });

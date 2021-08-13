@@ -6,6 +6,7 @@ import com.mobiliha.eventsbadesaba.data.remote.model.ShareInfo;
 import io.reactivex.Single;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface BadeSabaApi {
 
@@ -16,5 +17,13 @@ public interface BadeSabaApi {
      */
     @POST("event/share")
     Single<ShareInfo> saveTask(@Body RemoteTask task);
+
+    /**
+     * Get the task saved in the server using its token.
+     * @param token Token of task.
+     * @return Task with the given token.
+     */
+    @POST("event/get/{token}")
+    Single<RemoteTask> getTask(@Path("token") String token);
 
 }

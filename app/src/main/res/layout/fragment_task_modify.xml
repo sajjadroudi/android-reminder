@@ -15,191 +15,203 @@
             type="com.mobiliha.eventsbadesaba.ui.modify.TaskModifyViewModel" />
     </data>
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/task_modify_rows_container_padding_top"
-                android:paddingLeft="@dimen/task_modify_rows_container_padding_left"
-                android:paddingRight="@dimen/task_modify_rows_container_padding_right"
-                android:orientation="vertical">
-
-                <include
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    layout="@layout/layout_task_modify_edit_text"
-                    bind:icon="@{@string/icon_align_right}"
-                    bind:hint="@{@string/title}"
-                    bind:text="@={viewModel.task.title}"
-                    android:layout_marginBottom="@dimen/task_modify_row_margin_bottom"/>
-
-                <include
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    layout="@layout/layout_task_modify_due_date"
-                    bind:icon="@{@string/icon_calendar_day}"
-                    bind:calendar="@{viewModel.task.dueDate}"
-                    bind:clickListener="@{() -> viewModel.showDueDateDialog()}"
-                    android:layout_marginBottom="@dimen/task_modify_row_margin_bottom"/>
-
-                <com.mobiliha.eventsbadesaba.ui.custom.CustomTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:customHintText="@string/occasion"
-                    app:customText="@{Utils.toLocaleString(viewModel.task.occasion)}"
-                    app:customIcon="@string/icon_gift"
-                    android:layout_marginBottom="@dimen/task_modify_row_margin_bottom"
-                    android:onClick="@{() -> viewModel.showOccasionDialog()}"/>
-
-                <include
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    layout="@layout/layout_task_modify_edit_text"
-                    bind:icon="@{@string/icon_memo}"
-                    bind:hint="@{@string/description}"
-                    bind:text="@={viewModel.task.details}"
-                    android:layout_marginBottom="@dimen/task_modify_row_margin_bottom"
-                    android:visibility="@{viewModel.visibleFields.contains(AdditionalField.DESC) ? View.VISIBLE : View.GONE}"/>
-
-                <include
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    layout="@layout/layout_task_modify_edit_text"
-                    bind:icon="@{@string/icon_flag}"
-                    bind:hint="@{@string/location}"
-                    bind:text="@={viewModel.task.location}"
-                    android:layout_marginBottom="@dimen/task_modify_row_margin_bottom"
-                    android:visibility="@{viewModel.visibleFields.contains(AdditionalField.LOCATION) ? View.VISIBLE : View.GONE}"/>
-
-                <include
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    layout="@layout/layout_task_modify_edit_text"
-                    bind:icon="@{@string/icon_link_simple}"
-                    bind:hint="@{@string/link}"
-                    bind:text="@={viewModel.task.link}"
-                    android:layout_marginBottom="@dimen/task_modify_row_margin_bottom"
-                    android:visibility="@{viewModel.visibleFields.contains(AdditionalField.LINK) ? View.VISIBLE : View.GONE}"/>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/task_modify_row_margin_bottom"
-                    android:visibility="@{viewModel.visibleFields.size == AdditionalField.values().length ? View.GONE : View.VISIBLE}">
-
-                    <com.mobiliha.eventsbadesaba.ui.custom.FontIcon
-                        android:text="@string/icon_circle_plus"
-                        style="@style/TaskModifyFieldIcon" />
-
-                    <TextView
-                        android:text="@string/description"
-                        style="@style/TaskModifyAdditionalInformationTextViewStyle"
-                        android:visibility="@{viewModel.visibleFields.contains(AdditionalField.DESC) ? View.GONE : View.VISIBLE}"
-                        android:onClick="@{() -> viewModel.addToVisibleAdditionalFields(AdditionalField.DESC)}"/>
-
-                    <TextView
-                        android:text="@string/location"
-                        style="@style/TaskModifyAdditionalInformationTextViewStyle"
-                        android:visibility="@{viewModel.visibleFields.contains(AdditionalField.LOCATION) ? View.GONE : View.VISIBLE}"
-                        android:onClick="@{() -> viewModel.addToVisibleAdditionalFields(AdditionalField.LOCATION)}"/>
-
-                    <TextView
-                        android:text="@string/link"
-                        style="@style/TaskModifyAdditionalInformationTextViewStyle"
-                        android:layout_marginLeft="0dp"
-                        android:visibility="@{viewModel.visibleFields.contains(AdditionalField.LINK) ? View.GONE : View.VISIBLE}"
-                        android:onClick="@{() -> viewModel.addToVisibleAdditionalFields(AdditionalField.LINK)}"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:layout_marginBottom="@dimen/task_modify_row_margin_bottom">
-
-                    <com.mobiliha.eventsbadesaba.ui.custom.FontIcon
-                        android:text="@string/icon_palette"
-                        style="@style/TaskModifyFieldIcon"/>
-
-                    <RadioGroup
-                        android:id="@+id/colored_radio_button_group"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="right"
-                        android:padding="@dimen/task_modify_colored_radio_button_group_padding">
-
-                        <RadioButton
-                            android:id="@+id/radio_blue"
-                            app:taskColor="@{TaskColor.BLUE}"
-                            android:checked="@{viewModel.task.color == TaskColor.BLUE}"
-                            android:tag="@{TaskColor.BLUE}"
-                            style="@style/TaskModifyColorRadioButtonStyle"/>
-
-                        <RadioButton
-                            android:id="@+id/radio_yellow"
-                            app:taskColor="@{TaskColor.YELLOW}"
-                            android:checked="@{viewModel.task.color == TaskColor.YELLOW}"
-                            android:tag="@{TaskColor.YELLOW}"
-                            style="@style/TaskModifyColorRadioButtonStyle"/>
-
-                        <RadioButton
-                            android:id="@+id/radio_green"
-                            app:taskColor="@{TaskColor.GREEN}"
-                            android:checked="@{viewModel.task.color == TaskColor.GREEN}"
-                            android:tag="@{TaskColor.GREEN}"
-                            style="@style/TaskModifyColorRadioButtonStyle"/>
-
-                        <RadioButton
-                            android:id="@+id/radio_red"
-                            app:taskColor="@{TaskColor.RED}"
-                            android:checked="@{viewModel.task.color == TaskColor.RED}"
-                            android:tag="@{TaskColor.RED}"
-                            style="@style/TaskModifyColorRadioButtonStyle"/>
-
-                    </RadioGroup>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </ScrollView>
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="8dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <Button
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="@string/cancel"
-                android:layout_margin="@dimen/task_modify_action_button_margin"
-                android:textSize="@dimen/task_modify_action_button_text_size"
-                android:onClick="@{() -> viewModel.navigateBack()}"
-                style="?android:attr/buttonBarButtonStyle" />
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/task_modify_rows_container_padding_top"
+                    android:paddingLeft="@dimen/task_modify_rows_container_padding_left"
+                    android:paddingRight="@dimen/task_modify_rows_container_padding_right"
+                    android:orientation="vertical">
 
-            <Button
-                android:layout_width="0dp"
-                android:layout_weight="1"
+                    <include
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        layout="@layout/layout_task_modify_edit_text"
+                        bind:icon="@{@string/icon_align_right}"
+                        bind:hint="@{@string/title}"
+                        bind:text="@={viewModel.task.title}"
+                        android:layout_marginBottom="@dimen/task_modify_row_margin_bottom"/>
+
+                    <include
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        layout="@layout/layout_task_modify_due_date"
+                        bind:icon="@{@string/icon_calendar_day}"
+                        bind:calendar="@{viewModel.task.dueDate}"
+                        bind:clickListener="@{() -> viewModel.showDueDateDialog()}"
+                        android:layout_marginBottom="@dimen/task_modify_row_margin_bottom"/>
+
+                    <com.mobiliha.eventsbadesaba.ui.custom.CustomTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:customHintText="@string/occasion"
+                        app:customText="@{Utils.toLocaleString(viewModel.task.occasion)}"
+                        app:customIcon="@string/icon_gift"
+                        android:layout_marginBottom="@dimen/task_modify_row_margin_bottom"
+                        android:onClick="@{() -> viewModel.showOccasionDialog()}"/>
+
+                    <include
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        layout="@layout/layout_task_modify_edit_text"
+                        bind:icon="@{@string/icon_memo}"
+                        bind:hint="@{@string/description}"
+                        bind:text="@={viewModel.task.details}"
+                        android:layout_marginBottom="@dimen/task_modify_row_margin_bottom"
+                        android:visibility="@{viewModel.visibleFields.contains(AdditionalField.DESC) ? View.VISIBLE : View.GONE}"/>
+
+                    <include
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        layout="@layout/layout_task_modify_edit_text"
+                        bind:icon="@{@string/icon_flag}"
+                        bind:hint="@{@string/location}"
+                        bind:text="@={viewModel.task.location}"
+                        android:layout_marginBottom="@dimen/task_modify_row_margin_bottom"
+                        android:visibility="@{viewModel.visibleFields.contains(AdditionalField.LOCATION) ? View.VISIBLE : View.GONE}"/>
+
+                    <include
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        layout="@layout/layout_task_modify_edit_text"
+                        bind:icon="@{@string/icon_link_simple}"
+                        bind:hint="@{@string/link}"
+                        bind:text="@={viewModel.task.link}"
+                        android:layout_marginBottom="@dimen/task_modify_row_margin_bottom"
+                        android:visibility="@{viewModel.visibleFields.contains(AdditionalField.LINK) ? View.VISIBLE : View.GONE}"/>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/task_modify_row_margin_bottom"
+                        android:visibility="@{viewModel.visibleFields.size == AdditionalField.values().length ? View.GONE : View.VISIBLE}">
+
+                        <com.mobiliha.eventsbadesaba.ui.custom.FontIcon
+                            android:text="@string/icon_circle_plus"
+                            style="@style/TaskModifyFieldIcon" />
+
+                        <TextView
+                            android:text="@string/description"
+                            style="@style/TaskModifyAdditionalInformationTextViewStyle"
+                            android:visibility="@{viewModel.visibleFields.contains(AdditionalField.DESC) ? View.GONE : View.VISIBLE}"
+                            android:onClick="@{() -> viewModel.addToVisibleAdditionalFields(AdditionalField.DESC)}"/>
+
+                        <TextView
+                            android:text="@string/location"
+                            style="@style/TaskModifyAdditionalInformationTextViewStyle"
+                            android:visibility="@{viewModel.visibleFields.contains(AdditionalField.LOCATION) ? View.GONE : View.VISIBLE}"
+                            android:onClick="@{() -> viewModel.addToVisibleAdditionalFields(AdditionalField.LOCATION)}"/>
+
+                        <TextView
+                            android:text="@string/link"
+                            style="@style/TaskModifyAdditionalInformationTextViewStyle"
+                            android:layout_marginLeft="0dp"
+                            android:visibility="@{viewModel.visibleFields.contains(AdditionalField.LINK) ? View.GONE : View.VISIBLE}"
+                            android:onClick="@{() -> viewModel.addToVisibleAdditionalFields(AdditionalField.LINK)}"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:layout_marginBottom="@dimen/task_modify_row_margin_bottom">
+
+                        <com.mobiliha.eventsbadesaba.ui.custom.FontIcon
+                            android:text="@string/icon_palette"
+                            style="@style/TaskModifyFieldIcon"/>
+
+                        <RadioGroup
+                            android:id="@+id/colored_radio_button_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="right"
+                            android:padding="@dimen/task_modify_colored_radio_button_group_padding">
+
+                            <RadioButton
+                                android:id="@+id/radio_blue"
+                                app:taskColor="@{TaskColor.BLUE}"
+                                android:checked="@{viewModel.task.color == TaskColor.BLUE}"
+                                android:tag="@{TaskColor.BLUE}"
+                                style="@style/TaskModifyColorRadioButtonStyle"/>
+
+                            <RadioButton
+                                android:id="@+id/radio_yellow"
+                                app:taskColor="@{TaskColor.YELLOW}"
+                                android:checked="@{viewModel.task.color == TaskColor.YELLOW}"
+                                android:tag="@{TaskColor.YELLOW}"
+                                style="@style/TaskModifyColorRadioButtonStyle"/>
+
+                            <RadioButton
+                                android:id="@+id/radio_green"
+                                app:taskColor="@{TaskColor.GREEN}"
+                                android:checked="@{viewModel.task.color == TaskColor.GREEN}"
+                                android:tag="@{TaskColor.GREEN}"
+                                style="@style/TaskModifyColorRadioButtonStyle"/>
+
+                            <RadioButton
+                                android:id="@+id/radio_red"
+                                app:taskColor="@{TaskColor.RED}"
+                                android:checked="@{viewModel.task.color == TaskColor.RED}"
+                                android:tag="@{TaskColor.RED}"
+                                style="@style/TaskModifyColorRadioButtonStyle"/>
+
+                        </RadioGroup>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </ScrollView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/save"
-                android:layout_margin="@dimen/task_modify_action_button_margin"
-                android:textSize="@dimen/task_modify_action_button_text_size"
-                android:onClick="@{() -> viewModel.saveTask()}"/>
+                android:padding="8dp">
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cancel"
+                    android:layout_margin="@dimen/task_modify_action_button_margin"
+                    android:textSize="@dimen/task_modify_action_button_text_size"
+                    android:onClick="@{() -> viewModel.navigateBack()}"
+                    style="?android:attr/buttonBarButtonStyle" />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="@string/save"
+                    android:layout_margin="@dimen/task_modify_action_button_margin"
+                    android:textSize="@dimen/task_modify_action_button_text_size"
+                    android:onClick="@{() -> viewModel.saveTask()}"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{viewModel.showProgressBar ? View.VISIBLE : View.INVISIBLE}"/>
+
+    </FrameLayout>
 </layout>
