@@ -125,9 +125,7 @@ public class TaskModifyFragment extends Fragment {
         viewModel.getActionNavigateBack().observe(getViewLifecycleOwner(), doesNavigate -> {
             doesNavigate.handleIfNotNull(result -> {
                 if(result) {
-                    NavHostFragment
-                            .findNavController(this)
-                            .popBackStack();
+                    requireActivity().onBackPressed();
                 }
             });
         });
