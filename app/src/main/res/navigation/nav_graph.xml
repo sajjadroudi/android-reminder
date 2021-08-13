@@ -10,10 +10,18 @@
         android:label="@string/tasks" >
         <action
             android:id="@+id/action_list_to_modify"
-            app:destination="@id/modifyFragment" />
+            app:destination="@id/modifyFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
         <action
             android:id="@+id/action_list_to_details"
-            app:destination="@id/taskDetailsFragment" />
+            app:destination="@id/taskDetailsFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
     </fragment>
 
     <fragment
@@ -57,7 +65,11 @@
 
         <action
             android:id="@+id/action_details_to_modify"
-            app:destination="@id/modifyFragment"/>
+            app:destination="@id/modifyFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
 
     </fragment>
 
